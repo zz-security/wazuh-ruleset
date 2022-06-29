@@ -1,0 +1,57 @@
+<!--
+  -  Rules config
+  -  Author: Daniel Cid.
+  -  Updated by Wazuh, Inc.
+  -  Copyright (C) 2015, Wazuh Inc.
+  -  Copyright (C) 2009 Trend Micro Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<group name="syslog,">
+  <rule id="1" level="0" noalert="1">
+    <category>syslog</category>
+    <description>针对所有 syslog 规则的通用模板。</description>
+  </rule>
+</group>
+
+<group name="firewall,">
+  <rule id="2" level="0" noalert="1">
+    <category>firewall</category>
+    <description>针对所有防火墙规则的通用模板。</description>
+  </rule>
+</group>
+
+<group name="ids,">
+  <rule id="3" level="0" noalert="1">
+    <category>ids</category>
+    <description>针对所有 ids 规则的通用模板。</description>
+  </rule>
+</group>
+
+<group name="web-log,">
+  <rule id="4" level="0" noalert="1">
+    <category>web-log</category>
+    <description>针对所有 web 规则的通用模板。</description>
+  </rule>
+</group>
+
+<group name="squid,">
+  <rule id="5" level="0" noalert="1">
+    <category>squid</category>
+    <description>针对所有 web 代理规则的通用模板。</description>
+  </rule>
+</group>
+
+<group name="windows,">
+  <rule id="6" level="0" noalert="1">
+    <category>windows</category>
+    <description>针对所有 windows 规则的通用模板。</description>
+  </rule>
+</group>
+
+<group name="ossec,">
+  <rule id="7" level="0" noalert="1">
+    <category>ossec</category>
+    <description>针对所有 ossec 规则的通用模板。</description>
+  </rule>
+</group>
