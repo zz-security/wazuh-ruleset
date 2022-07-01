@@ -1,0 +1,953 @@
+<!--
+  -  Syslog rules
+  -  Author: Daniel Cid.
+  -  Updated by Wazuh, Inc.
+  -  Copyright (C) 2015, Wazuh Inc.
+  -  Copyright (C) 2009 Trend Micro Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+
+<!-- Default variables for the SYSLOG rules. -->
+
+<!-- Bad words matching. Any log containing these messages will be triggered. -->
+<var name="BAD_WORDS">core_dumped|failure|error|attack| bad |illegal |denied|refused|unauthorized|fatal|failed|Segmentation Fault|Corrupted</var>
+
+
+<!-- Syslog errors. -->
+<group name="syslog,errors,">
+  <rule id="1001" level="2">
+    <match>^Couldn't open /etc/securetty</match>
+    <description>文件丢失，root 访问未受限</description>
+    <group>pci_dss_10.2.4,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="1002" level="2">
+    <match>$BAD_WORDS</match>
+    <description>系统某处未知的问题</description>
+    <group>gpg13_4.3,</group>
+  </rule>
+
+  <rule id="1003" level="13" maxsize="1025" noalert="1">
+    <description>非标准的 syslog 消息 (消息太大).</description>
+    <mitre>
+      <id>T1499</id>
+    </mitre>
+    <group>gpg13_4.3,</group>
+  </rule>
+
+  <rule id="1004" level="5">
+    <match>^exiting on signal</match>
+    <description>Syslogd 退出 (停止记录).</description>
+    <group>pci_dss_10.6.1,gpg13_10.1,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="1005" level="5">
+    <program_name>syslogd</program_name>
+    <match>^restart</match>
+    <description>Syslogd 重启</description>
+    <group>pci_dss_10.6.1,gpg13_10.1,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="1006" level="5">
+    <regex>^syslogd \S+ restart</regex>
+    <description>Syslogd 重启</description>
+    <group>pci_dss_10.6.1,gpg13_10.1,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="1007" level="7">
+    <match>file system full|No space left on device</match>
+    <description>文件系统已满</description>
+    <group>low_diskspace,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="1008" level="5">
+    <match>killed by SIGTERM</match>
+    <description>进程退出 (killed).</description>
+    <group>service_availability,pci_dss_10.6.1,gpg13_4.3,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="1009" level="0">
+    <if_sid>1002</if_sid>
+    <match>无错误终止|无法认证主机名: getaddrinfo|</match>
+    <match>PPM exceeds tolerance</match>
+    <description>Ignoring known false positives on rule 1002.</description>
+  </rule>
+
+  <rule id="1010" level="5">
+    <match>segfault at </match>
+    <description>进程段错误</description>
+    <group>service_availability,gdpr_IV_35.7.d,</group>
+  </rule>
+
+</group> <!-- SYSLOG,ERRORS -->
+
+
+
+<!-- NFS messages -->
+<group name="syslog,nfs,">
+  <!-- XXX All These NFS rules need to be fixed. -->
+  <rule id="2100" level="0" noalert="1">
+    <program_name>^automount|^mount</program_name>
+    <description>NFS 规则组</description>
+  </rule>
+
+  <rule id="2101" level="4">
+    <if_sid>2100</if_sid>
+    <match>nfs: mount failure</match>
+    <description>无法挂载 NFS 共享</description>
+    <group>pci_dss_10.6.3</group>
+  </rule>
+
+  <rule id="2102" level="4">
+    <if_sid>2100</if_sid>
+    <match>reason given by server: Permission denied</match>
+    <description>无法挂载 NFS 目录</description>
+    <group>pci_dss_10.6.3</group>
+  </rule>
+
+  <rule id="2103" level="4">
+    <match>^rpc.mountd: refused mount request from</match>
+    <description>无法挂载 NFS 目录</description>
+    <group>pci_dss_10.6.3</group>
+  </rule>
+
+  <rule id="2104" level="2">
+    <if_sid>2100</if_sid>
+    <regex>lookup for \S+ failed</regex>
+    <description>自动挂载的信息类型消息</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+</group> <!-- SYSLOG,NFS -->
+
+
+
+<!-- xinetd messages -->
+<group name="syslog,xinetd,">
+  <rule id="2301" level="10">
+    <match>^Deactivating service </match>
+    <description>xinetd: 与服务连接数过多</description>
+    <mitre>
+      <id>T1499</id>
+    </mitre>
+    <group>pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+</group> <!-- SYSLOG,XINETD -->
+
+
+
+<!-- Access control messages -->
+<group name="syslog,access_control,">
+  <rule id="2501" level="5">
+    <match>FAILED LOGIN |authentication failure|</match>
+    <match>Authentication failed for|invalid password for|</match>
+    <match>LOGIN FAILURE|auth failure: |authentication error|</match>
+    <match>authinternal failed|Failed to authorize|</match>
+    <match>Wrong password given for|login failed|Auth: Login incorrect|</match>
+    <match>Failed to authenticate user</match>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.8,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+    <description>syslog: 用户认证失败</description>
+  </rule>
+
+  <rule id="2502" level="10">
+    <match>more authentication failures;|REPEATED login failures</match>
+    <description>syslog: 用户密码输入错误超过一次</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.8,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="2503" level="5">
+    <regex>^refused connect from|</regex>
+    <regex>^libwrap refused connection|</regex>
+    <regex>Connection from \S+ denied</regex>
+    <description>syslog: 连接被 Tcp Wrappers 拦截</description>
+    <mitre>
+      <id>T1095</id>
+    </mitre>
+    <group>access_denied,pci_dss_10.2.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="2504" level="9">
+    <match>ILLEGAL ROOT LOGIN|ROOT LOGIN REFUSED</match>
+    <description>syslog: 非法的 root 登录</description>
+    <mitre>
+      <id>T1548.003</id>
+    </mitre>
+    <group>invalid_login,pci_dss_10.2.4,pci_dss_10.2.5,pci_dss_10.2.2,gpg13_7.8,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AC.6,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="2505" level="3">
+    <match>^ROOT LOGIN  on</match>
+    <description>syslog: 物理访问服务器</description>
+    <group>pci_dss_10.2.2,gpg13_7.8,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.6,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="2506" level="3">
+    <match>^Authentication passed</match>
+    <description>syslog: Pop3 认证通过</description>
+    <group>pci_dss_10.2.5,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="2507" level="0">
+    <decoded_as>openldap</decoded_as>
+    <description>OpenLDAP 组</description>
+  </rule>
+
+  <rule id="2508" level="3">
+    <if_sid>2507</if_sid>
+    <match>ACCEPT from</match>
+    <description>OpenLDAP 连接开启</description>
+    <group>pci_dss_10.2.5,gdpr_IV_32.2,</group>
+  </rule>
+
+  <rule id="2509" level="5" timeframe="10" frequency="2">
+    <if_sid>2507</if_sid>
+    <if_matched_sid>2508</if_matched_sid>
+    <same_id />
+    <match>RESULT tag=97 err=49</match>
+    <description>OpenLDAP 认证失败</description>
+    <group>pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+</group> <!-- SYSLOG,ACESSCONTROL -->
+
+
+
+<!-- rshd -->
+<group name="syslog,access_control,">
+  <rule id="2550" level="0" noalert="1">
+    <decoded_as>rshd</decoded_as>
+    <description>rshd 消息组</description>
+  </rule>
+
+  <rule id="2551" level="10">
+    <if_sid>2550</if_sid>
+    <regex>^Connection from \S+ on illegal port$</regex>
+    <description>从非特权端口连接 rshd，可能是网络扫描</description>
+    <mitre>
+      <id>T1046</id>
+    </mitre>
+    <group>connection_attempt,pci_dss_10.6.1,gpg13_7.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+</group>
+
+
+
+<!-- Mail/Procmail messages -->
+<group name="syslog,mail,">
+  <rule id="2701" level="0">
+    <program_name>^procmail</program_name>
+    <description>忽略 procmail 消息</description>
+  </rule>
+</group> <!-- SYSLOG,SENDMAIL -->
+
+
+
+<!-- Smartd messages -->
+<group name="syslog,smartd,">
+  <rule id="2800" level="0" noalert="1">
+    <program_name>^smart</program_name>
+    <description>smartd 预匹配规则</description>
+  </rule>
+
+  <rule id="2801" level="0">
+    <if_sid>2800</if_sid>
+    <match>No configuration file /etc/smartd.conf found</match>
+    <description>Smartd 启动但未配置</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+
+  <rule id="2802" level="0">
+    <if_sid>2800</if_sid>
+    <match>Unable to register ATA device</match>
+    <description>Smartd 配置问题</description>
+  </rule>
+
+  <rule id="2803" level="0">
+    <if_sid>2800</if_sid>
+    <match>No such device or address</match>
+    <description>设备已配置但对 Smartd 不可用</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+</group> <!-- SYSLOG,SMARTD -->
+
+
+
+<!-- Linux Kernel messages -->
+<group name="syslog,linuxkernel,">
+  <rule id="5100" level="0" noalert="1">
+    <program_name>^kernel</program_name>
+    <description>内核消息预匹配规则</description>
+  </rule>
+
+  <rule id="5101" level="0">
+    <if_sid>5100</if_sid>
+    <match>PCI: if you experience problems, try using option</match>
+    <description>来自内核的信息类消息</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+
+  <rule id="5102" level="0">
+    <if_sid>5100</if_sid>
+    <match>modprobe: Can't locate module sound</match>
+    <description>来自内核的信息类消息</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+
+  <rule id="5103" level="9">
+    <if_sid>5100</if_sid>
+    <match>Oversized packet received from</match>
+    <description>来自内核的错误消息 </description>
+    <description>Ping 类型的 DOS 攻击</description>
+    <mitre>
+      <id>T1499</id>
+    </mitre>
+    <group>gdpr_IV_35.7.d,</group>
+  </rule>
+
+  <rule id="5104" level="8">
+    <if_sid>5100</if_sid>
+    <regex>Promiscuous mode enabled|</regex>
+    <regex>device \S+ entered promiscuous mode</regex>
+    <description>以混杂(嗅探)模式进入接口</description>
+    <mitre>
+      <id>T1040</id>
+    </mitre>
+    <group>promisc,pci_dss_10.6.1,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="5105" level="0">
+    <if_sid>5100</if_sid>
+    <match>end_request: I/O error, dev fd0, sector 0|</match>
+    <match>Buffer I/O error on device fd0, logical block 0</match>
+    <description>对 /dev/fd0 的无效请求 (内核上的错误).</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+
+  <rule id="5106" level="0">
+    <if_sid>5100</if_sid>
+    <match>svc: unknown program 100227 (me 100003)</match>
+    <description>Linux 和 Solaris 之间的 NFS 不兼容</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+
+  <rule id="5107" level="0">
+    <if_sid>5100</if_sid>
+    <match>svc: bad direction </match>
+    <description>Linux 和 Solaris 之间的 NFS 不兼容</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+
+  <rule id="5108" level="12">
+    <if_sid>5100</if_sid>
+    <match>Out of Memory: </match>
+    <description>系统内存不足</description>
+    <description>系统可用性存在风险</description>
+    <mitre>
+      <id>T1499</id>
+    </mitre>
+    <group>service_availability,pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5109" level="4">
+    <if_sid>5100</if_sid>
+    <match>I/O error: dev |end_request: I/O error, dev</match>
+    <description>内核输入/输出错误</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+
+  <rule id="5110" level="4">
+    <if_sid>5100</if_sid>
+    <match>Forged DCC command from</match>
+    <description>IRC 配置错误.</description>
+  </rule>
+
+  <rule id="5111" level="0">
+    <if_sid>5100</if_sid>
+    <match>ipw2200: Firmware error detected.| ACPI Error</match>
+    <description>内核设备错误</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+
+  <rule id="5112" level="0">
+    <if_sid>5100</if_sid>
+    <match>usbhid: probe of</match>
+    <description>内核 usbhid probe 错误 (已忽略).</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+
+  <rule id="5113" level="7">
+    <if_sid>5100</if_sid>
+    <match>Kernel log daemon terminating</match>
+    <group>system_shutdown,pci_dss_10.6.1,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+    <description>系统正在关机</description>
+    <mitre>
+      <id>T1529</id>
+    </mitre>
+  </rule>
+
+  <rule id="5130" level="7">
+    <if_sid>5100</if_sid>
+    <match>ADSL line is down</match>
+    <description>监控 ADSL 线路已断开</description>
+  </rule>
+
+  <rule id="5131" level="3">
+    <if_sid>5100</if_sid>
+    <match>ADSL line is up</match>
+    <description>监控 ADSL 线路已启用</description>
+  </rule>
+
+  <rule id="5132" level="11">
+    <if_sid>5100</if_sid>
+    <match>module verification failed</match>
+    <description>未签名的内核模块已加载</description>
+    <mitre>
+      <id>T1547.006</id>Monitor ADSL line is up
+    </mitre>
+  </rule>
+
+  <rule id="5133" level="11">
+    <if_sid>5100</if_sid>
+    <match>PKCS#7 signature not signed with a trusted key</match>
+    <description>已加载签名但不受信任的内核模块</description>
+    <mitre>
+      <id>T1547.006</id>
+    </mitre>
+  </rule>
+
+  <rule id="5134" level="7">
+    <program_name>^rngd</program_name>
+    <match>failure</match>
+    <description>RNGD 故障</description>
+  </rule>
+
+  <rule id="5135" level="7">
+   <if_sid>5100</if_sid>
+   <match>Disk failure</match>
+   <description>RAID 磁盘故障</description>
+  </rule>
+
+  <rule id="5136" level="2">
+   <program_name>^mdadm</program_name>
+   <description>一般 RAID mdadm 事件</description>
+  </rule>
+
+  <rule id="5137" level="7">
+   <if_sid>5136</if_sid>
+   <match>Fail</match>
+   <description>RAID mdadm 磁盘故障</description>
+  </rule>
+
+  <rule id="5138" level="7">
+    <if_sid>5100</if_sid>
+    <regex>ata\S+: failed command</regex>
+    <description>一般 SATA 磁盘故障</description>
+  </rule>
+
+  <rule id="5139" level="7">
+    <if_sid>5100</if_sid>
+    <match>device not ready</match>
+    <description>一般设备故障</description>
+  </rule>
+
+  <rule id="5140" level="2">
+   <program_name>^zpool</program_name>
+   <description>一般 ZFS 存储池事件</description>
+  </rule>
+
+  <rule id="5141" level="7">
+    <if_sid>5140</if_sid>
+    <match>cannot import</match>
+    <description>由于错误无法导入 ZFS 存储池</description>
+  </rule>
+
+  <rule id="5200" level="0">
+    <match>^hpiod: unable to ParDevice</match>
+    <description>忽略 hpiod 产生的无用日志</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+</group> <!-- SYSLOG,LINUXKERNEL -->
+
+
+
+<!-- Cron messages -->
+<group name="syslog,cron,">
+  <rule id="2830" level="0">
+    <program_name>crond|crontab</program_name>
+    <description>Crontab 规则组</description>
+  </rule>
+
+  <rule id="2831" level="0">
+    <if_sid>2830</if_sid>
+    <match>^unable to exec</match>
+    <description>错误的 crond 配置</description>
+  </rule>
+
+  <rule id="2834" level="5">
+    <if_sid>2830</if_sid>
+    <match>BEGIN EDIT</match>
+    <description>打开 Crontab 进行编辑</description>
+  </rule>
+
+  <rule id="2832" level="5">
+    <if_sid>2830</if_sid>
+    <match>REPLACE</match>
+    <description>Crontab 条目已更改</description>
+    <group>pci_dss_10.2.7,pci_dss_10.6.1,gpg13_4.13,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AU.6,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="2833" level="8">
+    <if_sid>2832</if_sid>
+    <match>REPLACE (root)</match>
+    <description>Root 下的定时任务条目已更改</description>
+    <mitre>
+      <id>T1053.003</id>
+    </mitre>
+    <group>pci_dss_10.2.7,pci_dss_10.6.1,pci_dss_10.2.2,gpg13_4.13,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AU.6,nist_800_53_AC.6,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+</group> <!-- SYSLOG,CRON -->
+
+
+
+<!-- Su messages -->
+<group name="syslog,su,">
+  <rule id="5300" level="0" noalert="1">
+    <decoded_as>su</decoded_as>
+    <description>su 消息的初始分组</description>
+  </rule>
+
+  <rule id="5301" level="5">
+   <if_sid>5300</if_sid>
+   <match>authentication failure; |failed|BAD su|^-</match>
+   <description>用户切换UID时输入错误的密码 </description>
+   <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.8,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5302" level="9">
+    <if_sid>5301</if_sid>
+    <user>^root</user>
+    <description>用户切换UID到root用户时输入错误的密码</description>
+    <mitre>
+      <id>T1548.003</id>
+    </mitre>
+    <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.8,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4</group>
+  </rule>
+
+  <rule id="5303" level="3">
+    <if_sid>5300</if_sid>
+    <regex>session opened for user root|^'su root'|</regex>
+    <regex>^+ \S+ \S+\proot$|^\S+ to root on|^SU \S+ \S+ + \S+ \S+-root$</regex>
+    <description>用户成功切换UID到root</description>
+    <mitre>
+      <id>T1078</id>
+    </mitre>
+    <group>authentication_success,pci_dss_10.2.5,gpg13_7.6,gpg13_7.8,gpg13_7.9,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5304" level="3">
+    <if_sid>5300</if_sid>
+    <regex>session opened for user|succeeded for|</regex>
+    <regex>^+|^\S+ to |^SU \S+ \S+ + </regex>
+    <description>用户成功更改UID</description>
+    <mitre>
+      <id>T1078</id>
+    </mitre>
+    <group>authentication_success,pci_dss_10.2.5,gpg13_7.6,gpg13_7.8,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5305" level="4">
+    <if_sid>5303, 5304</if_sid>
+    <if_fts />
+    <description>用户第一次执行 su 命令</description>
+  </rule>
+
+  <rule id="5306" level="0">
+    <if_sid>5300</if_sid>
+    <match>unknown class</match>
+    <info>OpenBSD uses login classes, and an inappropriate login class was used.</info>
+    <description>用户试图用 su 命令切换到未知的登录类型</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+
+</group> <!-- SYSLOG,SU -->
+
+
+
+<!-- Tripwire messages -->
+<group name="syslog,tripwire,">
+  <rule id="7101" level="8">
+    <match>Integrity Check failed: File could not</match>
+    <description>tripwire文件完整性检查问题</description>
+    <group>pci_dss_10.5.5,pci_dss_10.6.1,gdpr_II_5.1.f,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.9,nist_800_53_AU.6,tsc_PI1.4,tsc_PI1.5,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,tsc_CC8.1,</group>
+  </rule>
+</group> <!-- SYSLOG,TRIPWIRE -->
+
+
+
+<!-- Adduser messages -->
+<group name="syslog,adduser,">
+  <rule id="5901" level="8">
+    <match>^new group</match>
+    <description>系统中有新的用户组增加</description>
+    <group>pci_dss_10.2.7,pci_dss_10.2.5,pci_dss_8.1.2,gpg13_4.13,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,hipaa_164.312.a.2.I,hipaa_164.312.a.2.II,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AC.2,nist_800_53_IA.4,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5902" level="8">
+    <match>^new user|^new account added</match>
+    <description>系统中有新用户增加</description>
+    <mitre>
+      <id>T1136</id>
+    </mitre>
+    <group>pci_dss_10.2.7,pci_dss_10.2.5,pci_dss_8.1.2,gpg13_4.13,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,hipaa_164.312.a.2.I,hipaa_164.312.a.2.II,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AC.2,nist_800_53_IA.4,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5903" level="3">
+    <match>^delete user|^account deleted|^remove group</match>
+    <description>从系统中删除用户或组</description>
+    <mitre>
+      <id>T1531</id>
+    </mitre>
+    <group>pci_dss_10.2.7,pci_dss_10.2.5,pci_dss_8.1.2,gpg13_4.13,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,hipaa_164.312.a.2.I,hipaa_164.312.a.2.II,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AC.2,nist_800_53_IA.4,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5904" level="8">
+    <match>^changed user</match>
+    <description>用户信息已更改</description>
+    <mitre>
+      <id>T1098</id>
+    </mitre>
+    <group>pci_dss_10.2.7,pci_dss_10.2.5,pci_dss_8.1.2,gpg13_4.13,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,hipaa_164.312.a.2.I,hipaa_164.312.a.2.II,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AC.2,nist_800_53_IA.4,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5905" level="0">
+    <program_name>useradd</program_name>
+    <match>failed adding user </match>
+    <description>添加用户失败</description>
+  </rule>
+
+</group> <!-- SYSLOG,ADDUSER -->
+
+
+<!-- Sudo messages -->
+<group name="syslog,sudo,">
+  <rule id="5400" level="0" noalert="1">
+    <decoded_as>sudo</decoded_as>
+    <description>sudo 消息的初始用户组</description>
+  </rule>
+
+  <rule id="5401" level="5">
+    <if_sid>5400</if_sid>
+    <match>incorrect password attempt</match>
+    <description>尝试执行 sudo 失败</description>
+    <mitre>
+      <id>T1548.003</id>
+    </mitre>
+    <group>pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.8,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5402" level="3">
+    <if_sid>5400</if_sid>
+    <regex> ; USER=root ; COMMAND=| ; USER=root ; TSID=\S+ ; COMMAND=</regex>
+    <description>成功执行 sudo 到 root</description>
+    <mitre>
+      <id>T1548.003</id>
+    </mitre>
+    <group>pci_dss_10.2.5,pci_dss_10.2.2,gpg13_7.6,gpg13_7.8,gpg13_7.13,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AC.6,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5407" level="3">
+    <if_sid>5400</if_sid>
+    <regex> ; USER=\S+ ; COMMAND=| ; USER=\S+ ; TSID=\S+ ; COMMAND=</regex>
+    <description>成功执行 sudo</description>
+    <mitre>
+      <id>T1548.003</id>
+    </mitre>
+    <group>pci_dss_10.2.5,pci_dss_10.2.2,gpg13_7.6,gpg13_7.8,gpg13_7.13,gdpr_IV_32.2,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5403" level="4">
+    <if_sid>5400</if_sid>
+    <if_fts />
+    <description>用户第一次执行 sudo 命令</description>
+    <mitre>
+      <id>T1548.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="5404" level="10">
+    <if_sid>5401</if_sid>
+    <match>3 incorrect password attempts</match>
+    <description>执行 sudo 失败3次</description>
+    <mitre>
+      <id>T1548.003</id>
+    </mitre>
+    <group>pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.8,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5405" level="5">
+    <if_sid>5400</if_sid>
+    <match>user NOT in sudoers</match>
+    <description>未授权用户试图使用 sudo 命令</description>
+    <mitre>
+      <id>T1548.003</id>
+    </mitre>
+    <group>pci_dss_10.2.2,pci_dss_10.2.5,gpg13_7.8,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.6,nist_800_53_AC.7,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="5406" level="5">
+    <if_sid>5400</if_sid>
+    <match>command not allowed</match>
+    <description>不允许的命令</description>
+    <group>pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.8,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+</group> <!-- SYSLOG, SUDO -->
+
+
+<!-- PPTP messages -->
+<group name="syslog,pptp,">
+  <rule id="9100" level="0" noalert="1">
+    <program_name>^pptpd</program_name>
+    <description>PPTPD 消息组</description>
+  </rule>
+
+  <rule id="9101" level="0">
+    <if_sid>9100</if_sid>
+    <regex>^GRE: \S+ from \S+ failed: status = -1 </regex>
+    <description>PPTPD 失败的消息 (通信错误).</description>
+    <info type="link">http://poptop.sourceforge.net/dox/gre-protocol-unavailable.phtml</info>
+  </rule>
+
+  <rule id="9102" level="0">
+    <if_sid>9100</if_sid>
+    <match>^tcflush failed: Bad file descriptor</match>
+    <description>PPTPD 通信错误</description>
+  </rule>
+</group>
+
+
+
+<!-- Syslog FTS -->
+<group name="syslog,fts,">
+  <rule id="10100" level="4">
+    <if_group>authentication_success</if_group>
+    <if_fts />
+    <group>authentication_success,</group>
+    <description>用户第一次登陆</description>
+    <mitre>
+      <id>T1078</id>
+    </mitre>
+  </rule>
+</group>
+
+
+<group name="syslog,squid,">
+  <rule id="9200" level="0" noalert="1">
+    <program_name>^squid</program_name>
+    <description>Squid syslog 消息组</description>
+  </rule>
+
+  <rule id="9201" level="0">
+    <if_sid>9200</if_sid>
+    <match>^ctx: enter level|^sslRead|^urlParse: Illegal |</match>
+    <match>^httpReadReply: Request not yet |^httpReadReply: Excess data</match>
+    <description>Squid 调试消息</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+</group>
+
+<!-- 2015-10-08 17:21:56 remove libsmokebase3v5:amd64 4:4.14.3-1 <none> -->
+<!-- 2018-08-02 00:03:36 status installed nano:amd64 2.5.3-2ubuntu2 -->
+<!-- 2016-01-14 13:20:51 status half-configured gconf2:amd64 3.2.6-0ubuntu2 -->
+<!-- 2016-01-14 13:20:51 trigproc gconf2:amd64 3.2.6-0ubuntu2 -->
+
+<group name="syslog,dpkg,">
+  <rule id="2900" level="0">
+      <decoded_as>dpkg-decoder</decoded_as>
+      <description>Dpkg (Debian Package) 日志</description>
+  </rule>
+
+  <rule id="2901" level="3">
+    <if_sid>2900</if_sid>
+    <field name="dpkg_status">^install$</field>
+    <description>请求安装新的 dpkg (Debian Package) </description>
+    <group>pci_dss_10.6.1,gpg13_4.10,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,tsc_CC8.1,</group>
+  </rule>
+
+  <rule id="2902" level="7">
+     <if_sid>2900</if_sid>
+     <field name="dpkg_status">^status installed$</field>
+     <description>新的 dpkg (Debian Package)已安装</description>
+     <group>config_changed,pci_dss_10.6.1,pci_dss_10.2.7,gpg13_4.10,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_AU.14,tsc_CC7.2,tsc_CC7.3,tsc_CC6.8,tsc_CC8.1,</group>
+   </rule>
+
+   <rule id="2903" level="7">
+     <if_sid>2900</if_sid>
+     <field name="dpkg_status">^remove$|^purge$</field>
+     <description>Dpkg (Debian Package) 已移除</description>
+     <group>config_changed,pci_dss_10.6.1,pci_dss_10.2.7,gpg13_4.10,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_AU.14,tsc_CC7.2,tsc_CC7.3,tsc_CC6.8,tsc_CC8.1,</group>
+   </rule>
+
+   <rule id="2904" level="7">
+     <if_sid>2900</if_sid>
+     <field name="dpkg_status">^status half-configured$</field>
+     <description>Dpkg (Debian Package) 配置时出现错误</description>
+     <group>config_changed,pci_dss_10.6.1,pci_dss_10.2.7,gpg13_4.10,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_AU.14,tsc_CC7.2,tsc_CC7.3,tsc_CC6.8,tsc_CC8.1,</group>
+   </rule>
+</group>
+
+
+<group name="syslog,yum,">
+  <rule id="2930" level="0">
+    <program_name>^yum</program_name>
+    <description>Yum 日志</description>
+  </rule>
+
+  <rule id="2931" level="0">
+    <hostname>yum.log$</hostname>
+    <match>^Installed|^Updated|^Erased</match>
+    <description>Yum 日志</description>
+    <group>pci_dss_10.6.1,hipaa_164.312.b</group>
+  </rule>
+
+  <rule id="2932" level="7">
+    <if_sid>2930,2931</if_sid>
+    <match>^Installed</match>
+    <group>config_changed,pci_dss_10.6.1,pci_dss_10.2.7,gpg13_4.10,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_AU.14,tsc_CC7.2,tsc_CC7.3,tsc_CC6.8,tsc_CC8.1,</group>
+    <description>已安装新的 Yum 包</description>
+  </rule>
+
+  <rule id="2933" level="7">
+    <if_sid>2930,2931</if_sid>
+    <match>^Updated</match>
+    <group>config_changed,pci_dss_10.6.1,pci_dss_10.2.7,gpg13_4.10,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_AU.14,tsc_CC7.2,tsc_CC7.3,tsc_CC6.8,tsc_CC8.1,</group>
+    <description>Yum 包已更新</description>
+  </rule>
+
+  <rule id="2934" level="7">
+    <if_sid>2930,2931</if_sid>
+    <match>^Erased</match>
+    <group>config_changed,pci_dss_10.6.1,pci_dss_10.2.7,gpg13_4.10,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_AU.14,tsc_CC7.2,tsc_CC7.3,tsc_CC6.8,tsc_CC8.1,</group>
+    <description>Yum 包已删除</description>
+  </rule>
+
+  <!-- SCSI CONTROLLER -->
+  <rule id="2935" level="0" noalert="1">
+    <if_sid>5100</if_sid>
+    <id>mptscsih</id>
+    <description>mptscrih 规则组</description>
+  </rule>
+
+  <rule id="2936" level="0" noalert="1">
+    <if_sid>5100</if_sid>
+    <id>mptbase</id>
+    <description>mptbase 规则组</description>
+  </rule>
+
+  <rule id="2937" level="12">
+    <if_sid>2935</if_sid>
+    <status>FAILED</status>
+    <description>可能的磁盘故障，SCSI 控制器错误</description>
+    <group>pci_dss_10.6.1,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="2938" level="12">
+    <if_sid>2936</if_sid>
+    <action>failed</action>
+    <description>SCSI RAID 阵列错误, 驱动器故障</description>
+    <group>pci_dss_10.6.1,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="2939" level="12">
+    <if_sid>2936</if_sid>
+    <action>degraded</action>
+    <description>SCSI RAID 现在处于 degraded 状态</description>
+    <group>pci_dss_10.6.1,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="2940" level="0">
+    <program_name>^NetworkManager</program_name>
+    <description>NetworkManager 组</description>
+  </rule>
+
+  <rule id="2941" level="3">
+    <if_sid>2940</if_sid>
+    <match> No chain/target/match by that name.$</match>
+    <description>Incorrect chain/target/match.</description>
+  </rule>
+
+  <rule id="2942" level="0">
+    <if_sid>1002</if_sid>
+    <match>g_slice_set_config: assertion `sys_page_size == 0' failed</match>
+    <description>Uninteresting gnome error.</description>
+  </rule>
+
+  <rule id="2943" level="0">
+    <match>^nouveau </match>
+    <description>nouveau 驱动程序组</description>
+  </rule>
+
+  <rule id="2944" level="1">
+    <if_sid>2943</if_sid>
+    <match> DATA_ERROR BEGIN_END_ACTIVE$| DATA_ERROR$</match>
+    <description>Uninteresting nouveau error.</description>
+  </rule>
+
+  <rule id="2945" level="4">
+    <program_name>^rsyslogd</program_name>
+    <match>^imuxsock begins to drop messages </match>
+    <info>https://isc.sans.edu/diary/Are+you+losing+system+logging+information+%28and+don%27t+know+it%29%3F/15106</info>
+    <description>由于速率限制，rsyslog可能会丢日志</description>
+  </rule>
+
+  <rule id="2960" level="2">
+    <decoded_as>gpasswd</decoded_as>
+    <match>added by</match>
+    <description>用户添加到组</description>
+    <mitre>
+      <id>T1136</id>
+    </mitre>
+    <group>pci_dss_10.2.5,gpg13_7.9,gpg13_4.13,gdpr_IV_32.2,</group>
+  </rule>
+
+  <rule id="2961" level="5">
+    <if_sid>2960</if_sid>
+    <field name="group">sudo</field>
+    <description>用户添加到 sudo 组</description>
+    <mitre>
+      <id>T1136</id>
+    </mitre>
+    <group>pci_dss_10.2.5,gpg13_7.9,gpg13_4.13,gdpr_IV_32.2,</group>
+  </rule>
+
+</group>
+
+<group name="syslog,perdition,">
+  <rule id="2962" level="0">
+    <decoded_as>perdition</decoded_as>
+    <description>Perdition 自定义应用程序组</description>
+  </rule>
+
+  <rule id="2963" level="3">
+    <if_sid>2962</if_sid>
+    <match>Connect: </match>
+    <description>perdition: 新的连接</description>
+    <group>connection_attempt,pci_dss_10.6.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="2964" level="10" frequency="4" timeframe="30">
+    <if_matched_sid>2963</if_matched_sid>
+    <same_source_ip />
+    <description>perdition: 来自同一来源的多次连接尝试</description>
+    <mitre>
+      <id>T1499</id>
+    </mitre>
+    <group>recon,pci_dss_11.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+</group>
+
