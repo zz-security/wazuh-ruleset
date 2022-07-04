@@ -1,2 +1,2 @@
 # Wazuh Ruleset
-Wazuh 规则集中文翻译。
+Wazuh 中文翻译规则集。
