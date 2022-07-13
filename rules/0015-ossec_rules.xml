@@ -11,35 +11,35 @@
   <rule id="500" level="0">
     <category>ossec</category>
     <decoded_as>ossec</decoded_as>
-    <description>ossec 规则组</description>
+    <description>ossec规则组</description>
   </rule>
 
   <rule id="501" level="3">
     <if_sid>500</if_sid>
     <if_fts />
     <match>Agent started</match>
-    <description>已连接到新的 ossec 代理</description>
+    <description>已连接到新的ossec代理</description>
     <group>pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="502" level="3">
     <if_sid>500</if_sid>
     <match>Ossec started</match>
-    <description>Ossec 服务已启动</description>
+    <description>Ossec服务已启动</description>
     <group>pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="503" level="3">
     <if_sid>500</if_sid>
     <match>Agent started</match>
-    <description>Ossec 代理已启动</description>
+    <description>Ossec代理已启动</description>
     <group>pci_dss_10.6.1,pci_dss_10.2.6,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_AU.14,nist_800_53_AU.5,tsc_CC7.2,tsc_CC7.3,tsc_CC6.8,</group>
   </rule>
 
   <rule id="504" level="3">
     <if_sid>500</if_sid>
     <match>Agent disconnected</match>
-    <description>Ossec 代理断开连接</description>
+    <description>Ossec代理断开连接</description>
     <mitre>
       <id>T1562.001</id>
     </mitre>
@@ -49,7 +49,7 @@
   <rule id="505" level="3">
     <if_sid>500</if_sid>
     <match>Agent removed</match>
-    <description>Ossec 代理已移除</description>
+    <description>Ossec代理已移除</description>
     <mitre>
       <id>T1562.001</id>
     </mitre>
@@ -59,7 +59,7 @@
   <rule id="506" level="3">
     <if_sid>500</if_sid>
     <match>Agent stopped</match>
-    <description>Ossec 代理已停止运行</description>
+    <description>Ossec代理已停止运行</description>
     <mitre>
       <id>T1562.001</id>
     </mitre>
@@ -69,7 +69,7 @@
   <rule id="509" level="0">
     <category>ossec</category>
     <decoded_as>rootcheck</decoded_as>
-    <description>Rootcheck 事件</description>
+    <description>Rootcheck事件</description>
     <group>pci_dss_10.6.1,rootcheck,</group>
   </rule>
 
@@ -92,21 +92,21 @@
   <rule id="512" level="3">
     <if_sid>510</if_sid>
     <match>^Windows Audit</match>
-    <description>Windows 审计事件</description>
+    <description>Windows审计事件</description>
     <group>pci_dss_10.6.1,hipaa_164.312.b,rootcheck,</group>
   </rule>
 
   <rule id="513" level="9">
     <if_sid>510</if_sid>
     <match>^Windows Malware</match>
-    <description>检测到 Windows 恶意软件</description>
+    <description>检测到Windows恶意软件</description>
     <group>rootcheck,pci_dss_10.6.1,gpg13_4.2,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="514" level="2">
     <if_sid>510</if_sid>
     <match>^Application Found</match>
-    <description>Windows 应用程序监控事件</description>
+    <description>Windows应用程序监控事件</description>
     <group>pci_dss_10.6.1,hipaa_164.312.b,rootcheck,</group>
   </rule>
 
@@ -132,14 +132,14 @@
   <rule id="517" level="7">
     <if_sid>500</if_sid>
     <match>^ossec: Audit:</match>
-    <description>syscheck 审计: $(extra_data)</description>
+    <description>syscheck审计: $(extra_data)</description>
     <group>syscheck,gdpr_II_5.1.f,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="518" level="9">
     <if_sid>514</if_sid>
     <match>Adware|Spyware</match>
-    <description>发现 Windows 广告软件/间谍软件</description>
+    <description>发现Windows广告软件/间谍软件</description>
     <mitre>
       <id>T1072</id>
     </mitre>
@@ -149,7 +149,7 @@
   <rule id="519" level="7">
     <if_sid>516</if_sid>
     <match>^System Audit: Web vulnerability</match>
-    <description>系统审计: 发现存在漏洞的 web 应用</description>
+    <description>系统审计: 发现存在漏洞的web应用</description>
     <group>rootcheck,pci_dss_10.6.1,gdpr_IV_35.7.d,gdpr_IV_30.1.g,</group>
   </rule>
 
@@ -163,7 +163,7 @@
   <rule id="521" level="11">
     <if_sid>510</if_sid>
     <match>Possible kernel level rootkit</match>
-    <description>可能的内核级 rootkit</description>
+    <description>可能的内核级rootkit</description>
     <mitre>
       <id>T1014</id>
     </mitre>
@@ -174,7 +174,7 @@
   <rule id="530" level="0">
     <if_sid>500</if_sid>
     <match>^ossec: output: </match>
-    <description>OSSEC 进程监控规则</description>
+    <description>OSSEC进程监控规则</description>
     <group>process_monitor,</group>
   </rule>
 
@@ -182,7 +182,7 @@
     <if_sid>530</if_sid>
     <match>ossec: output: 'df -P': /dev/</match>
     <regex>100%</regex>
-    <description>分区使用率达到100% (磁盘空间监控).</description>
+    <description>分区使用率达到100%(磁盘空间监控).</description>
     <group>low_diskspace,pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -220,7 +220,7 @@
   <rule id="536" level="0">
     <if_sid>531</if_sid>
       <regex>'df -P':\s+/dev/loop\d+\s+\d+\s+\d+\s+0\s+100%\s+/snap/\w+/\d+</regex>
-      <description>忽略快照磁盘，因为它们的容量始终处于100%</description>
+      <description>忽略快照磁盘, 因为它们的容量始终处于100%</description>
   </rule>
 
 
@@ -262,7 +262,7 @@
   <rule id="560" level="7">
     <if_sid>500</if_sid>
     <match>^ossec: Real-time inotify kernel queue is full.</match>
-    <description>FIM 实时队列已满. 可能会丢失一些实时事件.</description>
+    <description>FIM实时队列已满. 可能会丢失一些实时事件.</description>
     <group>syscheck,agentless,pci_dss_11.5,pci_dss_10.6.1,gpg13_4.11,gdpr_II_5.1.f,gdpr_IV_35.7.d,hipaa_164.312.c.1,hipaa_164.312.c.2,hipaa_164.312.b,nist_800_53_SI.7,nist_800_53_AU.6,tsc_PI1.4,tsc_PI1.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -303,7 +303,7 @@
   <rule id="593" level="9">
     <if_sid>500</if_sid>
     <match>^ossec: Event log cleared</match>
-    <description>Microsoft 事件日志被清理</description>
+    <description>Microsoft事件日志被清理</description>
     <mitre>
       <id>T1070</id>
     </mitre>
@@ -355,7 +355,7 @@
     <if_sid>600</if_sid>
     <field name="script">firewall-drop</field>
     <field name="type">add</field>
-    <description>主机被 firewall-drop 联动策略拦截</description>
+    <description>主机被firewall-drop联动策略拦截</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -363,7 +363,7 @@
     <if_sid>600</if_sid>
     <field name="script">firewall-drop</field>
     <field name="type">delete</field>
-    <description>firewall-drop 联动策略解除对主机的拦截</description>
+    <description>firewall-drop联动策略解除对主机的拦截</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -371,7 +371,7 @@
     <if_sid>600</if_sid>
     <field name="script">host-deny</field>
     <field name="type">add</field>
-    <description>主机被 host-deny 联动策略拦截</description>
+    <description>主机被host-deny联动策略拦截</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -379,7 +379,7 @@
     <if_sid>600</if_sid>
     <field name="script">host-deny</field>
     <field name="type">delete</field>
-    <description>host-deny 联动策略解除对主机的拦截</description>
+    <description>host-deny联动策略解除对主机的拦截</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -387,7 +387,7 @@
     <if_sid>600</if_sid>
     <field name="script">route-null</field>
     <field name="type">add</field>
-    <description>主机被 $(script) 联动功能拦截</description>
+    <description>主机被$(script)联动功能拦截</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -395,7 +395,7 @@
     <if_sid>600</if_sid>
     <field name="script">route-null</field>
     <field name="type">delete</field>
-    <description>$(script) 联动策略解除对主机的拦截</description>
+    <description>$(script)联动策略解除对主机的拦截</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -407,7 +407,7 @@
 
   <rule id="650" level="0">
     <decoded_as>ar_log_json</decoded_as>
-    <description>已分组的联动 JSON 消息</description>
+    <description>已分组的联动JSON消息</description>
     <group>active_response,</group>
   </rule>
 
@@ -415,7 +415,7 @@
     <if_sid>650</if_sid>
     <field name="parameters.program">firewall-drop</field>
     <field name="command">add</field>
-    <description>主机被 firewall-drop 联动功能拦截</description>
+    <description>主机被firewall-drop联动功能拦截</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -423,7 +423,7 @@
     <if_sid>650</if_sid>
     <field name="parameters.program">firewall-drop</field>
     <field name="command">delete</field>
-    <description>主机被 firewall-drop 联动功能解除拦截</description>
+    <description>主机被firewall-drop联动功能解除拦截</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -431,7 +431,7 @@
     <if_sid>650</if_sid>
     <field name="parameters.program">host-deny</field>
     <field name="command">add</field>
-    <description>主机被 host-deny 联动功能拦截</description>
+    <description>主机被host-deny联动功能拦截</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -439,7 +439,7 @@
     <if_sid>650</if_sid>
     <field name="parameters.program">host-deny</field>
     <field name="command">delete</field>
-    <description>主机被 host-deny 联动功能解除拦截</description>
+    <description>主机被host-deny联动功能解除拦截</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -447,7 +447,7 @@
     <if_sid>650</if_sid>
     <field name="parameters.program">route-null</field>
     <field name="command">add</field>
-    <description>主机被 route-null 联动功能拦截</description>
+    <description>主机被route-null联动功能拦截</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -455,7 +455,7 @@
     <if_sid>650</if_sid>
     <field name="parameters.program">route-null</field>
     <field name="command">delete</field>
-    <description>主机被 route-null 联动功能解除拦截</description>
+    <description>主机被route-null联动功能解除拦截</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -471,7 +471,7 @@
   <rule id="700" level="0">
     <category>ossec</category>
     <decoded_as>ossec-logcollector</decoded_as>
-    <description>已分组的 Logcollector 消息</description>
+    <description>已分组的Logcollector消息</description>
   </rule>
 
   <rule id="701" level="0">

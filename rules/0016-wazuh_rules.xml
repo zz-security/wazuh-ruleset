@@ -8,7 +8,7 @@
 <group name="wazuh,">
   <rule id="200" level="0">
     <decoded_as>wazuh</decoded_as>
-    <description>wazuh 规则组</description>
+    <description>wazuh规则组</description>
   </rule>
 
   <!-- Agent buffer rules -->
@@ -22,21 +22,21 @@
   <rule id="202" level="7">
     <if_sid>201</if_sid>
     <field name="level">%</field>
-    <description>缓冲区中代理事件度列已达到 $(level)</description>
+    <description>缓冲区中代理事件度列已达到$(level)</description>
     <group>agent_flooding,pci_dss_10.6.1,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="203" level="9">
     <if_sid>201</if_sid>
     <field name="level">full</field>
-    <description>缓冲区中代理事件队列已满，事件可能丢失</description>
+    <description>缓冲区中代理事件队列已满,事件可能丢失</description>
     <group>agent_flooding,pci_dss_10.6.1,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="204" level="12">
     <if_sid>201</if_sid>
     <field name="level">flooded</field>
-    <description>缓冲区一直处于100%，容差时间内无法恢复到正常状态，触发 Flooding 状态警报。请检查代理配置。</description>
+    <description>缓冲区一直处于100%，容差时间内无法恢复到正常状态，触发Flooding状态警报。请检查代理配置。</description>
     <group>agent_flooding,pci_dss_10.6.1,gdpr_IV_35.7.d,</group>
   </rule>
 
@@ -147,28 +147,28 @@
     <if_sid>200</if_sid>
     <match>^wazuh: FIM DB: </match>
     <location>syscheck$</location>
-    <description>FIM DB 规则</description>
+    <description>FIM DB规则</description>
     <group>syscheck,fim_db_state,</group>
   </rule>
 
   <rule id="231" level="7">
     <if_sid>230</if_sid>
     <field name="alert_type">80_percentage</field>
-    <description>对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控，所有超出该限制的文件都不会被监控. 可以在本地代理或 wazuh manager 的集中配置文件中修改此设置</description>
+    <description>对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控，所有超出该限制的文件都不会被监控. 可以在本地代理或wazuh manager的集中配置文件中修改此设置</description>
     <group>syscheck,fim_db_state,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="232" level="9">
     <if_sid>230</if_sid>
     <field name="alert_type">90_percentage</field>
-    <description>对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控，所有超出该限制的文件都不会被监控. 可以在本地代理或 wazuh manager 的集中配置文件中修改此设置</description>
+    <description>对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控，所有超出该限制的文件都不会被监控. 可以在本地代理或wazuh manager的集中配置文件中修改此设置</description>
     <group>syscheck,fim_db_state,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="233" level="12">
     <if_sid>230</if_sid>
     <field name="alert_type">full</field>
-    <description>对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控，不再有文件会被监控. 可以在本地代理或 wazuh manager 的集中配置文件中修改此设置</description>
+    <description>对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控，不再有文件会被监控. 可以在本地代理或wazuh manager的集中配置文件中修改此设置</description>
     <group>syscheck,fim_db_state,gdpr_IV_35.7.d,</group>
   </rule>
 
