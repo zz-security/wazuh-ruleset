@@ -11,7 +11,7 @@
   <rule id="3800" level="0">
     <decoded_as>msexchange</decoded_as>
     <info type="text">Exchange规则组.</info>
-	<description>Grouping of Exchange rules.</description>
+    <description>Grouping of Exchange rules.</description>
   </rule>
 
   <rule id="3801" level="4">
@@ -19,7 +19,7 @@
     <action>RCPT</action>
     <id>^550</id>
     <info type="text">ms-exchange: 无效的邮件接收人 (无效的账户).</info>
-	<description>ms-exchange: E-mail rcpt is not valid (invalid account).</description>
+    <description>ms-exchange: E-mail rcpt is not valid (invalid account).</description>
     <group>spam,</group>
   </rule>
 
@@ -27,7 +27,7 @@
     <if_sid>3800</if_sid>
     <id>^5</id>
     <info type="text">ms-exchange: 邮件返回500错误状态码</info>
-	<description>ms-exchange: E-mail 500 error code.</description>
+    <description>ms-exchange: E-mail 500 error code.</description>
     <group>spam,</group>
   </rule>
 
@@ -35,7 +35,7 @@
     <if_matched_sid>3801</if_matched_sid>
     <same_source_ip />
     <info type="text">ms-exchange: 多次尝试向无效的邮件接收人发送邮件</info>
-	<description>ms-exchange: Multiple e-mail attempts to an invalid account.</description>
+    <description>ms-exchange: Multiple e-mail attempts to an invalid account.</description>
     <mitre>
       <id>T1114</id>
       <id>T1499</id>
@@ -47,7 +47,7 @@
     <if_matched_sid>3802</if_matched_sid>
     <same_source_ip />
     <info type="text">ms-exchange: 多个邮件返回500错误状态码(垃圾邮件).</info>
-	<description>ms-exchange: Multiple e-mail 500 error code (spam).</description>
+    <description>ms-exchange: Multiple e-mail 500 error code (spam).</description>
     <mitre>
       <id>T1114</id>
       <id>T1499</id>

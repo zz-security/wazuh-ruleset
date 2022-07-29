@@ -14,7 +14,7 @@
   <rule id="3300" level="0">
     <decoded_as>postfix-reject</decoded_as>
     <info type="text">postfix 拒信规则组</info>
-	<description>Grouping of the postfix reject rules.</description>
+    <description>Grouping of the postfix reject rules.</description>
   </rule>
 
   <rule id="3301" level="6">
@@ -22,8 +22,8 @@
     <id>^554$</id>
     <info type="text">Postfix: 尝试将邮件服务器作为中继服务器</info>
     <info type="text">(客户端主机被拒绝).</info>
-	<description>Postfix: Attempt to use mail server as relay </description>
-	<description>(client host rejected).</description>
+    <description>Postfix: Attempt to use mail server as relay </description>
+    <description>(client host rejected).</description>
     <mitre>
       <id>T1114</id>
     </mitre>
@@ -35,8 +35,8 @@
     <id>^550$</id>
     <info type="text">Postfix: 被访问列表拒绝</info>
     <info type="text">(请求的操作未被执行).</info>
-	<description>Postfix: Rejected by access list </description>
-	<description>(Requested action not taken).</description>
+    <description>Postfix: Rejected by access list </description>
+    <description>(Requested action not taken).</description>
     <mitre>
       <id>T1114</id>
     </mitre>
@@ -48,8 +48,8 @@
     <id>^450$</id>
     <info type="text">Postfix: 找不到发件域名 </info>
     <info type="text">(450: 请求的操作未被执行).</info>
-	<description>Postfix: Sender domain is not found </description>
-	<description>(450: Requested mail action not taken).</description>
+    <description>Postfix: Sender domain is not found </description>
+    <description>(450: Requested mail action not taken).</description>
     <mitre>
       <id>T1114</id>
     </mitre>
@@ -61,8 +61,8 @@
     <id>^503$</id>
     <info type="text">Postfix: SMTP 指令流水线使用不当</info>
     <info type="text">(503: 错误的命令序列).</info>
-	<description>Postfix: Improper use of SMTP command pipelining </description>
-	<description>(503: Bad sequence of commands).</description>
+    <description>Postfix: Improper use of SMTP command pipelining </description>
+    <description>(503: Bad sequence of commands).</description>
     <mitre>
       <id>T1114</id>
     </mitre>
@@ -74,8 +74,8 @@
     <id>^504$</id>
     <info type="text">Postfix: 收件人地址必须包含FQDN </info>
     <info type="text">(504: 命令参数未实现).</info>
-	<description>Postfix: Recipient address must contain FQDN </description>
-	<description>(504: Command parameter not implemented).</description>
+    <description>Postfix: Recipient address must contain FQDN </description>
+    <description>(504: Command parameter not implemented).</description>
     <mitre>
       <id>T1114</id>
     </mitre>
@@ -86,7 +86,7 @@
     <if_sid>3301, 3302</if_sid>
     <match> blocked using </match>
     <info type="text">Postfix: IP 地址被anti-spam列入黑名单 (已拦截).</info>
-	<description>Postfix: IP Address black-listed by anti-spam (blocked).</description>
+    <description>Postfix: IP Address black-listed by anti-spam (blocked).</description>
     <mitre>
       <id>T1114</id>
     </mitre>
@@ -96,7 +96,7 @@
   <rule id="3320" level="0">
     <decoded_as>postfix</decoded_as>
     <info type="text">postfix规则组</info>
-	<description>Grouping of the postfix rules.</description>
+    <description>Grouping of the postfix rules.</description>
   </rule>
 
   <rule id="3330" level="10" ignore="240">
@@ -104,7 +104,7 @@
     <match>defer service failure|Resource temporarily unavailable|</match>
     <match>^fatal: the Postfix mail system is not running</match>
     <info type="text">Postfix进程错误</info>
-	<description>Postfix process error.</description>
+    <description>Postfix process error.</description>
     <mitre>
       <id>T1499</id>
     </mitre>
@@ -115,7 +115,7 @@
     <if_sid>3320</if_sid>
     <match> authentication failed</match>
     <info type="text">Postfix SASL 认证失败</info>
-	<description>Postfix SASL authentication failure.</description>
+    <description>Postfix SASL authentication failure.</description>
     <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -123,7 +123,7 @@
     <if_sid>3300</if_sid>
     <id>^452</id>
     <info type="text">Postfix磁盘空间不足错误</info>
-	<description>Postfix insufficient disk space error.</description>
+    <description>Postfix insufficient disk space error.</description>
     <group>service_availability,pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -131,7 +131,7 @@
     <if_sid>3320</if_sid>
     <match>^daemon started </match>
     <info type="text">Postfix服务启动</info>
-	<description>Postfix started.</description>
+    <description>Postfix started.</description>
     <group></group>
   </rule>
 
@@ -139,7 +139,7 @@
     <if_sid>3320</if_sid>
     <match>^too many </match>
     <info type="text">Postfix: 大量未知的RCPT错误</info>
-	<description>Postfix: too many errors after RCPT from unknown</description>
+    <description>Postfix: too many errors after RCPT from unknown</description>
     <group>spam,pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
     <mitre>
       <id>T1114</id>
@@ -150,7 +150,7 @@
     <if_sid>3320</if_sid>
     <match>^terminating on signal</match>
     <info type="text">Postfix服务停止</info>
-	<description>Postfix stopped.</description>
+    <description>Postfix stopped.</description>
     <group>service_availability,pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -158,7 +158,7 @@
     <if_matched_sid>3301</if_matched_sid>
     <same_source_ip />
     <info type="text">Postfix: 垃圾邮件多次中继尝试</info>
-	<description>Postfix: Multiple relaying attempts of spam.</description>
+    <description>Postfix: Multiple relaying attempts of spam.</description>
     <mitre>
       <id>T1114</id>
       <id>T1499</id>
@@ -171,8 +171,8 @@
     <same_source_ip />
     <info type="text">Postfix: 多次尝试</info>
     <info type="text">从先前被拒绝的发件人发送电子邮件</info>
-	<description>Postfix: Multiple attempts to send e-mail from a </description>
-	<description>rejected sender IP (access).</description>
+    <description>Postfix: Multiple attempts to send e-mail from a </description>
+    <description>rejected sender IP (access).</description>
     <mitre>
       <id>T1114</id>
       <id>T1499</id>
@@ -185,8 +185,8 @@
     <same_source_ip />
     <info type="text">Postfix: 多次尝试</info>
     <info type="text">从无效/未知的发件人域名发送电子邮件</info>
-	<description>Postfix: Multiple attempts to send e-mail from </description>
-	<description>invalid/unknown sender domain.</description>
+    <description>Postfix: Multiple attempts to send e-mail from </description>
+    <description>invalid/unknown sender domain.</description>
     <mitre>
       <id>T1114</id>
       <id>T1499</id>
@@ -199,8 +199,8 @@
     <same_source_ip />
     <info type="text">Postfix: 多次SMTP服务滥用</info>
     <info type="text">(错误的命令序列).</info>
-	<description>Postfix: Multiple misuse of SMTP service </description>
-	<description>(bad sequence of commands).</description>
+    <description>Postfix: Multiple misuse of SMTP service </description>
+    <description>(bad sequence of commands).</description>
     <mitre>
       <id>T1114</id>
     </mitre>
@@ -212,8 +212,8 @@
     <same_source_ip />
     <info type="text">Postfix: 多次尝试</info>
     <info type="text">从无效的或未知的发件域名发送邮件</info>
-	<description>Postfix: Multiple attempts to send e-mail to </description>
-	<description>invalid recipient or from unknown sender domain.</description>
+    <description>Postfix: Multiple attempts to send e-mail to </description>
+    <description>invalid recipient or from unknown sender domain.</description>
     <mitre>
       <id>T1114</id>
       <id>T1499</id>
@@ -226,8 +226,8 @@
     <same_source_ip />
     <info type="text">Postfix: 多次尝试</info>
     <info type="text">从一个黑名单列表中的地址发送邮件(已拦截)</info>
-	<description>Postfix: Multiple attempts to send e-mail from </description>
-	<description>black-listed IP address (blocked).</description>
+    <description>Postfix: Multiple attempts to send e-mail from </description>
+    <description>black-listed IP address (blocked).</description>
     <mitre>
       <id>T1499</id>
     </mitre>
@@ -238,7 +238,7 @@
     <if_matched_sid>3332</if_matched_sid>
     <same_source_ip />
     <info type="text">Postfix: 多次SASL身份验证失败</info>
-	<description>Postfix: Multiple SASL authentication failures.</description>
+    <description>Postfix: Multiple SASL authentication failures.</description>
     <mitre>
       <id>T1110</id>
     </mitre>
@@ -248,12 +248,12 @@
   <rule id="3390" level="0">
     <match>^clamsmtpd: </match>
     <info type="text">clamsmtpd规则组</info>
-	<description>Grouping of the clamsmtpd rules.</description>
+    <description>Grouping of the clamsmtpd rules.</description>
   </rule>
 
   <rule id="3395" level="0">
     <info type="text">postfix告警规则组</info>
-	<description>Grouping of the postfix warning rules.</description>
+    <description>Grouping of the postfix warning rules.</description>
     <decoded_as>postfix-warning</decoded_as>
   </rule>
 
@@ -261,7 +261,7 @@
     <if_sid>3395</if_sid>
     <match>verification</match>
     <info type="text">Postfix: 主机名认证失败</info>
-	<description>Postfix: hostname verification failed</description>
+    <description>Postfix: hostname verification failed</description>
     <mitre>
       <id>T1114</id>
     </mitre>
@@ -272,7 +272,7 @@
     <if_sid>3395</if_sid>
     <match>RBL</match>
     <info type="text">Postfix: RBL查找错误:找不到主机或域名</info>
-	<description>Postfix: RBL lookup error: Host or domain name not found</description>
+    <description>Postfix: RBL lookup error: Host or domain name not found</description>
     <mitre>
       <id>T1114</id>
     </mitre>
@@ -283,7 +283,7 @@
     <if_sid>3395</if_sid>
     <match>MAIL|does not resolve to address</match>
     <info type="text">Postfix: 来自未知发件人的非法地址</info>
-	<description>Postfix: Illegal address from unknown sender</description>
+    <description>Postfix: Illegal address from unknown sender</description>
     <mitre>
       <id>T1114</id>
     </mitre>
@@ -297,7 +297,7 @@
     <if_sid>3398</if_sid>
     <match>Read-only file system</match>
     <info type="text">Postfix: 忽略权限警告</info>
-	<description>Postfix: Ignore permission warning</description>
+    <description>Postfix: Ignore permission warning</description>
   </rule>
 
 </group>

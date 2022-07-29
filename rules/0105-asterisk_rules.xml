@@ -11,14 +11,14 @@
   <rule id="6200" level="0">
     <decoded_as>asterisk</decoded_as>
     <info type="text">Asterisk消息分组</info>
-	<description>Asterisk messages grouped.</description>
+    <description>Asterisk messages grouped.</description>
   </rule>
 
   <rule id="6201" level="0">
     <if_sid>6200</if_sid>
     <match>^NOTICE</match>
     <info type="text">Asterisk通知级别消息分组.</info>
-	<description>Asterisk notice messages grouped.</description>
+    <description>Asterisk notice messages grouped.</description>
     <group>gpg13_4.12,</group>
   </rule>
 
@@ -26,7 +26,7 @@
     <if_sid>6200</if_sid>
     <match>^WARN</match>
     <info type="text">Asterisk警告级别消息</info>
-	<description>Asterisk warning message.</description>
+    <description>Asterisk warning message.</description>
     <group>gpg13_4.12,</group>
   </rule>
 
@@ -34,7 +34,7 @@
     <if_sid>6200</if_sid>
     <match>^ERROR</match>
     <info type="text">Asterisk错误消息.</info>
-	<description>Asterisk error message.</description>
+    <description>Asterisk error message.</description>
     <group>gpg13_4.3,</group>
   </rule>
 
@@ -42,7 +42,7 @@
     <if_sid>6201</if_sid>
     <match>Wrong password</match>
     <info type="text">Asterisk: 登录会话失败.</info>
-	<description>Asterisk: Login session failed.</description>
+    <description>Asterisk: Login session failed.</description>
     <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -50,7 +50,7 @@
     <if_sid>6201</if_sid>
     <match>Username/auth name mismatch</match>
     <info type="text">Asterisk: 登录会话失败(无效的用户).</info>
-	<description>Asterisk: Login session failed (invalid user).</description>
+    <description>Asterisk: Login session failed (invalid user).</description>
     <group>invalid_login,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -58,7 +58,7 @@
     <if_sid>6201</if_sid>
     <match>No matching peer found</match>
     <info type="text">Asterisk: 登录会话失败(无效的扩展).</info>
-	<description>Asterisk: Login session failed (invalid extension).</description>
+    <description>Asterisk: Login session failed (invalid extension).</description>
     <group>invalid_login,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -66,7 +66,7 @@
     <if_matched_sid>6211</if_matched_sid>
     <same_source_ip />
     <info type="text">Asterisk: 多次登录失败(用户枚举).</info>
-	<description>Asterisk: Multiple failed logins (user enumeration in process).</description>
+    <description>Asterisk: Multiple failed logins (user enumeration in process).</description>
     <mitre>
       <id>T1133</id>
     </mitre>
@@ -77,7 +77,7 @@
     <if_matched_sid>6210</if_matched_sid>
     <same_source_ip />
     <info type="text">Asterisk: 多次登录失败.</info>
-	<description>Asterisk: Multiple failed logins.</description>
+    <description>Asterisk: Multiple failed logins.</description>
     <mitre>
       <id>T1110</id>
       <id>T1133</id>
@@ -89,7 +89,7 @@
     <if_matched_sid>6212</if_matched_sid>
     <same_source_ip />
     <info type="text">Asterisk: 扩展枚举.</info>
-	<description>Asterisk: Extension enumeration.</description>
+    <description>Asterisk: Extension enumeration.</description>
     <mitre>
       <id>T1133</id>
     </mitre>
@@ -102,7 +102,7 @@
     <if_sid>6201</if_sid>
     <match>No registration for peer</match>
     <info type="text">Asterisk: 登录会话失败(无效的iax用户).</info>
-	<description>Asterisk: Login session failed (invalid iax user).</description>
+    <description>Asterisk: Login session failed (invalid iax user).</description>
     <group>invalid_login,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -111,7 +111,7 @@
     <if_matched_sid>6253</if_matched_sid>
     <same_source_ip />
     <info type="text">Asterisk: IAX扩展枚举.</info>
-	<description>Asterisk: Extension IAX Enumeration.</description>
+    <description>Asterisk: Extension IAX Enumeration.</description>
     <mitre>
       <id>T1133</id>
     </mitre>
@@ -123,7 +123,7 @@
     <if_sid>6202</if_sid>
     <match>Don't know how to respond via</match>
     <info type="text">Asterisk: 可能的注册劫持.</info>
-	<description>Asterisk: Possible Registration Hijacking.</description>
+    <description>Asterisk: Possible Registration Hijacking.</description>
     <group>invalid_login,pci_dss_10.2.4,pci_dss_10.2.5,pci_dss_11.4,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -132,7 +132,7 @@
     <if_sid>6201</if_sid>
     <match>failed MD5 authentication</match>
     <info type="text">Asterisk: IAX端点密码错误.</info>
-	<description>Asterisk: IAX peer Wrong Password.</description>
+    <description>Asterisk: IAX peer Wrong Password.</description>
     <group>invalid_login,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -141,7 +141,7 @@
     <if_matched_sid>6256</if_matched_sid>
     <same_source_ip />
     <info type="text">Asterisk: 多次登录失败.</info>
-	<description>Asterisk: IAX peer Wrong Password.</description>
+    <description>Asterisk: IAX peer Wrong Password.</description>
     <mitre>
       <id>T1110</id>
       <id>T1133</id>

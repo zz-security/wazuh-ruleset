@@ -10,7 +10,7 @@
 <group name="syslog,">
   <rule id="1" level="0" noalert="1">
     <category>syslog</category>
-	<info type="text">所有syslog规则通用模板。</info>
+    <info type="text">所有syslog规则通用模板。</info>
     <description>Generic template for all syslog rules.</description>
   </rule>
 </group>
@@ -18,8 +18,8 @@
 <group name="firewall,">
   <rule id="2" level="0" noalert="1">
     <category>firewall</category>
-   	<info type="text">所有防火墙规则通用模板。</info>
-	<description>Generic template for all firewall rules.</description>
+    <info type="text">所有防火墙规则通用模板。</info>
+    <description>Generic template for all firewall rules.</description>
   </rule>
 </group>
 
@@ -27,7 +27,7 @@
   <rule id="3" level="0" noalert="1">
     <category>ids</category>
     <info type="text">所有ids规则的通用模板。</info>
-	<description>Generic template for all ids rules.</description>
+    <description>Generic template for all ids rules.</description>
   </rule>
 </group>
 
@@ -35,7 +35,7 @@
   <rule id="4" level="0" noalert="1">
     <category>web-log</category>
     <info type="text">所有web规则的通用模板。</info>
-	<description>Generic template for all web rules.</description>
+    <description>Generic template for all web rules.</description>
   </rule>
 </group>
 
@@ -43,7 +43,7 @@
   <rule id="5" level="0" noalert="1">
     <category>squid</category>
     <info type="text">所有web代理规则的通用模板。</info>
-	<description>Generic template for all web proxy rules.</description>
+    <description>Generic template for all web proxy rules.</description>
   </rule>
 </group>
 
@@ -51,14 +51,14 @@
   <rule id="6" level="0" noalert="1">
     <category>windows</category>
     <info type="text">所有windows规则通用模板。</info>
-	<description>Generic template for all windows rules.</description>
+    <description>Generic template for all windows rules.</description>
   </rule>
 </group>
 
 <group name="ossec,">
   <rule id="7" level="0" noalert="1">
     <category>ossec</category>
-   	<info type="text">所有ossec规则通用模板。</info>
-	<description>Generic template for all ossec rules.</description>
+    <info type="text">所有ossec规则通用模板。</info>
+    <description>Generic template for all ossec rules.</description>
   </rule>
 </group>

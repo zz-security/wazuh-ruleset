@@ -11,14 +11,14 @@
   <rule id="3900" level="0">
     <decoded_as>courier</decoded_as>
     <info type="text">courier规则组.</info>
-	<description>Grouping for the courier rules.</description>
+    <description>Grouping for the courier rules.</description>
   </rule>
 
   <rule id="3901" level="3">
     <if_sid>3900</if_sid>
     <match>^Connection, </match>
     <info type="text">新的(imap/pop3)连接.</info>
-	<description>New courier (imap/pop3) connection.</description>
+    <description>New courier (imap/pop3) connection.</description>
     <group>connection_attempt,pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -26,7 +26,7 @@
     <if_sid>3900</if_sid>
     <match>^LOGIN FAILED,| FAILED:</match>
     <info type="text">Courier (imap/pop3)认证失败.</info>
-	<description>Courier (imap/pop3) authentication failed.</description>
+    <description>Courier (imap/pop3) authentication failed.</description>
     <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -34,7 +34,7 @@
     <if_sid>3900</if_sid>
     <match>^LOGOUT,|^DISCONNECTED</match>
     <info type="text">Courier登出/超时.</info>
-	<description>Courier logout/timeout.</description>
+    <description>Courier logout/timeout.</description>
     <group>pci_dss_8.1.5,gpg13_7.1,hipaa_164.312.a.1,nist_800_53_AC.2,tsc_CC6.1,</group>
   </rule>
 
@@ -42,7 +42,7 @@
     <if_sid>3900</if_sid>
     <match>^LOGIN,</match>
     <info type="text">Courier(imap/pop3)认证成功.</info>
-	<description>Courier (imap/pop3) authentication success.</description>
+    <description>Courier (imap/pop3) authentication success.</description>
     <mitre>
       <id>T1078</id>
     </mitre>
@@ -52,7 +52,7 @@
   <rule id="3910" level="10" frequency="12" timeframe="30">
     <if_matched_sid>3902</if_matched_sid>
     <info type="text">Courier暴力破解(多次失败的登录).</info>
-	<description>Courier brute force (multiple failed logins).</description>
+    <description>Courier brute force (multiple failed logins).</description>
     <mitre>
       <id>T1110</id>
     </mitre>
@@ -64,7 +64,7 @@
     <if_matched_sid>3901</if_matched_sid>
     <same_source_ip />
     <info type="text">Courier: 来自同一来源的多次连接尝试.</info>
-	<description>Courier: Multiple connection attempts from same source.</description>
+    <description>Courier: Multiple connection attempts from same source.</description>
     <mitre>
       <id>T1110</id>
     </mitre>

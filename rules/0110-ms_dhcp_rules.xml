@@ -20,7 +20,7 @@
 15        A lease was denied.
 16        A lease was deleted.
 17        A lease was expired.
-18	A lease was expired and DNS records were deleted. (Server 2008 Only)
+18    A lease was expired and DNS records were deleted. (Server 2008 Only)
 20        A BOOTP address was leased to a client.
 21        A dynamic BOOTP address was leased to a client.
 22        A BOOTP request could not be satisfied because the scope's  address pool for BOOTP was exhausted.
@@ -30,7 +30,7 @@
 30        DNS update request to the named DNS server
 31        DNS update failed
 32        DNS update successful
-33	Packet dropped due to NAP policy. Server 2008 Only)
+33    Packet dropped due to NAP policy. Server 2008 Only)
 50+       Codes above 50 are used for Rogue Server Detection information.
 -->
 
@@ -53,14 +53,14 @@ ID,Date,Time,Description,IP Address,Host Name,MAC Address
   <rule id="6300" level="0">
     <decoded_as>ms-dhcp-ipv4</decoded_as>
     <info type="text">MS-DHCP ipv4规则分组.</info>
-	<description>Grouping for the MS-DHCP ipv4 rules.</description>
+    <description>Grouping for the MS-DHCP ipv4 rules.</description>
   </rule>
 
   <rule id="6301" level="2">
-	  <if_sid>6300</if_sid>
-	  <id>^00</id>
+      <if_sid>6300</if_sid>
+      <id>^00</id>
     <info type="text">MS-DHCP: 日志记录开启.</info>
-	<description>MS-DHCP: The log was started.</description>
+    <description>MS-DHCP: The log was started.</description>
     <mitre>
       <id>T1543.003</id>
     </mitre>
@@ -68,10 +68,10 @@ ID,Date,Time,Description,IP Address,Host Name,MAC Address
   </rule>
 
   <rule id="6302" level="3">
-	  <if_sid>6300</if_sid>
-	  <id>^01</id>
+      <if_sid>6300</if_sid>
+      <id>^01</id>
     <info type="text">MS-DHCP: 日志记录停止.</info>
-	<description>MS-DHCP: The log was stopped.</description>
+    <description>MS-DHCP: The log was stopped.</description>
     <mitre>
       <id>T1070.001</id>
       <id>T1543.003</id>
@@ -80,10 +80,10 @@ ID,Date,Time,Description,IP Address,Host Name,MAC Address
   </rule>
 
   <rule id="6303" level="10">
-	<if_sid>6300</if_sid>
-	<id>^02</id>
+    <if_sid>6300</if_sid>
+    <id>^02</id>
     <info type="text">MS-DHCP: 由于磁盘空间不足，日志记录暂停.</info>
-	<description>MS-DHCP: The log was temporarily paused due to low disk space.</description>
+    <description>MS-DHCP: The log was temporarily paused due to low disk space.</description>
     <mitre>
       <id>T1489</id>
     </mitre>
@@ -91,42 +91,42 @@ ID,Date,Time,Description,IP Address,Host Name,MAC Address
   </rule>
 
   <rule id="6304" level="0">
-	<if_sid>6300</if_sid>
-	<id>^10</id>
+    <if_sid>6300</if_sid>
+    <id>^10</id>
     <info type="text">MS-DHCP: 客户端租用到一个新的IP地址.</info>
-	<description>MS-DHCP: A new IP address was leased to a client.</description>
+    <description>MS-DHCP: A new IP address was leased to a client.</description>
     <group>dhcp_lease_action,</group>
   </rule>
 
   <rule id="6305" level="0">
-	<if_sid>6300</if_sid>
-	<id>^11</id>
+    <if_sid>6300</if_sid>
+    <id>^11</id>
     <info type="text">MS-DHCP: 客户端续订了租约.</info>
-	<description>MS-DHCP: A lease was renewed by a client.</description>
+    <description>MS-DHCP: A lease was renewed by a client.</description>
     <group>dhcp_lease_action,</group>
   </rule>
 
   <rule id="6306" level="0">
-	<if_sid>6300</if_sid>
-	<id>^12</id>
+    <if_sid>6300</if_sid>
+    <id>^12</id>
     <info type="text">MS-DHCP: 客户端释放租约.</info>
-	<description>MS-DHCP: A lease was released by a client.</description>
+    <description>MS-DHCP: A lease was released by a client.</description>
     <group>dhcp_lease_action,</group>
   </rule>
 
   <rule id="6307" level="0">
-	<if_sid>6300</if_sid>
-	<id>^13</id>
+    <if_sid>6300</if_sid>
+    <id>^13</id>
     <info type="text">MS-DHCP: 发现一个IP地址正在网络中使用.</info>
-	<description>MS-DHCP: An IP address was found to be in use on the network.</description>
+    <description>MS-DHCP: An IP address was found to be in use on the network.</description>
     <group>dhcp_lease_action,pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="6308" level="12">
-	<if_sid>6300</if_sid>
-	<id>^14</id>
+    <if_sid>6300</if_sid>
+    <id>^14</id>
     <info type="text">MS-DHCP: 由于范围内的地址池已用尽，无法满足租用请求.</info>
-	<description>MS-DHCP: A lease request could not be satisfied because the scope's address pool was exhausted.</description>
+    <description>MS-DHCP: A lease request could not be satisfied because the scope's address pool was exhausted.</description>
     <mitre>
       <id>T1489</id>
     </mitre>
@@ -134,75 +134,75 @@ ID,Date,Time,Description,IP Address,Host Name,MAC Address
   </rule>
 
   <rule id="6309" level="7">
-	<if_sid>6300</if_sid>
-	<id>^15</id>
+    <if_sid>6300</if_sid>
+    <id>^15</id>
     <info type="text">MS-DHCP: 租约被拒绝.</info>
-	<description>MS-DHCP: A lease was denied.</description>
+    <description>MS-DHCP: A lease was denied.</description>
     <group>dhcp_lease_action,pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="6310" level="0">
-	<if_sid>6300</if_sid>
-	<id>^16</id>
+    <if_sid>6300</if_sid>
+    <id>^16</id>
     <info type="text">MS-DHCP: 租约被删除</info>
-	<description>MS-DHCP: A lease was deleted.</description>
+    <description>MS-DHCP: A lease was deleted.</description>
     <group>dhcp_lease_action,</group>
   </rule>
 
   <rule id="6311" level="0">
-	<if_sid>6300</if_sid>
-	<id>^17</id>
+    <if_sid>6300</if_sid>
+    <id>^17</id>
     <info type="text">MS-DHCP: 租约已过期且未删除已过期租约的 DNS 记录.</info>
-	<description>MS-DHCP: A lease was expired and DNS records for an expired leases have not been deleted.</description>
+    <description>MS-DHCP: A lease was expired and DNS records for an expired leases have not been deleted.</description>
     <group>dhcp_lease_action,</group>
   </rule>
 
   <rule id="6322" level="0">
-	<if_sid>6300</if_sid>
-	<id>^18</id>
+    <if_sid>6300</if_sid>
+    <id>^18</id>
     <info type="text">MS-DHCP: 租约已过期，DNS记录已被删除.</info>
-	<description>MS-DHCP: A lease was expired and DNS records were deleted.</description>
+    <description>MS-DHCP: A lease was expired and DNS records were deleted.</description>
     <group>dhcp_lease_action,dhcp_dns_maintenance,</group>
   </rule>
 
   <rule id="6312" level="0">
-	<if_sid>6300</if_sid>
-	<id>^20</id>
+    <if_sid>6300</if_sid>
+    <id>^20</id>
     <info type="text">MS-DHCP: BOOTP已租给客户端.</info>
-	<description>MS-DHCP: A BOOTP address was leased to a client.</description>
+    <description>MS-DHCP: A BOOTP address was leased to a client.</description>
     <group>dhcp_lease_action,</group>
   </rule>
 
   <rule id="6313" level="0">
-	<if_sid>6300</if_sid>
-	<id>^21</id>
+    <if_sid>6300</if_sid>
+    <id>^21</id>
     <info type="text">MS-DHCP: 一个动态BOOTP地址已租给客户端.</info>
-	<description>MS-DHCP: A dynamic BOOTP address was leased to a client.</description>
+    <description>MS-DHCP: A dynamic BOOTP address was leased to a client.</description>
     <group>dhcp_lease_action,</group>
   </rule>
 
 
   <rule id="6314" level="10">
-	<if_sid>6300</if_sid>
-	<id>^22</id>
+    <if_sid>6300</if_sid>
+    <id>^22</id>
     <info type="text">MS-DHCP: 无法满足 BOOTP 请求，因为 BOOTP 范围的地址池已用尽.</info>
-	<description>MS-DHCP: A BOOTP request could not be satisfied because the scope's  address pool for BOOTP was exhausted.</description>
+    <description>MS-DHCP: A BOOTP request could not be satisfied because the scope's  address pool for BOOTP was exhausted.</description>
     <group>dhcp_lease_action,pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="6315" level="0">
-	<if_sid>6300</if_sid>
-	<id>^23</id>
+    <if_sid>6300</if_sid>
+    <id>^23</id>
     <info type="text">MS-DHCP: 一个 BOOTP IP 地址在检查后被删除，发现它没有被使用.</info>
-	<description>MS-DHCP: A BOOTP IP address was deleted after checking to see it was not in use.</description>
+    <description>MS-DHCP: A BOOTP IP address was deleted after checking to see it was not in use.</description>
     <group>dhcp_lease_action,</group>
   </rule>
 
   <rule id="6316" level="3">
-	<if_sid>6300</if_sid>
-	<id>^24</id>
+    <if_sid>6300</if_sid>
+    <id>^24</id>
     <info type="text">MS-DHCP: 已开始IP地址清理操作.</info>
-	<description>MS-DHCP: IP address cleanup operation has began.</description>
+    <description>MS-DHCP: IP address cleanup operation has began.</description>
     <mitre>
       <id>T1070</id>
     </mitre>
@@ -210,42 +210,42 @@ ID,Date,Time,Description,IP Address,Host Name,MAC Address
   </rule>
 
   <rule id="6317" level="2">
-	<if_sid>6300</if_sid>
-	<id>^25</id>
+    <if_sid>6300</if_sid>
+    <id>^25</id>
     <info type="text">MS-DHCP: IP地址清理统计.</info>
-	<description>MS-DHCP: IP address cleanup statistics.</description>
+    <description>MS-DHCP: IP address cleanup statistics.</description>
     <group>dhcp_maintenance,</group>
   </rule>
 
   <rule id="6318" level="0">
-	<if_sid>6300</if_sid>
-	<id>^30</id>
+    <if_sid>6300</if_sid>
+    <id>^30</id>
     <info type="text">MS-DHCP: 对DNS 服务器的 DNS 更新请求.</info>
-	<description>MS-DHCP: DNS update request to the named DNS server.</description>
+    <description>MS-DHCP: DNS update request to the named DNS server.</description>
     <group>dhcp_dns_maintenance,</group>
   </rule>
 
   <rule id="6319" level="7">
-	<if_sid>6300</if_sid>
-	<id>^31</id>
+    <if_sid>6300</if_sid>
+    <id>^31</id>
     <info type="text">MS-DHCP: DNS更新失败.</info>
-	<description>MS-DHCP: DNS update failed.</description>
+    <description>MS-DHCP: DNS update failed.</description>
     <group>dhcp_dns_maintenance,pci_dss_10.6.1,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="6320" level="0">
-	<if_sid>6300</if_sid>
-	<id>^32</id>
+    <if_sid>6300</if_sid>
+    <id>^32</id>
     <info type="text">MS-DHCP: DNS更新成功.</info>
-	<description>MS-DHCP: DNS update successful.</description>
+    <description>MS-DHCP: DNS update successful.</description>
     <group>dhcp_dns_maintenance,pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="6323" level="12">
-	  <if_sid>6300</if_sid>
-	  <id>^33</id>
+      <if_sid>6300</if_sid>
+      <id>^33</id>
     <info type="text">MS-DHCP: 由于NAP策略丢弃数据包.</info>
-	<description>MS-DHCP: Packet dropped due to NAP policy.</description>
+    <description>MS-DHCP: Packet dropped due to NAP policy.</description>
     <mitre>
       <id>T1595</id>
     </mitre>
@@ -253,10 +253,10 @@ ID,Date,Time,Description,IP Address,Host Name,MAC Address
   </rule>
 
   <rule id="6321" level="12">
-	  <if_sid>6300</if_sid>
-	  <id>^5</id>
+      <if_sid>6300</if_sid>
+      <id>^5</id>
     <info type="text">MS-DHCP: 编号大于50的事件用于恶意服务器检测信息.</info>
-	<description>MS-DHCP: Codes above 50 are used for Rogue Server Detection information.</description>
+    <description>MS-DHCP: Codes above 50 are used for Rogue Server Detection information.</description>
     <mitre>
       <id>T1557.002</id>
     </mitre>
@@ -266,31 +266,31 @@ ID,Date,Time,Description,IP Address,Host Name,MAC Address
 
 <!--
 Server 2008 IPv6 Event ID  Meaning
-11000	Solicit.
-11001		Advertise.
-11002	Request.
-11003	Confirm.
-11004	Renew.
-11005	Rebind.
-11006	Decline.
-11007	Release.
-11008	Information Request.
-11009	Scope Full.
-11010		Started.
-11011		Stopped.
-11012		Audit log paused.
-11013		DHCP Log File.
-11014		Bad Address.
-11015		Address is already in use.
-11016		Client deleted.
-11017		DNS record not deleted.
-11018		Expired.
-11019		Expired and Deleted count.
-11020	Database cleanup begin.
-11021		Database cleanup end.
-11023	Service not authorized in AD.
-11024	Service authorized in AD.
-11025	Service has not determined if it authorized in AD.
+11000    Solicit.
+11001        Advertise.
+11002    Request.
+11003    Confirm.
+11004    Renew.
+11005    Rebind.
+11006    Decline.
+11007    Release.
+11008    Information Request.
+11009    Scope Full.
+11010        Started.
+11011        Stopped.
+11012        Audit log paused.
+11013        DHCP Log File.
+11014        Bad Address.
+11015        Address is already in use.
+11016        Client deleted.
+11017        DNS record not deleted.
+11018        Expired.
+11019        Expired and Deleted count.
+11020    Database cleanup begin.
+11021        Database cleanup end.
+11023    Service not authorized in AD.
+11024    Service authorized in AD.
+11025    Service has not determined if it authorized in AD.
 -->
 
 <!--Server 2008 IPv6 Log Sample (short on samples, not currently using)
@@ -304,79 +304,79 @@ Server 2008 IPv6 Event ID  Meaning
   <rule id="6350" level="0">
     <decoded_as>ms-dhcp-ipv6</decoded_as>
     <info type="text">MS-DHCP ipv6规则分组.</info>
-	<description>Grouping for the MS-DHCP ipv6 rules.</description>
+    <description>Grouping for the MS-DHCP ipv6 rules.</description>
   </rule>
 
   <rule id="6351" level="0">
-	<if_sid>6350</if_sid>
-	<id>^11000</id>
+    <if_sid>6350</if_sid>
+    <id>^11000</id>
     <info type="text">MS-DHCP: Solicit报文.</info>
-	<description>MS-DHCP: Solicit.</description>
+    <description>MS-DHCP: Solicit.</description>
     <group>dhcp_ipv6,</group>
   </rule>
 
   <rule id="6352" level="0">
-	<if_sid>6350</if_sid>
-	<id>^11001|^11002</id>
+    <if_sid>6350</if_sid>
+    <id>^11001|^11002</id>
     <info type="text">MS-DHCP: Advertise报文.</info>
-	<description>MS-DHCP: Advertise.</description>
+    <description>MS-DHCP: Advertise.</description>
     <group>dhcp_ipv6,</group>
   </rule>
 
   <rule id="6354" level="0">
-	<if_sid>6350</if_sid>
-	<id>^11003</id>
+    <if_sid>6350</if_sid>
+    <id>^11003</id>
     <info type="text">MS-DHCP: Confirm报文.</info>
-	<description>MS-DHCP: Confirm.</description>
+    <description>MS-DHCP: Confirm.</description>
     <group>dhcp_ipv6,</group>
   </rule>
 
   <rule id="6355" level="0">
-	<if_sid>6350</if_sid>
-	<id>^11004</id>
+    <if_sid>6350</if_sid>
+    <id>^11004</id>
     <info type="text">MS-DHCP: Renew报文.</info>
-	<description>MS-DHCP: Renew.</description>
+    <description>MS-DHCP: Renew.</description>
     <group>dhcp_ipv6,</group>
   </rule>
 
   <rule id="6356" level="0">
-	<if_sid>6350</if_sid>
-	<id>^11005</id>
+    <if_sid>6350</if_sid>
+    <id>^11005</id>
     <info type="text">MS-DHCP: Rebind报文.</info>
-	<description>MS-DHCP: Rebind.</description>
+    <description>MS-DHCP: Rebind.</description>
     <group>dhcp_ipv6,</group>
   </rule>
 
 
   <rule id="6357" level="7">
-	<if_sid>6350</if_sid>
-	<id>^11006</id>
+    <if_sid>6350</if_sid>
+    <id>^11006</id>
     <info type="text">MS-DHCP: DHCP Decline报文.</info>
-	<description>MS-DHCP: DHCP Decline.</description>
+    <description>MS-DHCP: DHCP Decline.</description>
     <group>dhcp_ipv6,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="6358" level="0">
-	<if_sid>6350</if_sid>
-	<id>^11007</id>
+    <if_sid>6350</if_sid>
+    <id>^11007</id>
     <info type="text">MS-DHCP: Release报文.</info>
-	<description>MS-DHCP: Release.</description>
+    <description>MS-DHCP: Release.</description>
     <group>dhcp_ipv6,</group>
   </rule>
 
   <rule id="6359" level="0">
-	<if_sid>6350</if_sid>
-	<id>^11008</id>
+    <if_sid>6350</if_sid>
+    <id>^11008</id>
     <info type="text">MS-DHCP: Information-Request报文.</info>
-	<description>MS-DHCP: Information Request.</description>
+    <description>MS-DHCP: Information Request.</description>
     <group>dhcp_ipv6,</group>
   </rule>
 
   <rule id="6360" level="12">
-	  <if_sid>6350</if_sid>
-	  <id>^11009</id>
+      <if_sid>6350</if_sid>
+      <id>^11009</id>
     <info type="text">MS-DHCP: 地址池已满.</info>
-	<description>MS-DHCP: Scope Full.</description>
+    <description>MS-DHCP: Scope Full.</description>
     <mitre>
       <id>T1498.001</id>
     </mitre>
@@ -384,10 +384,10 @@ Server 2008 IPv6 Event ID  Meaning
   </rule>
 
   <rule id="6361" level="3">
-	  <if_sid>6350</if_sid>
-	  <id>^11010</id>
+      <if_sid>6350</if_sid>
+      <id>^11010</id>
     <info type="text">MS-DHCP: 启动.</info>
-	<description>MS-DHCP: Started.</description>
+    <description>MS-DHCP: Started.</description>
     <mitre>
       <id>T1543.003</id>
     </mitre>
@@ -395,10 +395,10 @@ Server 2008 IPv6 Event ID  Meaning
   </rule>
 
   <rule id="6362" level="7">
-	<if_sid>6350</if_sid>
-	<id>^11011</id>
+    <if_sid>6350</if_sid>
+    <id>^11011</id>
     <info type="text">MS-DHCP: 停止.</info>
-	<description>MS-DHCP: Stopped.</description>
+    <description>MS-DHCP: Stopped.</description>
     <mitre>
       <id>T1489</id>
     </mitre>
@@ -406,10 +406,10 @@ Server 2008 IPv6 Event ID  Meaning
   </rule>
 
   <rule id="6363" level="10">
-	<if_sid>6350</if_sid>
-	<id>^11012</id>
+    <if_sid>6350</if_sid>
+    <id>^11012</id>
     <info type="text">MS-DHCP: 审计日志已暂停.</info>
-	<description>MS-DHCP: Audit log paused.</description>
+    <description>MS-DHCP: Audit log paused.</description>
     <mitre>
       <id>T1489</id>
     </mitre>
@@ -418,83 +418,83 @@ Server 2008 IPv6 Event ID  Meaning
 
 
   <rule id="6364" level="7">
-	<if_sid>6350</if_sid>
-	<id>^11013</id>
+    <if_sid>6350</if_sid>
+    <id>^11013</id>
     <info type="text">MS-DHCP: DHCP日志文件.</info>
-	<description>MS-DHCP: DHCP Log File.</description>
+    <description>MS-DHCP: DHCP Log File.</description>
     <group>system_error,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="6365" level="7">
-	<if_sid>6350</if_sid>
-	<id>^11014</id>
+    <if_sid>6350</if_sid>
+    <id>^11014</id>
     <info type="text">MS-DHCP: 地址错误.</info>
-	<description>MS-DHCP: Bad Address.</description>
+    <description>MS-DHCP: Bad Address.</description>
     <group>dhcp_ipv6,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="6366" level="4">
-	<if_sid>6350</if_sid>
-	<id>^11015</id>
+    <if_sid>6350</if_sid>
+    <id>^11015</id>
     <info type="text">MS-DHCP: 地址已被使用.</info>
-	<description>MS-DHCP: Address is already in use.</description>
+    <description>MS-DHCP: Address is already in use.</description>
     <group>dhcp_ipv6,</group>
   </rule>
 
   <rule id="6367" level="0">
-	<if_sid>6350</if_sid>
-	<id>^11016</id>
+    <if_sid>6350</if_sid>
+    <id>^11016</id>
     <info type="text">MS-DHCP: 客户端已删除.</info>
-	<description>MS-DHCP: Client deleted.</description>
+    <description>MS-DHCP: Client deleted.</description>
     <group>dhcp_ipv6,</group>
   </rule>
 
   <rule id="6368" level="0">
-	<if_sid>6350</if_sid>
-	<id>^11017</id>
+    <if_sid>6350</if_sid>
+    <id>^11017</id>
     <info type="text">MS-DHCP: 记录未删除.</info>
-	<description>MS-DHCP: DNS record not deleted.</description>
+    <description>MS-DHCP: DNS record not deleted.</description>
     <group>dhcp_ipv6,</group>
   </rule>
 
   <rule id="6369" level="0">
-	<if_sid>6350</if_sid>
-	<id>^11018</id>
+    <if_sid>6350</if_sid>
+    <id>^11018</id>
     <info type="text">MS-DHCP: 已过期.</info>
-	<description>MS-DHCP: Expired.</description>
+    <description>MS-DHCP: Expired.</description>
     <group>dhcp_ipv6,</group>
   </rule>
 
   <rule id="6370" level="0">
-	<if_sid>6350</if_sid>
-	<id>^11019</id>
+    <if_sid>6350</if_sid>
+    <id>^11019</id>
     <info type="text">MS-DHCP: 已过期和已删除的计数.</info>
-	<description>MS-DHCP: Expired and Deleted count.</description>
+    <description>MS-DHCP: Expired and Deleted count.</description>
     <group>dhcp_ipv6,</group>
   </rule>
 
   <rule id="6371" level="2">
-	<if_sid>6350</if_sid>
-	<id>^11020</id>
+    <if_sid>6350</if_sid>
+    <id>^11020</id>
     <info type="text">MS-DHCP: 数据库清理开始.</info>
-	<description>MS-DHCP: Database cleanup begin.</description>
+    <description>MS-DHCP: Database cleanup begin.</description>
     <group>dhcp_ipv6,</group>
 
   </rule>
 
   <rule id="6372" level="2">
-	<if_sid>6350</if_sid>
-	<id>^11021</id>
+    <if_sid>6350</if_sid>
+    <id>^11021</id>
     <info type="text">MS-DHCP: 数据库清理完成.</info>
-	<description>MS-DHCP: Database cleanup end.</description>
+    <description>MS-DHCP: Database cleanup end.</description>
     <group>dhcp_ipv6,</group>
   </rule>
 
   <rule id="6373" level="12">
-	  <if_sid>6350</if_sid>
-	  <id>^11023</id>
+      <if_sid>6350</if_sid>
+      <id>^11023</id>
     <info type="text">MS-DHCP: 服务未在AD中授权.</info>
-	<description>MS-DHCP: Service not authorized in AD.</description>
+    <description>MS-DHCP: Service not authorized in AD.</description>
     <mitre>
       <id>T1569.002</id>
     </mitre>
@@ -502,10 +502,10 @@ Server 2008 IPv6 Event ID  Meaning
   </rule>
 
   <rule id="6374" level="3">
-	  <if_sid>6350</if_sid>
-	  <id>^11024</id>
+      <if_sid>6350</if_sid>
+      <id>^11024</id>
     <info type="text">MS-DHCP: 已在AD域中授权服务.</info>
-	<description>MS-DHCP: Service authorized in AD.</description>
+    <description>MS-DHCP: Service authorized in AD.</description>
     <mitre>
       <id>T1543.003</id>
     </mitre>
@@ -513,10 +513,10 @@ Server 2008 IPv6 Event ID  Meaning
   </rule>
 
   <rule id="6376" level="12">
-	  <if_sid>6350</if_sid>
-	  <id>^11025</id>
+      <if_sid>6350</if_sid>
+      <id>^11025</id>
     <info type="text">MS-DHCP: 尚未确定是否在AD域中授权服务.</info>
-	<description>MS-DHCP: Service has not determined if it is authorized in AD.</description>
+    <description>MS-DHCP: Service has not determined if it is authorized in AD.</description>
     <mitre>
       <id>T1569.002</id>
     </mitre>

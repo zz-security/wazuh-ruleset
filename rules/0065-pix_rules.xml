@@ -12,56 +12,56 @@
     <decoded_as>pix</decoded_as>
     <category>firewall</category>
     <info type="text">PIX规则组</info>
-	<description>Grouping of PIX rules</description>
+    <description>Grouping of PIX rules</description>
   </rule>
 
   <rule id="4310" level="5">
     <if_sid>4300</if_sid>
     <id>^1-</id>
     <info type="text">PIX警告级别消息</info>
-	<description>PIX alert message.</description>
+    <description>PIX alert message.</description>
   </rule>
 
   <rule id="4311" level="5">
     <if_sid>4300</if_sid>
     <id>^2-</id>
     <info type="text">PIX严重级别消息</info>
-	<description>PIX critical message.</description>
+    <description>PIX critical message.</description>
   </rule>
 
   <rule id="4312" level="4">
     <if_sid>4300</if_sid>
     <id>^3-</id>
     <info type="text">PIX错误级别消息</info>
-	<description>PIX error message.</description>
+    <description>PIX error message.</description>
   </rule>
 
   <rule id="4313" level="4">
     <if_sid>4300</if_sid>
     <id>^4-</id>
     <info type="text">PIX提示级别消息</info>
-	<description>PIX warning message.</description>
+    <description>PIX warning message.</description>
   </rule>
 
   <rule id="4314" level="0">
     <if_sid>4300</if_sid>
     <id>^5-|^6-</id>
     <info type="text">PIX通知/信息级别消息.</info>
-	<description>PIX notification/informational message.</description>
+    <description>PIX notification/informational message.</description>
   </rule>
 
   <rule id="4315" level="0">
     <if_sid>4300</if_sid>
     <id>^7-</id>
     <info type="text">PIX调试消息.</info>
-	<description>PIX debug message.</description>
+    <description>PIX debug message.</description>
   </rule>
 
   <rule id="4321" level="9">
     <if_sid>4314</if_sid>
     <id>^6-605004</id>
     <info type="text">PIX: 尝试登录失败.</info>
-	<description>PIX: Failed login attempt.</description>
+    <description>PIX: Failed login attempt.</description>
     <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.8,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -69,7 +69,7 @@
     <if_sid>4314</if_sid>
     <id>^5-502103</id>
     <info type="text">PIX: 权限已变更.</info>
-	<description>PIX: Privilege changed.</description>
+    <description>PIX: Privilege changed.</description>
     <group>pci_dss_10.2.7,pci_dss_10.6.1,gpg13_7.9,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AU.6,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -77,7 +77,7 @@
     <if_sid>4314</if_sid>
     <id>^6-605005</id>
     <info type="text">PIX: 成功登录.</info>
-	<description>PIX: Successful login.</description>
+    <description>PIX: Successful login.</description>
     <mitre>
       <id>T1078</id>
     </mitre>
@@ -89,8 +89,8 @@
     <id>^6-308001</id>
     <info type="text">PIX: 当运行'enable'时密码不匹配 </info>
     <info type="text">在PIX上.</info>
-	 <description>PIX: Password mismatch while running 'enable' </description>
-	 <description>on the PIX.</description>
+     <description>PIX: Password mismatch while running 'enable' </description>
+     <description>on the PIX.</description>
     <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.8,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -98,7 +98,7 @@
     <if_sid>4313</if_sid>
     <id>^4-405001</id>
     <info type="text">PIX: 检测到ARP冲突.</info>
-	<description>PIX: ARP collision detected.</description>
+    <description>PIX: ARP collision detected.</description>
     <mitre>
       <id>T1095</id>
     </mitre>
@@ -109,7 +109,7 @@
     <if_sid>4313</if_sid>
     <id>^4-401004</id>
     <info type="text">PIX: IP尝试从一个被拦截的IP进行连接.</info>
-	<description>PIX: Attempt to connect from a blocked (shunned) IP.</description>
+    <description>PIX: Attempt to connect from a blocked (shunned) IP.</description>
     <group>access_denied,pci_dss_10.2.4,pci_dss_11.4,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -117,7 +117,7 @@
     <if_sid>4313</if_sid>
     <id>^4-710004</id>
     <info type="text">PIX: 超出连接限制.</info>
-	<description>PIX: Connection limit exceeded.</description>
+    <description>PIX: Connection limit exceeded.</description>
     <group>pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -125,7 +125,7 @@
     <if_sid>4310</if_sid>
     <id>^1-106021|^1-106022</id>
     <info type="text">PIX: 检测到正在进行的攻击.</info>
-	<description>PIX: Attack in progress detected.</description>
+    <description>PIX: Attack in progress detected.</description>
     <group>pci_dss_11.4,gdpr_IV_35.7.d,</group>
   </rule>
 
@@ -133,7 +133,7 @@
     <if_sid>4311</if_sid>
     <id>^2-106012|^2-106017|^2-106020</id>
     <info type="text">PIX: 检测到正在进行的攻击.</info>
-	<description>PIX: Attack in progress detected.</description>
+    <description>PIX: Attack in progress detected.</description>
     <group>pci_dss_11.4,gdpr_IV_35.7.d,</group>
   </rule>
 
@@ -141,7 +141,7 @@
     <if_sid>4313</if_sid>
     <id>^4-4000</id>
     <info type="text">PIX: 检测到正在进行的攻击.</info>
-	<description>PIX: Attack in progress detected.</description>
+    <description>PIX: Attack in progress detected.</description>
     <group>pci_dss_11.4,gdpr_IV_35.7.d,</group>
   </rule>
 
@@ -151,7 +151,7 @@
   <rule id="4333" level="8">
     <if_sid>4330, 4331, 4332</if_sid>
     <info type="text">PIX: 检测到正在进行的攻击.</info>
-	<description>PIX: Attack in progress detected</description>
+    <description>PIX: Attack in progress detected</description>
     <group>ids,pci_dss_11.4,gpg13_4.12,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -159,7 +159,7 @@
     <if_sid>4314</if_sid>
     <id>^6-113005</id>
     <info type="text">PIX: AAA (VPN)认证失败.</info>
-	<description>PIX: AAA (VPN) authentication failed.</description>
+    <description>PIX: AAA (VPN) authentication failed.</description>
     <group>authentication_failed,pci_dss_10.2.4,pci_dss_10.2.5,gpg13_7.1,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -167,7 +167,7 @@
     <if_sid>4314</if_sid>
     <id>^6-113004</id>
     <info type="text">PIX: AAA (VPN)认证成功</info>
-	<description>PIX: AAA (VPN) authentication successful.</description>
+    <description>PIX: AAA (VPN) authentication successful.</description>
     <mitre>
       <id>T1078</id>
     </mitre>
@@ -178,7 +178,7 @@
     <if_sid>4314</if_sid>
     <id>^6-113006</id>
     <info type="text">PIX: AAA (VPN) 用户被锁定.</info>
-	<description>PIX: AAA (VPN) user locked out.</description>
+    <description>PIX: AAA (VPN) user locked out.</description>
     <mitre>
       <id>T1133</id>
     </mitre>
@@ -189,7 +189,7 @@
     <if_sid>4312</if_sid>
     <id>^3-201008</id>
     <info type="text">PIX: PIX不允许新的连接.</info>
-	<description>PIX: The PIX is disallowing new connections.</description>
+    <description>PIX: The PIX is disallowing new connections.</description>
     <mitre>
       <id>T1133</id>
     </mitre>
@@ -201,7 +201,7 @@
     <id>^1-105005|^1-105009|^1-105043</id>
     <match>Failed|Lost Failover</match>
     <info type="text">PIX: 防火墙failover pair通信问题.</info>
-	<description>PIX: Firewall failover pair communication problem.</description>
+    <description>PIX: Firewall failover pair communication problem.</description>
     <group>service_availability,pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -209,7 +209,7 @@
     <if_sid>4314</if_sid>
     <id>^5-111003</id>
     <info type="text">PIX: 检测到防火墙配置.</info>
-	<description>PIX: Firewall configuration deleted.</description>
+    <description>PIX: Firewall configuration deleted.</description>
     <mitre>
       <id>T1562.004</id>
     </mitre>
@@ -220,7 +220,7 @@
     <if_sid>4314</if_sid>
     <id>^5-111005|^5-111004|^5-111002|^5-111007</id>
     <info type="text">PIX: 防火墙配置变更.</info>
-	<description>PIX: Firewall configuration changed.</description>
+    <description>PIX: Firewall configuration changed.</description>
     <mitre>
       <id>T1562.004</id>
     </mitre>
@@ -231,14 +231,14 @@
     <if_sid>4314</if_sid>
     <id>^5-111008|^7-111009</id>
     <info type="text">PIX: 防火墙命令执行 (for accounting only).</info>
-	<description>PIX: Firewall command executed (for accounting only).</description>
+    <description>PIX: Firewall command executed (for accounting only).</description>
   </rule>
 
   <rule id="4342" level="8">
     <if_sid>4314</if_sid>
     <id>^5-502101|^5-502102</id>
     <info type="text">PIX: 防火墙用户创建或修改.</info>
-	<description>PIX: User created or modified on the Firewall.</description>
+    <description>PIX: User created or modified on the Firewall.</description>
     <mitre>
       <id>T1562.004</id>
       <id>T1133</id>
@@ -249,28 +249,28 @@
   <rule id="4380" level="10" frequency="8" timeframe="360">
     <if_matched_sid>4310</if_matched_sid>
     <info type="text">多个PIX警告消息.</info>
-	<description>Multiple PIX alert messages.</description>
+    <description>Multiple PIX alert messages.</description>
     <group>pci_dss_10.6.1,pci_dss_11.4,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
   </rule>
 
   <rule id="4381" level="10" frequency="8" timeframe="360">
     <if_matched_sid>4311</if_matched_sid>
     <info type="text">PIX: 多个关键消息.</info>
-	<description>PIX: Multiple critical messages.</description>
+    <description>PIX: Multiple critical messages.</description>
     <group>pci_dss_10.6.1,pci_dss_11.4,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
   </rule>
 
   <rule id="4382" level="10" frequency="10" timeframe="120">
     <if_matched_sid>4312</if_matched_sid>
     <info type="text">PIX: 多个错误消息.</info>
-	<description>PIX: Multiple error messages.</description>
+    <description>PIX: Multiple error messages.</description>
     <group>system_error,pci_dss_10.6.1,pci_dss_11.4,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
   </rule>
 
   <rule id="4383" level="10" frequency="10" timeframe="120">
     <if_matched_sid>4313</if_matched_sid>
     <info type="text">PIX: 多个告警消息.</info>
-	<description>PIX: Multiple warning messages.</description>
+    <description>PIX: Multiple warning messages.</description>
     <group>pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -278,14 +278,14 @@
     <if_matched_sid>4333</if_matched_sid>
     <same_source_ip />
     <info type="text">PIX: 多个进行中的攻击消息.</info>
-	<description>PIX: Multiple attack in progress messages.</description>
+    <description>PIX: Multiple attack in progress messages.</description>
     <group>pci_dss_10.6.1,pci_dss_11.4,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
   </rule>
 
   <rule id="4386" level="10" frequency="10" timeframe="240">
     <if_matched_sid>4334</if_matched_sid>
     <info type="text">PIX: 多次AAA (VPN) 失败认证.</info>
-	<description>PIX: Multiple AAA (VPN) authentication failures.</description>
+    <description>PIX: Multiple AAA (VPN) authentication failures.</description>
     <mitre>
       <id>T1110</id>
       <id>T1133</id>

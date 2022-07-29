@@ -11,42 +11,42 @@
   <rule id="4500" level="0">
     <decoded_as>netscreenfw</decoded_as>
     <info type="text">Netscreen防火墙规则组.</info>
-	<description>Grouping for the Netscreen Firewall rules</description>
+    <description>Grouping for the Netscreen Firewall rules</description>
   </rule>
 
   <rule id="4501" level="3">
     <if_sid>4500</if_sid>
     <action>notification</action>
     <info type="text">Netscreen通知消息.</info>
-	<description>Netscreen notification message.</description>
+    <description>Netscreen notification message.</description>
   </rule>
 
   <rule id="4502" level="4">
     <if_sid>4500</if_sid>
     <action>warning</action>
     <info type="text">Netscreen提示消息.</info>
-	<description>Netscreen warning message.</description>
+    <description>Netscreen warning message.</description>
   </rule>
 
   <rule id="4503" level="5">
     <if_sid>4500</if_sid>
     <action>critical</action>
     <info type="text">Netscreen严重/告警消息.</info>
-	<description>Netscreen critical/alert message.</description>
+    <description>Netscreen critical/alert message.</description>
   </rule>
 
   <rule id="4513" level="5">
     <if_sid>4500</if_sid>
     <action>alert</action>
     <info type="text">Netscreen严重/告警消息.</info>
-	<description>Netscreen critical/alert message.</description>
+    <description>Netscreen critical/alert message.</description>
   </rule>
 
   <rule id="4504" level="5">
     <if_sid>4500</if_sid>
     <action>information</action>
     <info type="text">Netscreen信息消息.</info>
-	<description>Netscreen informational message.</description>
+    <description>Netscreen informational message.</description>
   </rule>
 
   <!-- ns204: NetScreen device_id=ns204 [Root]system-critical-00027:
@@ -55,7 +55,7 @@
     <if_sid>4503</if_sid>
     <id>^00027</id>
     <info type="text">Netscreen清除序列已启动.</info>
-	<description>Netscreen Erase sequence started.</description>
+    <description>Netscreen Erase sequence started.</description>
     <mitre>
       <id>T1485</id>
     </mitre>
@@ -66,7 +66,7 @@
     <if_sid>4501</if_sid>
     <id>^00002</id>
     <info type="text">Netscreen firewall: admin登录成功.</info>
-	<description>Netscreen firewall: Successfull admin login</description>
+    <description>Netscreen firewall: Successfull admin login</description>
     <mitre>
       <id>T1078</id>
     </mitre>
@@ -77,7 +77,7 @@
     <if_sid>4502</if_sid>
     <id>^00515</id>
     <info type="text">Netscreen firewall: admin登录成功.</info>
-	<description>Netscreen firewall: Successfull admin login</description>
+    <description>Netscreen firewall: Successfull admin login</description>
     <mitre>
       <id>T1078</id>
     </mitre>
@@ -88,7 +88,7 @@
     <if_sid>4501</if_sid>
     <id>^00018</id>
     <info type="text">Netscreen firewall: 策略已更改.</info>
-	<description>Netscreen firewall: policy changed.</description>
+    <description>Netscreen firewall: policy changed.</description>
     <group>config_changed,pci_dss_1.1.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.a.1,nist_800_53_CM.3,nist_800_53_CM.5,tsc_CC8.1,</group>
   </rule>
 
@@ -96,7 +96,7 @@
     <if_sid>4504</if_sid>
     <id>^00767</id>
     <info type="text">Netscreen firewall: 配置已更改.</info>
-	<description>Netscreen firewall: configuration changed.</description>
+    <description>Netscreen firewall: configuration changed.</description>
     <mitre>
       <id>T1562.004</id>
     </mitre>
@@ -108,8 +108,8 @@
     <same_source_ip />
     <info type="text">Netscreen firewall: 来自同一IP的 </info>
     <info type="text">多个关键消息.</info>
-	<description>Netscreen firewall: Multiple critical messages from </description>
-	<description>same source IP.</description>
+    <description>Netscreen firewall: Multiple critical messages from </description>
+    <description>same source IP.</description>
     <mitre>
       <id>T1499</id>
     </mitre>
@@ -119,7 +119,7 @@
   <rule id="4551" level="10" frequency="8" timeframe="180" ignore="60">
     <if_matched_sid>4503</if_matched_sid>
     <info type="text">Netscreen firewall: 多个严重消息.</info>
-	<description>Netscreen firewall: Multiple critical messages.</description>
+    <description>Netscreen firewall: Multiple critical messages.</description>
     <mitre>
       <id>T1499</id>
     </mitre>
@@ -130,22 +130,22 @@
     <same_source_ip />
     <info type="text">Netscreen firewall: 来自同一来源IP的 </info>
     <info type="text">多个告警消息.</info>
-	<description>Netscreen firewall: Multiple alert messages from </description>
-	<description>same source IP.</description>
+    <description>Netscreen firewall: Multiple alert messages from </description>
+    <description>same source IP.</description>
     <group>pci_dss_1.4,pci_dss_10.6.1,pci_dss_11.4,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.a.1,hipaa_164.312.b,nist_800_53_SC.7,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC6.7,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,</group>
   </rule>
 
   <rule id="4553" level="10" frequency="10" timeframe="100" ignore="60">
     <if_matched_sid>4513</if_matched_sid>
     <info type="text">Netscreen firewall: 多个告警消息.</info>
-	<description>Netscreen firewall: Multiple alert messages.</description>
+    <description>Netscreen firewall: Multiple alert messages.</description>
   </rule>
 
   <rule id="4560" level="3">
     <if_sid>4500</if_sid>
     <match>SYN flood! </match>
     <info type="text">netscreen检测到SYN flood攻击.</info>
-	<description>netscreen detected a SYN flood.</description>
+    <description>netscreen detected a SYN flood.</description>
   </rule>
 </group>
 

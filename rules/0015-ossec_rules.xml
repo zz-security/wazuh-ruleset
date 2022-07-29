@@ -12,7 +12,7 @@
     <category>ossec</category>
     <decoded_as>ossec</decoded_as>
     <info type="text">ossec规则组</info>
-	<description>Grouping of ossec rules.</description>
+    <description>Grouping of ossec rules.</description>
   </rule>
 
   <rule id="501" level="3">
@@ -20,7 +20,7 @@
     <if_fts />
     <match>Agent started</match>
     <info type="text">已连接到新的ossec代理</info>
-	<description>New ossec agent connected.</description>
+    <description>New ossec agent connected.</description>
     <group>pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -28,7 +28,7 @@
     <if_sid>500</if_sid>
     <match>Ossec started</match>
     <info type="text">Ossec服务已启动</info>
-	<description>Ossec server started.</description>
+    <description>Ossec server started.</description>
     <group>pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -36,7 +36,7 @@
     <if_sid>500</if_sid>
     <match>Agent started</match>
     <info type="text">Ossec代理已启动</info>
-	<description>Ossec agent started.</description>
+    <description>Ossec agent started.</description>
     <group>pci_dss_10.6.1,pci_dss_10.2.6,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_AU.14,nist_800_53_AU.5,tsc_CC7.2,tsc_CC7.3,tsc_CC6.8,</group>
   </rule>
 
@@ -44,7 +44,7 @@
     <if_sid>500</if_sid>
     <match>Agent disconnected</match>
     <info type="text">Ossec代理断开连接</info>
-	<description>Ossec agent disconnected.</description>
+    <description>Ossec agent disconnected.</description>
     <mitre>
       <id>T1562.001</id>
     </mitre>
@@ -55,7 +55,7 @@
     <if_sid>500</if_sid>
     <match>Agent removed</match>
     <info type="text">Ossec代理已移除</info>
-	<description>Ossec agent removed.</description>
+    <description>Ossec agent removed.</description>
     <mitre>
       <id>T1562.001</id>
     </mitre>
@@ -66,7 +66,7 @@
     <if_sid>500</if_sid>
     <match>Agent stopped</match>
     <info type="text">Ossec代理已停止运行</info>
-	<description>Ossec agent stopped.</description>
+    <description>Ossec agent stopped.</description>
     <mitre>
       <id>T1562.001</id>
     </mitre>
@@ -77,14 +77,14 @@
     <category>ossec</category>
     <decoded_as>rootcheck</decoded_as>
     <info type="text">Rootcheck事件</info>
-	<description>Rootcheck event.</description>
+    <description>Rootcheck event.</description>
     <group>pci_dss_10.6.1,rootcheck,</group>
   </rule>
 
   <rule id="510" level="7">
     <if_sid>509</if_sid>
     <info type="text">基于主机的异常检测事件</info>
-	<description>Host-based anomaly detection event (rootcheck).</description>
+    <description>Host-based anomaly detection event (rootcheck).</description>
     <group>rootcheck,pci_dss_10.6.1,gdpr_IV_35.7.d,</group>
    <!-- <if_fts />  -->
   </rule>
@@ -95,7 +95,7 @@
     <regex>Thumbs.db:encryptable'.|:Zone.Identifier'.|</regex>
     <regex>Exchsrvr/Mailroot/vsi</regex>
     <info type="text">被忽略的常见 NTFS ADS条目</info>
-	<description>Ignored common NTFS ADS entries.</description>
+    <description>Ignored common NTFS ADS entries.</description>
     <group>rootcheck,</group>
   </rule>
 
@@ -103,7 +103,7 @@
     <if_sid>510</if_sid>
     <match>^Windows Audit</match>
     <info type="text">Windows审计事件</info>
-	<description>Windows Audit event.</description>
+    <description>Windows Audit event.</description>
     <group>pci_dss_10.6.1,hipaa_164.312.b,rootcheck,</group>
   </rule>
 
@@ -111,7 +111,7 @@
     <if_sid>510</if_sid>
     <match>^Windows Malware</match>
     <info type="text">检测到Windows恶意软件</info>
-	<description>Windows malware detected.</description>
+    <description>Windows malware detected.</description>
     <group>rootcheck,pci_dss_10.6.1,gpg13_4.2,gdpr_IV_35.7.d,</group>
   </rule>
 
@@ -119,7 +119,7 @@
     <if_sid>510</if_sid>
     <match>^Application Found</match>
     <info type="text">Windows应用程序监控事件</info>
-	<description>Windows application monitor event.</description>
+    <description>Windows application monitor event.</description>
     <group>pci_dss_10.6.1,hipaa_164.312.b,rootcheck,</group>
   </rule>
 
@@ -132,7 +132,7 @@
     <match>^Starting vulnerability scan|^Ending vulnerability scan.|</match>
     <match>^Starting Azure-logs scan.|^Ending Azure-logs scan.</match>
     <info type="text">忽略扫描消息</info>
-	<description>Ignoring scan messages.</description>
+    <description>Ignoring scan messages.</description>
     <group>rootcheck,syscheck,pci_dss_10.6.1,gdpr_IV_35.7.d,gdpr_IV_30.1.g,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -140,7 +140,7 @@
     <if_sid>510</if_sid>
     <match>^System Audit</match>
     <info type="text">系统审计事件</info>
-	<description>System Audit event.</description>
+    <description>System Audit event.</description>
     <group>rootcheck,gdpr_IV_30.1.g,</group>
   </rule>
 
@@ -148,7 +148,7 @@
     <if_sid>500</if_sid>
     <match>^ossec: Audit:</match>
     <info type="text">syscheck审计: $(extra_data)</info>
-	<description>Syscheck Audit: $(extra_data)</description>
+    <description>Syscheck Audit: $(extra_data)</description>
     <group>syscheck,gdpr_II_5.1.f,gdpr_IV_35.7.d,</group>
   </rule>
 
@@ -156,7 +156,7 @@
     <if_sid>514</if_sid>
     <match>Adware|Spyware</match>
     <info type="text">发现Windows广告软件/间谍软件</info>
-	<description>Windows Adware/Spyware application found.</description>
+    <description>Windows Adware/Spyware application found.</description>
     <mitre>
       <id>T1072</id>
     </mitre>
@@ -167,7 +167,7 @@
     <if_sid>516</if_sid>
     <match>^System Audit: Web vulnerability</match>
     <info type="text">系统审计: 发现存在漏洞的web应用</info>
-	<description>System Audit: Vulnerable web application found.</description>
+    <description>System Audit: Vulnerable web application found.</description>
     <group>rootcheck,pci_dss_10.6.1,gdpr_IV_35.7.d,gdpr_IV_30.1.g,</group>
   </rule>
 
@@ -175,7 +175,7 @@
     <if_sid>500</if_sid>
     <match>Duplicate IP</match>
     <info type="text">尝试添加有重复IP的代理</info>
-	<description>Trying to add an agent with duplicate IP.</description>
+    <description>Trying to add an agent with duplicate IP.</description>
     <group>pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -183,7 +183,7 @@
     <if_sid>510</if_sid>
     <match>Possible kernel level rootkit</match>
     <info type="text">可能的内核级rootkit</info>
-	<description>Possible kernel level rootkit</description>
+    <description>Possible kernel level rootkit</description>
     <mitre>
       <id>T1014</id>
     </mitre>
@@ -195,7 +195,7 @@
     <if_sid>500</if_sid>
     <match>^ossec: output: </match>
     <info type="text">OSSEC进程监控规则</info>
-	<description>OSSEC process monitoring rules.</description>
+    <description>OSSEC process monitoring rules.</description>
     <group>process_monitor,</group>
   </rule>
 
@@ -204,15 +204,15 @@
     <match>ossec: output: 'df -P': /dev/</match>
     <regex>100%</regex>
     <info type="text">分区使用率达到100%(磁盘空间监控)</info>
-	<description>Partition usage reached 100% (disk space monitor).</description>
+    <description>Partition usage reached 100% (disk space monitor).</description>
     <group>low_diskspace,pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
  <rule id="532" level="0">
     <if_sid>531</if_sid>
     <match>cdrom|/media|usb|/mount|floppy|dvd</match>
-	<info type="text">忽略外部媒体</info>
-	<description>Ignoring external medias.</description>
+    <info type="text">忽略外部媒体</info>
+    <description>Ignoring external medias.</description>
   </rule>
 
   <rule id="533" level="7">
@@ -220,7 +220,7 @@
     <match>ossec: output: 'netstat listening ports</match>
     <check_diff />
     <info type="text">被监听的端口状态 (netstat) 改变 (开启或关闭新端口).</info>
-	<description>Listened ports status (netstat) changed (new port opened or closed).</description>
+    <description>Listened ports status (netstat) changed (new port opened or closed).</description>
     <group>pci_dss_10.2.7,pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AU.6,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -230,7 +230,7 @@
     <check_diff />
     <options>no_log</options>
     <info type="text">已登录用户列表. 默认不会告警</info>
-	<description>List of logged in users. It will not be alerted by default.</description>
+    <description>List of logged in users. It will not be alerted by default.</description>
   </rule>
 
   <rule id="535" level="1">
@@ -239,7 +239,7 @@
     <check_diff />
     <options>no_log</options>
     <info type="text">最近登录用户列表</info>
-	<description>List of the last logged in users.</description>
+    <description>List of the last logged in users.</description>
     <group>pci_dss_10.6.1,hipaa_164.312.b,</group>
   </rule>
 
@@ -247,7 +247,7 @@
     <if_sid>531</if_sid>
       <regex>'df -P':\s+/dev/loop\d+\s+\d+\s+\d+\s+0\s+100%\s+/snap/\w+/\d+</regex>
       <info type="text">忽略快照磁盘, 因为它们的容量始终处于100%</info>
-	  <description>Ignore snap disks because they are always at 100% of capacity</description>
+      <description>Ignore snap disks because they are always at 100% of capacity</description>
   </rule>
 
 
@@ -255,7 +255,7 @@
     <category>ossec</category>
     <decoded_as>syscheck_integrity_changed</decoded_as>
     <info type="text">文件完整性校验值发生变化</info>
-	<description>Integrity checksum changed.</description>
+    <description>Integrity checksum changed.</description>
     <mitre>
       <id>T1565.001</id>
     </mitre>
@@ -266,7 +266,7 @@
     <category>ossec</category>
     <decoded_as>syscheck_deleted</decoded_as>
     <info type="text">文件已删除</info>
-	<description>File deleted.</description>
+    <description>File deleted.</description>
     <mitre>
       <id>T1070.004</id>
       <id>T1485</id>
@@ -278,15 +278,15 @@
     <category>ossec</category>
     <decoded_as>syscheck_new_entry</decoded_as>
     <info type="text">添加文件到系统</info>
-	<description>File added to the system.</description>
+    <description>File added to the system.</description>
     <group>syscheck,syscheck_entry_added,syscheck_file,pci_dss_11.5,gpg13_4.11,gdpr_II_5.1.f,hipaa_164.312.c.1,hipaa_164.312.c.2,nist_800_53_SI.7,tsc_PI1.4,tsc_PI1.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="555" level="7">
     <if_sid>500</if_sid>
     <match>^ossec: agentless: </match>
-   	<info type="text">文件完整性校验值发生变化(无代理设备)</info>
-	<description>Integrity checksum for agentless device changed.</description>
+    <info type="text">文件完整性校验值发生变化(无代理设备)</info>
+    <description>Integrity checksum for agentless device changed.</description>
     <group>syscheck,agentless,pci_dss_11.5,pci_dss_10.6.1,gpg13_4.11,gdpr_II_5.1.f,gdpr_IV_35.7.d,hipaa_164.312.c.1,hipaa_164.312.c.2,hipaa_164.312.b,nist_800_53_SI.7,nist_800_53_AU.6,tsc_PI1.4,tsc_PI1.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -294,7 +294,7 @@
     <if_sid>500</if_sid>
     <match>^ossec: Real-time inotify kernel queue is full.</match>
     <info type="text">FIM实时队列已满. 可能会丢失一些实时事件</info>
-	<description>FIM real-time queue is full. Some real-time events may be lost.</description>
+    <description>FIM real-time queue is full. Some real-time events may be lost.</description>
     <group>syscheck,agentless,pci_dss_11.5,pci_dss_10.6.1,gpg13_4.11,gdpr_II_5.1.f,gdpr_IV_35.7.d,hipaa_164.312.c.1,hipaa_164.312.c.2,hipaa_164.312.b,nist_800_53_SI.7,nist_800_53_AU.6,tsc_PI1.4,tsc_PI1.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -303,7 +303,7 @@
     <category>ossec</category>
     <decoded_as>hostinfo_modified</decoded_as>
     <info type="text">主机信息已更改</info>
-	<description>Host information changed.</description>
+    <description>Host information changed.</description>
     <group>hostinfo,pci_dss_10.2.7,gpg13_4.13,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -311,7 +311,7 @@
     <category>ossec</category>
     <decoded_as>hostinfo_new</decoded_as>
     <info type="text">添加主机信息</info>
-	<description>Host information added.</description>
+    <description>Host information added.</description>
     <group>hostinfo,pci_dss_10.2.7,gpg13_4.13,hipaa_164.312.b,nist_800_53_AU.14,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -321,7 +321,7 @@
     <if_sid>500</if_sid>
     <match>^ossec: File rotated </match>
     <info type="text">日志文件转储</info>
-	<description>Log file rotated.</description>
+    <description>Log file rotated.</description>
     <group>pci_dss_10.5.2,pci_dss_10.5.5,gpg13_10.1,gdpr_II_5.1.f,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.9,tsc_CC6.1,tsc_CC7.2,tsc_CC7.3,tsc_PI1.4,tsc_PI1.5,tsc_CC7.1,tsc_CC8.1,</group>
   </rule>
 
@@ -329,7 +329,7 @@
     <if_sid>500</if_sid>
     <match>^ossec: File size reduced</match>
     <info type="text">日志文件大小减少</info>
-	<description>Log file size reduced.</description>
+    <description>Log file size reduced.</description>
     <mitre>
       <id>T1565.001</id>
     </mitre>
@@ -340,7 +340,7 @@
     <if_sid>500</if_sid>
     <match>^ossec: Event log cleared</match>
     <info type="text">Microsoft事件日志被清理</info>
-	<description>Microsoft Event log cleared.</description>
+    <description>Microsoft Event log cleared.</description>
     <mitre>
       <id>T1070</id>
     </mitre>
@@ -352,7 +352,7 @@
     <decoded_as>syscheck_registry_key_modified</decoded_as>
     <group>syscheck,syscheck_entry_modified,syscheck_registry,pci_dss_11.5,gpg13_4.13,gdpr_II_5.1.f,hipaa_164.312.c.1,hipaa_164.312.c.2,nist_800_53_SI.7,tsc_PI1.4,tsc_PI1.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
     <info type="text">注册表项完整性校验和值已改变</info>
-	<description>Registry Key Integrity Checksum Changed</description>
+    <description>Registry Key Integrity Checksum Changed</description>
     <mitre>
       <id>T1565.001</id>
       <id>T1112</id>
@@ -364,7 +364,7 @@
     <decoded_as>syscheck_registry_key_deleted</decoded_as>
     <group>syscheck,syscheck_entry_deleted,syscheck_registry,pci_dss_11.5,gpg13_4.13,gdpr_II_5.1.f,hipaa_164.312.c.1,hipaa_164.312.c.2,nist_800_53_SI.7,tsc_PI1.4,tsc_PI1.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
     <info type="text">注册表项已删除</info>
-	<description>Registry Key Entry Deleted.</description>
+    <description>Registry Key Entry Deleted.</description>
     <mitre>
       <id>T1070.004</id>
       <id>T1485</id>
@@ -377,7 +377,7 @@
     <decoded_as>syscheck_registry_key_added</decoded_as>
     <group>syscheck,syscheck_entry_added,syscheck_registry,pci_dss_11.5,gpg13_4.13,gdpr_II_5.1.f,hipaa_164.312.c.1,hipaa_164.312.c.2,nist_800_53_SI.7,tsc_PI1.4,tsc_PI1.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
     <info type="text">添加注册表项</info>
-	<description>Registry Key Entry Added to the System</description>
+    <description>Registry Key Entry Added to the System</description>
     <mitre>
       <id>T1112</id>
     </mitre>
@@ -388,7 +388,7 @@
   <rule id="600" level="0">
     <decoded_as>ar_log</decoded_as>
     <info type="text">主动响应消息分组</info>
-	<description>Active Response Messages Grouped</description>
+    <description>Active Response Messages Grouped</description>
     <group>active_response,</group>
   </rule>
 
@@ -397,7 +397,7 @@
     <field name="script">firewall-drop</field>
     <field name="type">add</field>
     <info type="text">主机被firewall-drop主动响应策略拦截</info>
-	<description>Host Blocked by firewall-drop Active Response</description>
+    <description>Host Blocked by firewall-drop Active Response</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -405,8 +405,8 @@
     <if_sid>600</if_sid>
     <field name="script">firewall-drop</field>
     <field name="type">delete</field>
-   	<info type="text">firewall-drop主动响应策略放开对主机的拦截</info>
-	<description>Host Unblocked by firewall-drop Active Response</description>
+    <info type="text">firewall-drop主动响应策略放开对主机的拦截</info>
+    <description>Host Unblocked by firewall-drop Active Response</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -414,7 +414,7 @@
     <if_sid>600</if_sid>
     <field name="script">host-deny</field>
     <field name="type">add</field>
-	<info type="text">主机被host-deny主动响应策略拦截</info>
+    <info type="text">主机被host-deny主动响应策略拦截</info>
     <description>Host Blocked by host-deny Active Response</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
@@ -424,7 +424,7 @@
     <field name="script">host-deny</field>
     <field name="type">delete</field>
     <info type="text">host-deny主动响应策略放开对主机的拦截</info>
-	<description>Host Unblocked by host-deny Active Response</description>
+    <description>Host Unblocked by host-deny Active Response</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -433,7 +433,7 @@
     <field name="script">route-null</field>
     <field name="type">add</field>
     <info type="text">主机被$(script)主动响应策略拦截</info>
-	<description>Host Blocked by $(script) Active Response</description>
+    <description>Host Blocked by $(script) Active Response</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -442,21 +442,21 @@
     <field name="script">route-null</field>
     <field name="type">delete</field>
     <info type="text">$(script)主动响应策略放开对主机的拦截</info>
-	<description>Host Unblocked by $(script) Active Response</description>
+    <description>Host Unblocked by $(script) Active Response</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
   <rule id="607" level="3">
     <if_sid>600</if_sid>
     <info type="text">主动响应: $(script) - $(type)</info>
-	<description>Active response: $(script) - $(type)</description>
+    <description>Active response: $(script) - $(type)</description>
     <group>active_response,pci_dss_11.4,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
   <rule id="650" level="0">
     <decoded_as>ar_log_json</decoded_as>
     <info type="text">已分组的联动JSON消息</info>
-	<description>Active Response JSON Messages Grouped</description>
+    <description>Active Response JSON Messages Grouped</description>
     <group>active_response,</group>
   </rule>
 
@@ -465,7 +465,7 @@
     <field name="parameters.program">firewall-drop</field>
     <field name="command">add</field>
     <info type="text">主机被firewall-drop主动响应策略拦截</info>
-	<description>Host Blocked by firewall-drop Active Response</description>
+    <description>Host Blocked by firewall-drop Active Response</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -474,7 +474,7 @@
     <field name="parameters.program">firewall-drop</field>
     <field name="command">delete</field>
     <info type="text">firewall-drop主动响应策略放开对主机的拦截</info>
-	<description>Host Unblocked by firewall-drop Active Response</description>
+    <description>Host Unblocked by firewall-drop Active Response</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -483,7 +483,7 @@
     <field name="parameters.program">host-deny</field>
     <field name="command">add</field>
     <info type="text">主机被host-deny主动响应策略拦截</info>
-	<description>Host Blocked by host-deny Active Response</description>
+    <description>Host Blocked by host-deny Active Response</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -492,7 +492,7 @@
     <field name="parameters.program">host-deny</field>
     <field name="command">delete</field>
     <info type="text">host-deny主动响应策略放开对主机的拦截</info>
-	<description>Host Unblocked by host-deny Active Response</description>
+    <description>Host Unblocked by host-deny Active Response</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -501,7 +501,7 @@
     <field name="parameters.program">route-null</field>
     <field name="command">add</field>
     <info type="text">主机被route-null主动响应策略拦截</info>
-	<description>Host Blocked by route-null Active Response</description>
+    <description>Host Blocked by route-null Active Response</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -510,7 +510,7 @@
     <field name="parameters.program">route-null</field>
     <field name="command">delete</field>
     <info type="text">route-null主动响应策略放开对主机的拦截</info>
-	<description>Host Unblocked by route-null Active Response</description>
+    <description>Host Unblocked by route-null Active Response</description>
     <group>active_response,pci_dss_11.4,gpg13_4.13,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -518,7 +518,7 @@
     <if_sid>650</if_sid>
     <field name="command">add|delete</field>
     <info type="text">主动响应: $(parameters.program) - $(command)</info>
-	<description>Active response: $(parameters.program) - $(command)</description>
+    <description>Active response: $(parameters.program) - $(command)</description>
     <group>active_response,pci_dss_11.4,gdpr_IV_35.7.d,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,tsc_CC7.4,</group>
   </rule>
 
@@ -528,14 +528,14 @@
     <category>ossec</category>
     <decoded_as>ossec-logcollector</decoded_as>
     <info type="text">已分组的Logcollector消息</info>
-	<description>Logcollector Messages Grouped</description>
+    <description>Logcollector Messages Grouped</description>
   </rule>
 
   <rule id="701" level="0">
     <if_sid>700</if_sid>
     <match>INFO: </match>
     <info type="text">忽略信息消息(通常在启动时)</info>
-	<description>Ignore informational messages (usually at startup)</description>
+    <description>Ignore informational messages (usually at startup)</description>
   </rule>
 
   <rule id="750" level="5">
@@ -543,7 +543,7 @@
     <decoded_as>syscheck_registry_value_modified</decoded_as>
     <group>syscheck,syscheck_entry_modified,syscheck_registry,pci_dss_11.5,gpg13_4.13,gdpr_II_5.1.f,hipaa_164.312.c.1,hipaa_164.312.c.2,nist_800_53_SI.7,tsc_PI1.4,tsc_PI1.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
     <info type="text">注册表值完整性校验值发生变化</info>
-	<description>Registry Value Integrity Checksum Changed</description>
+    <description>Registry Value Integrity Checksum Changed</description>
     <mitre>
       <id>T1565.001</id>
       <id>T1112</id>
@@ -555,7 +555,7 @@
     <decoded_as>syscheck_registry_value_deleted</decoded_as>
     <group>syscheck,syscheck_entry_deleted,syscheck_registry,pci_dss_11.5,gpg13_4.13,gdpr_II_5.1.f,hipaa_164.312.c.1,hipaa_164.312.c.2,nist_800_53_SI.7,tsc_PI1.4,tsc_PI1.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
     <info type="text">注册表值条目已删除</info>
-	<description>Registry Value Entry Deleted.</description>
+    <description>Registry Value Entry Deleted.</description>
     <mitre>
       <id>T1070.004</id>
       <id>T1485</id>
@@ -568,7 +568,7 @@
     <decoded_as>syscheck_registry_value_added</decoded_as>
     <group>syscheck,syscheck_entry_added,syscheck_registry,pci_dss_11.5,gpg13_4.13,gdpr_II_5.1.f,hipaa_164.312.c.1,hipaa_164.312.c.2,nist_800_53_SI.7,tsc_PI1.4,tsc_PI1.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
     <info type="text">已添加注册表值条目</info>
-	<description>Registry Value Entry Added to the System</description>
+    <description>Registry Value Entry Added to the System</description>
     <mitre>
       <id>T1112</id>
     </mitre>
