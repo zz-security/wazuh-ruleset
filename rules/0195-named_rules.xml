@@ -1,0 +1,388 @@
+<!--
+  -  Named rules
+  -  Author: Daniel Cid.
+  -  Updated by Wazuh, Inc.
+  -  Copyright (C) 2015, Wazuh Inc.
+  -  Copyright (C) 2009 Trend Micro Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<group name="syslog,named,">
+  <rule id="12100" level="0">
+    <decoded_as>named</decoded_as>
+    <info type="text">命名规则的分组</info>
+    <description>Grouping of the named rules</description>
+  </rule>
+
+  <rule id="12101" level="12">
+    <if_sid>12100</if_sid>
+    <match>dropping source port zero packet from</match>
+    <info type="text">无效的DNS数据包。攻击的可能性。</info>
+    <description>Invalid DNS packet. Possibility of attack.</description>
+    <mitre>
+      <id>T1071</id>
+      <id>T1499</id>
+    </mitre>
+    <group>invalid_access,pci_dss_10.2.4,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12102" level="9">
+    <if_sid>12100</if_sid>
+    <match>denied AXFR from</match>
+    <info type="text">执行区域传输尝试失败。</info>
+    <description>Failed attempt to perform a zone transfer.</description>
+    <group>access_denied,pci_dss_10.2.4,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12103" level="4">
+    <if_sid>12100</if_sid>
+    <match>denied update from|unapproved update from</match>
+    <info type="text">DNS更新被拒绝。一般配置错误。</info>
+    <description>DNS update denied. </description>
+    <description>Generally mis-configuration.</description>
+    <info type="link">http://seclists.org/incidents/2000/May/217</info>
+    <group>client_misconfig,pci_dss_10.2.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12104" level="4">
+    <if_sid>12100</if_sid>
+    <match>unable to rename log file</match>
+    <info type="text">在Named中记录日志权限配置错误。</info>
+    <description>Log permission misconfiguration in Named.</description>
+    <group>system_error,pci_dss_10.1,hipaa_164.312.b,nist_800_53_AU.12,tsc_CC6.1,tsc_CC6.2,tsc_CC6.3,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12105" level="4">
+    <if_sid>12100</if_sid>
+    <match>unexpected RCODE </match>
+    <info type="text">解析域时出现意外错误。</info>
+    <description>Unexpected error while resolving domain.</description>
+  </rule>
+
+  <rule id="12106" level="4">
+    <if_sid>12100</if_sid>
+    <match>refused notify from non-master</match>
+    <info type="text">DNS配置错误。</info>
+    <description>DNS configuration error.</description>
+	<group>system_error,pci_dss_10.6.1,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12107" level="0">
+    <if_sid>12100</if_sid>
+    <regex>update \S+ denied</regex>
+    <info type="text">使用RFC2136动态协议的DNS更新。</info>
+    <description>DNS update using RFC2136 Dynamic protocol.</description>
+    <group>pci_dss_10.2.4,pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AU.6,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12108" level="5">
+    <if_sid>12100</if_sid>
+    <match>query (cache) denied|: query (cache)</match>
+    <info type="text">查询缓存被拒绝（可能是配置错误）。</info>
+    <description>Query cache denied (probably config error).</description>
+    <info type="link">http://www.reedmedia.net/misc/dns/errors.html</info>
+	<group>system_error,pci_dss_10.2.4,pci_dss_10.6.1,gpg13_4.3,connection_attempt,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_AU.6,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12109" level="12">
+    <if_sid>12100</if_sid>
+    <match>exiting (due to fatal error)</match>
+    <info type="text">命名的致命错误。DNS服务中断。</info>
+    <description>Named fatal error. DNS service going down.</description>
+    <group>service_availability,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12110" level="8">
+    <regex>^zone \S+ serial number \S+ received from master </regex>
+    <regex>\S+ \S ours (\S+)</regex>
+    <info type="text">来自主机的序列号低于存储的。</info>
+    <description>Serial number from master is lower </description>
+    <description>than stored.</description>
+    <group>system_error,gpg13_4.3,</group>
+  </rule>
+
+  <rule id="12111" level="8">
+    <regex>^transfer of \S+ from \S+ failed while receiving \S+ REFUSED</regex>
+    <info type="text">无法在执行区域转移。</info>
+    <description>Unable to perform zone transfer.</description>
+    <group>system_error,pci_dss_10.6.1,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12112" level="4">
+    <regex>^zone \S+: expired</regex>
+    <info type="text">区域转移错误。</info>
+    <description>Zone transfer error.</description>
+    <group>pci_dss_10.6.1,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12113" level="0">
+    <if_sid>12100</if_sid>
+    <match>zone transfer deferred due to quota</match>
+    <info type="text">区域转移延期。</info>
+    <description>Zone transfer deferred.</description>
+    <group>pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12114" level="1">
+    <if_sid>12100</if_sid>
+    <match>bad owner name (check-names)</match>
+    <info type="text">主机名包含检查名称不认可的字符。</info>
+    <description>Hostname contains characters that check-names does not like.</description>
+  </rule>
+
+  <rule id="12115" level="0">
+    <if_sid>12100</if_sid>
+    <match>loaded serial|transferred serial</match>
+    <info type="text">区域转移。</info>
+    <description>Zone transfer.</description>
+  </rule>
+
+  <rule id="12116" level="1">
+    <if_sid>12100</if_sid>
+    <match>syntax error near|</match>
+    <match>reloading configuration failed: unexpected token</match>
+    <info type="text">命名配置文件中的语法错误。</info>
+    <description>Syntax error in a named configuration file.</description>
+	<group>pci_dss_10.6.1,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <rule id="12117" level="1">
+    <if_sid>12100</if_sid>
+    <regex>refresh: retry limit for master \S+ exceeded</regex>
+    <info type="text">区域转移重试时间超出限制</info>
+    <description>Zone transfer rety limit exceeded</description>
+    <group>pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12118" level="1">
+    <if_sid>12100</if_sid>
+    <match>already exists previous definition</match>
+    <info type="text">区域已重复。</info>
+    <description>Zone has been duplicated.</description>
+  </rule>
+
+  <rule id="12119" level="3">
+    <if_sid>12100</if_sid>
+    <match>starting BIND</match>
+    <info type="text">BIND已启动。</info>
+    <description>BIND has been started</description>
+  </rule>
+
+  <rule id="12120" level="1">
+    <if_sid>12100</if_sid>
+    <match>has no address records</match>
+    <info type="text">缺少A或AAAA记录</info>
+    <description>Missing A or AAAA record</description>
+  </rule>
+
+  <rule id="12121" level="1">
+    <if_sid>12100</if_sid>
+    <regex>zone \S+: \(master\) removed</regex>
+    <info type="text">区域已从主服务器中删除</info>
+    <description>Zone has been removed from a master server</description>
+  </rule>
+
+  <rule id="12122" level="1">
+    <if_sid>12100</if_sid>
+    <regex>loading from master file \S+ failed: not at top of zone$</regex>
+    <info type="text">区域的来源和SOA的所有者名称不匹配。</info>
+    <description>Origin of zone and owner name of SOA do not match.</description>
+  </rule>
+
+  <rule id="12123" level="0">
+    <if_sid>12100</if_sid>
+    <match>already exists previous definition</match>
+    <info type="text">区域已重复。</info>
+    <description>Zone has been duplicated</description>
+	<group>pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12125" level="3">
+    <if_sid>12100</if_sid>
+    <match>reloading configuration failed: unexpected end of input</match>
+    <info type="text">BIND配置错误。</info>
+    <description>BIND Configuration error.</description>
+	<group>pci_dss_10.6.1,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12126" level="0">
+    <if_sid>12100</if_sid>
+    <regex>zone \S+: \(master\) removed</regex>
+    <info type="text">区域已从主服务器中删除</info>
+    <description>Zone has been removed from a master server</description>
+	<group>pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12127" level="1">
+    <if_sid>12100</if_sid>
+    <regex>loading from master file \S+ failed: not at top of zone$</regex>
+    <info type="text">区域的来源和SOA的所有者名称不匹配。</info>
+    <description>Origin of zone and owner name of SOA do not match.</description>
+  </rule>
+
+  <rule id="12128" level="1">
+    <if_sid>12100</if_sid>
+    <match>^transfer of|</match>
+    <match>AXFR started$</match>
+    <info type="text">区域转移。</info>
+    <description>Zone transfer.</description>
+  </rule>
+
+  <rule id="12129" level="4">
+    <if_sid>12128</if_sid>
+    <match>failed to connect: connection refused</match>
+    <info type="text">区域转移失败，无法连接到主机。</info>
+    <description>Zone transfer failed, unable to connect to master.</description>
+    <group>pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12130" level="2">
+    <if_sid>12100</if_sid>
+    <match>IPv6 interfaces failed</match>
+    <info type="text">无法监听IPv6接口。</info>
+    <description>Could not listen on IPv6 interface.</description>
+	<group>pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12131" level="2">
+    <if_sid>12100</if_sid>
+    <match>failed; interface ignored</match>
+    <info type="text">无法绑定接口。</info>
+    <description>Could not bind to an interface.</description>
+	<group>pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12132" level="0">
+    <if_sid>12128</if_sid>
+    <match>failed while receiving responses: not authoritative</match>
+    <info type="text">主机对于区域没有权限。</info>
+    <description>Master is not authoritative for zone.</description>
+  </rule>
+
+  <rule id="12133" level="4">
+    <if_sid>12100</if_sid>
+    <regex>open: \S+: permission denied$</regex>
+    <info type="text">无法打开配置文件，没有权限。</info>
+    <description>Could not open configuration file, permission denied.</description>
+	<group>pci_dss_10.2.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12134" level="4">
+    <if_sid>12100</if_sid>
+    <match>loading configuration: permission denied</match>
+    <info type="text">无法打开配置文件，没有权限。</info>
+    <description>Could not open configuration file, permission denied.</description>
+	<group>pci_dss_10.2.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12135" level="0">
+    <if_sid>12100</if_sid>
+    <match>IN SOA -E</match>
+    <info type="text">在SOA -E中的域。</info>
+    <description>Domain in SOA -E.</description>
+  </rule>
+
+  <rule id="12136" level="4">
+    <if_sid>12128</if_sid>
+    <match>failed to connect: host unreachable</match>
+    <info type="text">主机出现断开。</info>
+    <description>Master appears to be down.</description>
+    <group>pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12137" level="0">
+    <if_sid>12100</if_sid>
+    <match>IN AXFR -</match>
+    <info type="text">查询域以获取转移的区域。</info>
+    <description>Domain is queried for a zone transferred.</description>
+  </rule>
+
+  <rule id="12138" level="0">
+    <if_sid>12100</if_sid>
+    <match> IN A +</match>
+    <info type="text">域A查找到记录。</info>
+    <description>Domain A record found.</description>
+  </rule>
+
+  <rule id="12139" level="3">
+    <if_sid>12100</if_sid>
+    <regex>client \S+: bad zone transfer request: \S+: non-authoritative zone \(NOTAUTH\)</regex>
+    <info type="text">错误的区域转移请求。</info>
+    <description>Bad zone transfer request.</description>
+  </rule>
+
+  <rule id="12140" level="2">
+    <if_sid>12100</if_sid>
+    <match>refresh: failure trying master</match>
+    <info type="text">无法从主服务器刷新域。</info>
+    <description>Cannot refresh a domain from the master server.</description>
+  </rule>
+
+  <rule id="12141" level="1">
+    <if_sid>12100</if_sid>
+    <match>SOA record not at top of zone</match>
+    <info type="text">区域的来源和SOA的所有者名称不匹配。</info>
+    <description>Origin of zone and owner name of SOA do not match.</description>
+  </rule>
+
+  <rule id="12142" level="0">
+    <if_sid>12100</if_sid>
+    <match>command channel listening on</match>
+    <info type="text">named的命令通道正在监听。</info>
+    <description>named command channel is listening.</description>
+  </rule>
+
+  <rule id="12143" level="0">
+    <if_sid>12100</if_sid>
+    <match>automatic empty zone</match>
+    <info type="text">named创建了一个自动空白的区域。</info>
+    <description>named has created an automatic empty zone.</description>
+  </rule>
+
+  <rule id="12144" level="9">
+    <if_sid>12100</if_sid>
+    <match>reloading configuration failed: out of memory</match>
+    <info type="text">服务器没有足够的内存来重新加载配置。</info>
+    <description>Server does not have enough memory to reload the configuration.</description>
+    <group>pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="12145" level="1">
+    <if_sid>12100</if_sid>
+    <regex>zone transfer \S+ denied</regex>
+    <info type="text">区域转移被拒绝</info>
+    <description>zone transfer denied</description>
+    <group>pci_dss_10.6.1,pci_dss_10.2.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="12146" level="0">
+    <if_sid>12100</if_sid>
+    <match>error sending response: host unreachable$</match>
+    <info type="text">无法发送DNS响应。</info>
+    <description>Cannot send a DNS response.</description>
+  </rule>
+
+  <rule id="12147" level="0">
+    <if_sid>12100</if_sid>
+    <regex>update forwarding \.+ denied$</regex>
+    <info type="text">无法更新转发域。</info>
+    <description>Cannot update forwarding domain.</description>
+  </rule>
+
+  <rule id="12148" level="0">
+    <if_sid>12100</if_sid>
+    <match>: parsing failed$</match>
+    <info type="text">配置文件解析失败。</info>
+    <description>Parsing of a configuration file has failed.</description>
+  </rule>
+
+  <rule id="12149" level="10" frequency="8" timeframe="120">
+    <if_matched_sid>12108</if_matched_sid>
+    <same_source_ip />
+    <info type="text">多个查询（缓存）失败。</info>
+    <description> Multiple query (cache) failures.</description>
+    <group>connection_attempt,</group>
+  </rule>
+
+</group>

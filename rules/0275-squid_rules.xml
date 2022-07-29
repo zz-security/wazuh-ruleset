@@ -1,0 +1,264 @@
+<!--
+  -  Squid rules
+  -  Author: Daniel Cid.
+  -  Contributed by: Ahmet Ozturk
+  -  Updated by Wazuh, Inc.
+  -  Copyright (C) 2015, Wazuh Inc.
+  -  Copyright (C) 2009 Trend Micro Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<var name="SQUID_FREQ">10</var>
+
+<group name="squid,">
+  <rule id="35000" level="0">
+    <category>squid</category>
+    <info type="text">Squid(用来缓存Internet数据的软件)消息分组。</info>
+    <description>Squid messages grouped.</description>
+  </rule>
+
+  <!-- Pre-rule with all the 400 error codes.
+     - This will make searching faster for most
+     - of the traffic.
+    -->
+
+  <rule id="35002" level="4">
+    <if_sid>35000</if_sid>
+    <id>^4|^5|^6</id>
+    <info type="text">Squid(用来缓存Internet数据的软件)通用的错误代码。</info>
+    <description>Squid generic error codes.</description>
+  </rule>
+
+  <rule id="35003" level="5">
+    <if_sid>35002</if_sid>
+    <id>^400</id>
+    <info type="text">Squid:错误请求/无效的语法。</info>
+    <description>Squid: Bad request/Invalid syntax.</description>
+  </rule>
+
+  <rule id="35004" level="5">
+    <if_sid>35002</if_sid>
+    <id>^401</id>
+    <info type="text">Squid:未授权：尝试访问需要授权的文件或目录失败。</info>
+    <description>Squid: Unauthorized: Failed attempt to access </description>
+    <description>authorization-required file or directory.</description>
+    <group>pci_dss_10.2.4,pci_dss_10.2.5,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="35005" level="5">
+    <if_sid>35002</if_sid>
+    <id>^403</id>
+    <info type="text">Squid:禁止：尝试访问禁止的文件或目录。</info>
+    <description>Squid: Forbidden: Attempt to access forbidden file </description>
+    <description>or directory.</description>
+    <group>pci_dss_10.2.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="35006" level="5">
+    <if_sid>35002</if_sid>
+    <id>^404</id>
+    <info type="text">Squid:未找到：尝试访问不存在的文件或目录。</info>
+    <description>Squid: Not Found: Attempt to access non-existent </description>
+    <description>file or directory.</description>
+    <group>pci_dss_10.2.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="35007" level="5">
+    <if_sid>35002</if_sid>
+    <id>^407</id>
+    <info type="text">Squid:代理身份验证需求：用户无权使用代理。</info>
+    <description>Squid: Proxy Authentication Required: User is not </description>
+    <description>authorized to use proxy.</description>
+    <mitre>
+      <id>T1090</id>
+    </mitre>
+    <group>pci_dss_10.2.4,pci_dss_10.2.5,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="35008" level="5">
+    <if_sid>35002</if_sid>
+    <id>^4</id>
+    <info type="text">Squid:400错误代码(请求失败)。</info>
+    <description>Squid: 400 error code (request failed).</description>
+  </rule>
+
+  <rule id="35009" level="5">
+    <if_sid>35002</if_sid>
+    <id>^5|^6</id>
+    <info type="text">Squid:500/600错误代码(服务器错误)。</info>
+    <description>Squid: 500/600 error code (server error).</description>
+    <group>pci_dss_10.6.1,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="35010" level="4">
+    <if_sid>35009</if_sid>
+    <id>^503</id>
+    <info type="text">Squid:503错误代码(服务器无法访问)。</info>
+    <description>Squid: 503 error code (server unavailable).</description>
+    <group>pci_dss_10.6.1,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <!-- Special rules for 403/404 errors -->
+  <rule id="35021" level="6">
+    <if_sid>35006</if_sid>
+    <url>blst.php|xxx3.php|ngr7.php|ngr2.php|/nul.php$|/mul.php$|/444.php</url>
+    <info type="text">Squid:尝试访问Beagle蠕虫(或变种)文件。</info>
+    <description>Squid: Attempt to access a Beagle worm (or variant) </description>
+    <description>file.</description>
+    <info type="link">http://www.symantec.com/avcenter/venc/data/w32.beagle.dp.html</info>
+    <info type="text">W32.Beagle.DP is a Worm that drops Trojan.Lodear and opens a back door on the compromised computer.</info>
+    <mitre>
+      <id>T1505.003</id>
+    </mitre>
+    <group>automatic_attack,pci_dss_11.4,pci_dss_6.2,gdpr_IV_35.7.d,nist_800_53_SI.4,nist_800_53_SI.2,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <!-- Other worms -->
+  <rule id="35022" level="6">
+    <if_sid>35006</if_sid>
+    <url>/jk/exp.wmf$|/PopupSh.ocx$</url>
+    <info type="text">Squid:尝试访问与蠕虫/木马相关的站点。</info>
+    <description>Squid: Attempt to access a worm/trojan related site.</description>
+    <mitre>
+      <id>T1505.003</id>
+    </mitre>
+    <group>automatic_attack,pci_dss_11.4,pci_dss_6.2,gdpr_IV_35.7.d,nist_800_53_SI.4,nist_800_53_SI.2,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <!-- Ignoring google earth, ms web site access and some other
+    -  common extensions to cause false positives (specially anti virus).
+    -  It includes most of the time bugs on IE that always
+    -  access these pages (causing 403/404 errors).
+    -->
+  <rule id="35023" level="0">
+    <if_sid>35004, 35005, 35006, 35009</if_sid>
+    <url>.jpg|.gif|favicon.ico$|.png$|.swf|.txt$|.zip|.css|.xml|.js|.bmp$|</url>
+    <url>windowsupdate/redir/wuredir.cab|</url>
+    <url>^http://codecs.microsoft.com/isapi/ocget.dll|</url>
+    <url>^http://activex.microsoft.com/objects/ocget.dll|</url>
+    <url>^http://webmessenger.msn.com/session/null|</url>
+    <url>^http://sqm.msn.com/sqm/wmp/sqmserver.dll|</url>
+    <url>^http://config.messenger.msn.com/Config/MsgrConfig.asmx|</url>
+    <url>kaspersky-labs.com/|</url>
+    <url>^http://liveupdate.symantecliveupdate.com/|</url>
+    <url>_vti_bin/owssvr.dll|MSOffice/cltreq.asp|</url>
+    <url>google.com/mt?|</url>
+    <url>google.com/kh?|</url>
+    <url>^http://kh.google.com/flatfile</url>
+
+    <!-- Add more extensions to be ignored in here.
+    <url>|.html$|.htm</url>
+      -->
+    <info type="text">Squid:忽略报40x错误的文件。</info>
+    <description>Squid: Ignored files on a 40x error.</description>
+  </rule>
+
+  <!-- Context relevant rules (correlated) -->
+  <rule id="35051" level="10" frequency="$SQUID_FREQ" timeframe="120">
+    <if_matched_sid>35005</if_matched_sid>
+    <same_source_ip />
+    <different_url />
+    <info type="text">Squid:同一源ip多次尝试访问被禁止的文件或目录。</info>
+    <description>Squid: Multiple attempts to access forbidden file </description>
+    <description>or directory from same source ip.</description>
+    <mitre>
+      <id>T1083</id>
+    </mitre>
+    <group>pci_dss_10.2.4,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="35052" level="10" frequency="$SQUID_FREQ" timeframe="120">
+    <if_matched_sid>35007</if_matched_sid>
+    <same_source_ip />
+    <info type="text">Squid:多次尝试使用未授权的代理。</info>
+    <description>Squid: Multiple unauthorized attempts to use proxy.</description>
+    <mitre>
+      <id>T1090</id>
+      <id>T1110</id>
+    </mitre>
+    <group>pci_dss_10.2.4,pci_dss_10.2.5,pci_dss_11.4,gdpr_IV_35.7.d,gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="35053" level="10" frequency="$SQUID_FREQ" timeframe="120">
+    <if_matched_sid>35003</if_matched_sid>
+    <same_source_ip />
+    <different_url />
+    <info type="text">Squid:多个错误请求/无效语法。</info>
+    <description>Squid: Multiple Bad requests/Invalid syntax.</description>
+    <mitre>
+      <id>T1499</id>
+    </mitre>
+    <group>pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="35054" level="12" frequency="$SQUID_FREQ" timeframe="240">
+    <if_matched_sid>35021</if_matched_sid>
+    <same_source_ip />
+    <info type="text">Squid:感染了W32.Beagle.DP的机器。</info>
+    <description>Squid: Infected machine with W32.Beagle.DP.</description>
+    <info type="link">http://www.symantec.com/avcenter/venc/data/w32.beagle.dp.html</info>
+    <info type="text">W32.Beagle.DP is a Worm that drops Trojan.Lodear and opens a back door on the compromised computer.</info>
+    <mitre>
+      <id>T1565.001</id>
+    </mitre>
+    <group>pci_dss_11.4,pci_dss_6.2,gdpr_IV_35.7.d,nist_800_53_SI.4,nist_800_53_SI.2,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="35055" level="10" frequency="$SQUID_FREQ" timeframe="90">
+    <if_matched_sid>35006</if_matched_sid>
+    <same_source_ip />
+    <different_url />
+    <info type="text">Squid:多次尝试访问不存在的文件。</info>
+    <description>Squid: Multiple attempts to access a non-existent file.</description>
+    <mitre>
+      <id>T1083</id>
+    </mitre>
+    <group>pci_dss_10.2.4,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="35056" level="12" frequency="$SQUID_FREQ" timeframe="240">
+    <if_matched_sid>35022</if_matched_sid>
+    <same_source_ip />
+    <info type="text">Squid:多次尝试访问与蠕虫/木马/病毒相关的网站。系统可能被感染。</info>
+    <description>Squid: Multiple attempts to access a worm/trojan/virus </description>
+    <description>related web site. System probably infected.</description>
+    <mitre>
+      <id>T1588.001</id>
+    </mitre>
+    <group>pci_dss_10.2.4,pci_dss_11.4,gpg13_4.2,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,nist_800_53_SI.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="35057" level="10" frequency="$SQUID_FREQ" timeframe="240">
+    <if_matched_sid>35008</if_matched_sid>
+    <same_source_ip />
+    <different_url />
+    <info type="text">Squid:多次400错误代码(请求失败)。</info>
+    <description>Squid: Multiple 400 error codes (requests failed).</description>
+    <mitre>
+      <id>T1499</id>
+    </mitre>
+    <group>pci_dss_10.6.1,gdpr_IV_35.7.d,</group>
+  </rule>
+
+  <rule id="35058" level="10" frequency="$SQUID_FREQ" timeframe="240">
+    <if_matched_sid>35009</if_matched_sid>
+    <same_source_ip />
+    <different_url />
+    <info type="text">Squid:多次500/600错误代码(服务器错误)。</info>
+    <description>Squid: Multiple 500/600 error codes (server error).</description>
+    <mitre>
+      <id>T1499</id>
+    </mitre>
+    <group>pci_dss_10.6.1,gdpr_IV_35.7.d,</group>
+  </rule>
+
+  <rule id="35095" level="0" frequency="4" timeframe="360">
+    <if_matched_sid>35055</if_matched_sid>
+    <same_source_ip />
+    <info type="text">Squid:忽略来自同一源 ip 的多次尝试（仅警告一次）。</info>
+    <description>Squid: Ignoring multiple attempts from same source ip</description>
+    <description> (alert only once).</description>
+  </rule>
+
+</group>
+

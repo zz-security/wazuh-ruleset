@@ -10,67 +10,77 @@
 <group name="syslog,arpwatch,">
   <rule id="7200" level="0" noalert="1">
     <decoded_as>arpwatch</decoded_as>
-    <description>Arpwatch消息组.</description>
+    <info type="text">Arpwatch消息组.</info>
+	<description>Arpwatch messages grouped.</description>
   </rule>
 
   <rule id="7201" level="4">
     <if_sid>7200</if_sid>
     <if_fts />
-    <description>Arpwatch检测到新主机.</description>
+    <info type="text">Arpwatch检测到新主机.</info>
+	<description>Arpwatch new host detected.</description>
     <group>new_host,pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="7202" level="9">
     <if_sid>7200</if_sid>
     <match>flip flop </match>
-    <description>Arpwatch: "flip flop"消息. IP 地址/MAC关系变化太频繁.</description>
+    <info type="text">Arpwatch: "flip flop"消息. IP 地址/MAC关系变化太频繁.</info>
+	<description>Arpwatch: "flip flop" message. IP address/MAC relation changing too often.</description>
     <group>ip_spoof,pci_dss_1.3.4,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.a.1,nist_800_53_CA.3,nist_800_53_SI.4,tsc_CC6.6,tsc_CC6.7,tsc_CC6.8,tsc_CC7.1,tsc_CC6.1,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="7203" level="3">
     <if_sid>7200</if_sid>
     <match>reaper: pid </match>
-    <description>Arpwatch: exiting.</description>
+    <info type="text">Arpwatch: 退出.</info>
+	<description>Arpwatch: exiting.</description>
     <group>service_availability,pci_dss_10.6.1,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="7204" level="9">
     <if_sid>7200</if_sid>
     <match>changed ethernet address </match>
-    <description>Arpwatch: 更改了IP地址的网络接口.</description>
+    <info type="text">Arpwatch: 更改了IP地址的网络接口.</info>
+	<description>Arpwatch: Changed network interface for ip address.</description>
     <group>ip_spoof,pci_dss_1.3.4,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.a.1,nist_800_53_CA.3,nist_800_53_SI.4,tsc_CC6.6,tsc_CC6.7,tsc_CC6.8,tsc_CC7.1,tsc_CC6.1,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="7205" level="0">
     <if_sid>7200</if_sid>
     <match>bad interface eth0|exiting|Running as </match>
-    <description>Arpwatch: 启动或退出消息.</description>
+    <info type="text">Arpwatch: 启动或退出消息.</info>
+	<description>Arpwatch: startup/exiting messages.</description>
   </rule>
 
   <rule id="7206" level="0">
     <if_sid>7200</if_sid>
     <match>sent bad addr len</match>
-    <description>Arpwatch: 检测到错误的地址长度(忽略).</description>
+    <info type="text">Arpwatch: 检测到错误的地址长度(忽略).</info>
+	<description>Arpwatch: detected bad address len (ignored).</description>
   </rule>
 
   <rule id="7207" level="1">
     <if_sid>7200</if_sid>
     <match>/dev/bpf0: Permission denied</match>
-    <description>arpwatch可能以错误的权限运行</description>
+    <info type="text">arpwatch可能以错误的权限运行</info>
+	<description>arpwatch probably run with wrong permissions</description>
     <group>pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="7208" level="1">
     <if_sid>7200</if_sid>
     <match>reused old ethernet address</match>
-    <description>Arpwatch: IP地址已恢复为旧的以太网地址.</description>
+    <info type="text">Arpwatch: IP地址已恢复为旧的以太网地址.</info>
+	<description>Arpwatch: An IP has reverted to an old ethernet address.</description>
     <group>pci_dss_10.6.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="7209" level="7">
     <if_sid>7200</if_sid>
     <match>ethernet mismatch</match>
-    <description>Arpwatch: 可能的arp欺骗尝试.</description>
+    <info type="text">Arpwatch: 可能的arp欺骗尝试.</info>
+	<description>Arpwatch: Possible arpspoofing attempt.</description>
     <mitre>
       <id>T1095</id>
     </mitre>

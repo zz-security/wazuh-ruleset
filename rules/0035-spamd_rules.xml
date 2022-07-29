@@ -11,18 +11,21 @@
 <group name="syslog,spamd,">
   <rule id="3500" level="0" noalert="1">
     <match>^spamd</match>
-    <description>spamd规则组</description>
+    <info type="text">spamd规则组</info>
+	<description>Grouping for the spamd rules</description>
   </rule>
 
   <rule id="3501" level="0">
     <if_sid>3500</if_sid>
     <match>: result:</match>
-    <description>SPAMD结果消息(在这里不是很有用)</description>
+    <info type="text">SPAMD结果消息(在这里不是很有用)</info>
+	<description>SPAMD result message (not very usefull here).</description>
   </rule>
 
   <rule id="3502" level="0">
     <if_sid>3500</if_sid>
     <match> checking message | processing message </match>
-    <description>Spamd调试事件(读消息).</description>
+    <info type="text">Spamd调试事件(读消息).</info>
+	<description>Spamd debug event (reading message).</description>
   </rule>
 </group>

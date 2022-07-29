@@ -11,13 +11,15 @@
 <group name="syslog,telnetd,">
   <rule id="5600" level="0" noalert="1">
     <decoded_as>telnetd</decoded_as>
-    <description>telnetd规则组</description>
+    <info type="text">telnetd规则组</info>
+	<description>Grouping for the telnetd rules</description>
   </rule>
 
   <rule id="5601" level="5">
     <if_sid>5600</if_sid>
     <match>refused connect from </match>
-    <description>telnetd: 连接被TCP Wrappers拒绝.</description>
+    <info type="text">telnetd: 连接被TCP Wrappers拒绝.</info>
+	<description>telnetd: Connection refused by TCP Wrappers.</description>
     <mitre>
       <id>T1095</id>
     </mitre>
@@ -27,7 +29,8 @@
   <rule id="5602" level="3">
     <if_sid>5600</if_sid>
     <match>connect from </match>
-    <description>telnetd: 远程主机建立telnet连接.</description>
+    <info type="text">telnetd: 远程主机建立telnet连接.</info>
+	<description>telnetd: Remote host established a telnet connection.</description>
     <group>pci_dss_10.2.5,gdpr_IV_32.2,</group>
   </rule>
 
@@ -35,21 +38,25 @@
     <match>ttloop:  peer died:|ttloop:  read:</match>
     <if_sid>5600</if_sid>
     <if_matched_sid>5602</if_matched_sid>
-    <description>telnetd: 无效的远程主机连接.</description>
+    <info type="text">telnetd: 无效的远程主机连接.</info>
+	<description>telnetd: Remote host invalid connection.</description>
     <group>pci_dss_10.2.4,pci_dss_10.2.5,gdpr_IV_35.7.d,gdpr_IV_32.2,</group>
   </rule>
 
   <rule id="5604" level="5">
     <match>warning: can't verify hostname:</match>
-    <description>telnetd: 反查错误 (错误的主机名配置).</description>
+    <info type="text">telnetd: 反查错误 (错误的主机名配置).</info>
+	<description>telnetd: Reverse lookup error (bad hostname config).</description>
     <group>pci_dss_10.2.4,pci_dss_10.2.5,pci_dss_11.4,gdpr_IV_35.7.d,gdpr_IV_32.2,</group>
   </rule>
 
   <rule id="5631" level="10" frequency="6" timeframe="120">
     <if_matched_sid>5602</if_matched_sid>
     <same_source_ip />
-    <description>telnetd: 来自同一来源的多次连接尝试.</description>
-    <description>(possible scan).</description>
+    <info type="text">telnetd: 来自同一来源的多次连接尝试.</info>
+    <info type="text">(可能是扫描行为).</info>
+	<description>telnetd: Multiple connection attempts from same source </description>
+	<description>(possible scan).</description>
     <mitre>
       <id>T1110</id>
     </mitre>

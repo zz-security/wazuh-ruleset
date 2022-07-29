@@ -1,0 +1,58 @@
+<!--
+  -  Systemd rules
+  -  Author: Dan Parriott <ddpbsd@gmail.com>.
+  -  Author: atomicturtle.
+  -  Updated by Wazuh, Inc.
+  -  Copyright (C) 2015, Wazuh Inc.
+  -  Copyright (C) 2009 Trend Micro Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<group name="local,systemd,">
+
+  <rule id="40700" level="0">
+    <program_name>^systemd$|^systemctl$</program_name>
+    <info type="text">Systemd(负责使Linux主机启动到可以做生产性任务的状态)规则</info>
+    <description>Systemd rules</description>
+  </rule>
+
+  <rule id="40701" level="0">
+    <if_sid>40700</if_sid>
+    <match> Stale file handle$</match>
+    <info type="text">Systemd:过时文件处理。</info>
+    <description>Systemd: Stale file handle.</description>
+  </rule>
+
+  <rule id="40702" level="2">
+    <if_sid>40700</if_sid>
+    <match>Failed to get unit file state for</match>
+    <info type="text">Systemd:未能获得服务的单位状态。这意味着.service文件丢失</info>
+    <description>Systemd: Failed to get unit state for service. This means that the .service file is missing</description>
+    <group>gpg13_4.3,gdpr_IV_35.7.d,</group>
+  </rule>
+
+  <rule id="40703" level="5">
+    <if_sid>40700</if_sid>
+    <match>entered failed state</match>
+    <info type="text">Systemd:服务已进入失败状态，并且可能尚未启动。</info>
+    <description>Systemd: Service has entered a failed state, and likely has not started.</description>
+    <group>gpg13_4.3,gdpr_IV_35.7.d,</group>
+  </rule>
+
+  <rule id="40704" level="5">
+    <if_sid>40700</if_sid>
+    <match>status=1/FAILURE</match>
+    <info type="text">Systemd:服务因失败而退出。</info>
+    <description>Systemd: Service exited due to a failure.</description>
+    <group>gpg13_4.3,gdpr_IV_35.7.d,</group>
+  </rule>
+
+  <rule id="40705" level="5">
+    <if_sid>40700</if_sid>
+    <match>Time has been changed$</match>
+    <info type="text">Systemd:系统时间已更改。</info>
+    <description>Systemd: System time has been changed.</description>
+    <group>gpg13_4.3,gdpr_IV_35.7.d,</group>
+  </rule>
+
+</group>

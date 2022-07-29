@@ -10,13 +10,15 @@
 
   <rule id="5700" level="0" noalert="1">
     <decoded_as>sshd</decoded_as>
-    <description>SSHD消息组.</description>
+    <info type="text">SSHD消息组.</info>
+	<description>SSHD messages grouped.</description>
   </rule>
 
   <rule id="5701" level="8">
     <if_sid>5700</if_sid>
     <match>Bad protocol version identification</match>
-    <description>sshd: 可能是针对SSH服务器的攻击 (或者版本收集).</description>
+    <info type="text">sshd: 可能是针对SSH服务器的攻击 (或者版本收集).</info>
+	<description>sshd: Possible attack on the ssh server (or version gathering).</description>
     <mitre>
       <id>T1190</id>
     </mitre>
@@ -27,14 +29,16 @@
     <if_sid>5700</if_sid>
     <match>^reverse mapping</match>
     <regex>failed - POSSIBLE BREAK</regex>
-    <description>sshd: 反查错误(ISP问题或攻击).</description>
+    <info type="text">sshd: 反查错误(ISP问题或攻击).</info>
+	<description>sshd: Reverse lookup error (bad ISP or attack).</description>
     <group>gdpr_IV_35.7.d,gpg13_4.12,nist_800_53_SI.4,pci_dss_11.4,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="5703" level="10" frequency="6" timeframe="360">
     <if_matched_sid>5702</if_matched_sid>
     <same_source_ip />
-    <description>sshd: 可能是侵入尝试 (大量反查错误).</description>
+    <info type="text">sshd: 可能是侵入尝试 (大量反查错误).</info>
+	<description>sshd: Possible breakin attempt (high number of reverse lookup errors).</description>
     <mitre>
       <id>T1110</id>
     </mitre>
@@ -44,12 +48,14 @@
   <rule id="5704" level="4">
     <if_sid>5700</if_sid>
     <match>fatal: Timeout before authentication for、</match>
-    <description>sshd: 登录超时.</description>
+    <info type="text">sshd: 登录超时.</info>
+	<description>sshd: Timeout while logging in.</description>
   </rule>
 
   <rule id="5705" level="10" frequency="6" timeframe="360">
     <if_matched_sid>5704</if_matched_sid>
-    <description>sshd: 可能是扫描或者入侵尝试(大量登录超时).</description>
+    <info type="text">sshd: 可能是扫描或者入侵尝试(大量登录超时).</info>
+	<description>sshd: Possible scan or breakin attempt (high number of login timeouts).</description>
     <mitre>
       <id>T1190</id>
       <id>T1110</id>
@@ -60,7 +66,8 @@
   <rule id="5706" level="6">
     <if_sid>5700</if_sid>
     <match>Did not receive identification string from</match>
-    <description>sshd: 不安全的连接尝试(扫描).</description>
+    <info type="text">sshd: 不安全的连接尝试(扫描).</info>
+	<description>sshd: insecure connection attempt (scan).</description>
     <mitre>
       <id>T1021.004</id>
     </mitre>
@@ -70,7 +77,8 @@
   <rule id="5707" level="14">
     <if_sid>5700</if_sid>
     <match>fatal: buffer_get_string: bad string</match>
-    <description>sshd: OpenSSH challenge-response漏洞利用.</description>
+    <info type="text">sshd: OpenSSH challenge-response漏洞利用.</info>
+	<description>sshd: OpenSSH challenge-response exploit.</description>
     <mitre>
       <id>T1210</id>
       <id>T1068</id>
@@ -83,13 +91,15 @@
     <match>error: Could not get shadow information for NOUSER|</match>
     <match>fatal: Read from socket failed: |error: ssh_msg_send: write|</match>
     <match>^syslogin_perform_logout: |^pam_succeed_if(sshd:auth): error retrieving information about user|can't verify hostname: getaddrinfo</match>
-    <description>sshd: 没有用户/ip和上下文的无用SSHD消息.</description>
+    <info type="text">sshd: 没有用户/ip和上下文的无用SSHD消息.</info>
+	<description>sshd: Useless SSHD message without an user/ip and context.</description>
   </rule>
 
   <rule id="5710" level="5">
     <if_sid>5700</if_sid>
     <match>illegal user|invalid user</match>
-    <description>sshd: 尝试用不存在的用户登录</description>
+    <info type="text">sshd: 尝试用不存在的用户登录</info>
+	<description>sshd: Attempt to login using a non-existent user</description>
     <mitre>
       <id>T1110.001</id>
       <id>T1021.004</id>
@@ -104,13 +114,15 @@
     <match>input_userauth_request: invalid user|</match>
     <match>PAM: User not known to the underlying authentication module for illegal user|</match>
     <match>error retrieving information about user</match>
-    <description>sshd: 没有用户/ip的无用或重复SSHD消息.</description>
+    <info type="text">sshd: 没有用户/ip的无用或重复SSHD消息.</info>
+	<description>sshd: Useless/Duplicated SSHD message without a user/ip.</description>
   </rule>
 
   <rule id="5712" level="10" frequency="8" timeframe="120" ignore="60">
     <if_matched_sid>5710</if_matched_sid>
     <same_source_ip />
-    <description>sshd: 尝试暴力破解以访问系统. 不存在的用户.</description>
+    <info type="text">sshd: 尝试暴力破解以访问系统. 不存在的用户.</info>
+	<description>sshd: brute force trying to get access to the system. Non existent user.</description>
     <mitre>
       <id>T1110</id>
     </mitre>
@@ -120,15 +132,17 @@
   <rule id="5713" level="6">
     <if_sid>5700</if_sid>
     <match>Corrupted check bytes on</match>
-    <description>sshd: 损坏的SSHD校验字节.</description>
+    <info type="text">sshd: 损坏的SSHD校验字节.</info>
+	<description>sshd: Corrupted bytes on SSHD.</description>
   </rule>
 
   <rule id="5714" level="14" timeframe="120" frequency="3">
     <if_matched_sid>5713</if_matched_sid>
     <match>Local: crc32 compensation attack</match>
     <info type="cve">2001-0144</info>
-    <info type="link">http://www.securityfocus.com/bid/2347/info/</info>
-    <description>sshd: SSH1守护程序crc32补偿攻击</description>
+    <info type="link">http://www.securityfocus.com/bid/2347/info/||</info>
+    <info type="text">sshd: SSH1守护程序crc32补偿攻击</info>
+	<description>sshd: SSH CRC-32 Compensation attack</description>
     <mitre>
       <id>T1210</id>
     </mitre>
@@ -138,7 +152,8 @@
   <rule id="5715" level="3">
     <if_sid>5700</if_sid>
     <match>^Accepted|authenticated.$</match>
-    <description>sshd: 认证成功.</description>
+    <info type="text">sshd: 认证成功.</info>
+	<description>sshd: authentication success.</description>
     <mitre>
       <id>T1078</id>
       <id>T1021</id>
@@ -149,7 +164,8 @@
   <rule id="5716" level="5">
     <if_sid>5700</if_sid>
     <match>^Failed|^error: PAM: Authentication</match>
-    <description>sshd: 认证失败.</description>
+    <info type="text">sshd: 认证失败.</info>
+	<description>sshd: authentication failed.</description>
     <mitre>
       <id>T1110</id>
     </mitre>
@@ -158,14 +174,16 @@
 
   <rule id="5717" level="4">
     <if_sid>5700</if_sid>
-    <match>error: Bad prime description in line</match>
-    <description>sshd: 配置错误 (moduli).</description>
+    <match>error: Bad prime info type="text" in line</match>
+    <info type="text">sshd: 配置错误 (moduli).</info>
+	<description>sshd: configuration error (moduli).</description>
   </rule>
 
   <rule id="5718" level="5">
     <if_sid>5700</if_sid>
     <match>not allowed because</match>
-    <description>sshd: 尝试用已拒绝的用户登录.</description>
+    <info type="text">sshd: 尝试用已拒绝的用户登录.</info>
+	<description>sshd: Attempt to login using a denied user.</description>
     <mitre>
       <id>T1110</id>
     </mitre>
@@ -174,7 +192,8 @@
 
   <rule id="5719" level="10" frequency="8" timeframe="120" ignore="60">
     <if_matched_sid>5718</if_matched_sid>
-    <description>sshd: 多次尝试用已拒绝用户访问.</description>
+    <info type="text">sshd: 多次尝试用已拒绝用户访问.</info>
+	<description>sshd: Multiple access attempts using a denied user.</description>
     <mitre>
       <id>T1110</id>
     </mitre>
@@ -184,7 +203,8 @@
   <rule id="5720" level="10" frequency="8">
     <if_matched_sid>5716</if_matched_sid>
     <same_source_ip />
-    <description>sshd: 多次认证失败.</description>
+    <info type="text">sshd: 多次认证失败.</info>
+	<description>sshd: Multiple authentication failures.</description>
     <mitre>
       <id>T1110</id>
     </mitre>
@@ -194,48 +214,55 @@
   <rule id="5721" level="0">
     <if_sid>5700</if_sid>
     <match>Received disconnect from</match>
-    <description>sshd: sshd服务连接断开.</description>
+    <info type="text">sshd: sshd服务连接断开.</info>
+	<description>sshd: System disconnected from sshd.</description>
   </rule>
 
   <rule id="5722" level="0">
     <if_sid>5700</if_sid>
     <match>Connection closed</match>
-    <description>sshd: ssh连接关闭.</description>
+    <info type="text">sshd: ssh连接关闭.</info>
+	<description>sshd: ssh connection closed.</description>
     <group>gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,pci_dss_10.2.5,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="5723" level="0">
     <if_sid>5700</if_sid>
     <match>error: buffer_get_bignum2_ret: negative numbers not supported</match>
-    <info>This maybe a bad key in authorized_keys.</info>
-    <description>sshd: 密钥错误.</description>
+    <info>This maybe a bad key in authorized_keys.||</info>
+    <info type="text">sshd: 密钥错误.</info>
+	<description>sshd: key error.</description>
     <group>gdpr_IV_35.7.d,gpg13_4.3,hipaa_164.312.a.2.IV,hipaa_164.312.e.1,hipaa_164.312.e.2.I,hipaa_164.312.e.2.II,hipaa_164.312.b,nist_800_53_SC.8,nist_800_53_AU.6,pci_dss_4.1,pci_dss_10.6.1,tsc_CC6.7,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="5724" level="0">
     <if_sid>5700</if_sid>
     <match>fatal: buffer_get_bignum2: buffer error</match>
-    <info>This error may relate to ssh key handling.</info>
-    <description>sshd: 密钥错误.</description>
+    <info>This error may relate to ssh key handling.||</info>
+    <info type="text">sshd: 密钥错误.</info>
+	<description>sshd: key error.</description>
     <group>gdpr_IV_35.7.d,gpg13_4.3,hipaa_164.312.a.2.IV,hipaa_164.312.e.1,hipaa_164.312.e.2.I,hipaa_164.312.e.2.II,hipaa_164.312.b,nist_800_53_SC.8,nist_800_53_AU.6,pci_dss_4.1,pci_dss_10.6.1,tsc_CC6.7,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="5725" level="0">
     <if_sid>5700</if_sid>
     <match>fatal: Write failed: Host is down</match>
-    <description>sshd: 主机未正常断开连接.</description>
+    <info type="text">sshd: 主机未正常断开连接.</info>
+	<description>sshd: Host ungracefully disconnected.</description>
   </rule>
 
   <rule id="5726" level="5">
     <if_sid>5700</if_sid>
     <match>error: PAM: Module is unknown for</match>
-    <description>sshd: 未知的PAM模块, PAM配置错误.</description>
+    <info type="text">sshd: 未知的PAM模块, PAM配置错误.</info>
+	<description>sshd: Unknown PAM module, PAM misconfiguration.</description>
   </rule>
 
   <rule id="5727" level="0">
     <if_sid>5700</if_sid>
     <match>failed: Address already in use.</match>
-    <description>sshd: 试图在端口被占用的情况下启动ssh服务.</description>
+    <info type="text">sshd: 试图在端口被占用的情况下启动ssh服务.</info>
+	<description>sshd: Attempt to start sshd when something already bound to the port.</description>
     <group>gdpr_IV_35.7.d,gpg13_4.3,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_CM.1,pci_dss_10.6.1,pci_dss_2.2.3,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
@@ -243,27 +270,31 @@
     <if_sid>5700</if_sid>
     <match>Authentication service cannot retrieve user credentials</match>
     <info>May be related to PAM module errors.</info>
-    <description>sshd: 身份验证服务无法检索用户凭据.</description>
+    <info type="text">sshd: 身份验证服务无法检索用户凭据.</info>
+	 <description>sshd: Authentication services were not able to retrieve user credentials.</description>
     <group>authentication_failed,gdpr_IV_35.7.d,gdpr_IV_32.2,gpg13_7.1,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,pci_dss_10.2.5,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="5729" level="0">
     <if_sid>5700</if_sid>
     <match>debug1: attempt</match>
-    <description>sshd: 调试消息.</description>
+    <info type="text">sshd: 调试消息.</info>
+	<description>sshd: Debug message.</description>
   </rule>
 
   <rule id="5730" level="4">
     <if_sid>5700</if_sid>
     <regex>error: connect to \S+ port \d+ failed: Connection refused</regex>
-    <description>sshd: SSHD不接收连接.</description>
+    <info type="text">sshd: SSHD不接收连接.</info>
+	<description>sshd: SSHD is not accepting connections.</description>
     <group>gdpr_IV_35.7.d,gpg13_4.3,hipaa_164.312.b,nist_800_53_AU.6,pci_dss_10.6.1,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="5731" level="6">
     <if_sid>5700</if_sid>
     <match>AKASSH_Version_Mapper1.</match>
-    <description>sshd: SSH扫描.</description>
+    <info type="text">sshd: SSH扫描.</info>
+	<description>sshd: SSH Scanning.</description>
     <mitre>
       <id>T1046</id>
     </mitre>
@@ -273,174 +304,201 @@
   <rule id="5732" level="0">
     <if_sid>5700</if_sid>
     <match>error: connect_to </match>
-    <description>sshd: 可能的端口转发失败.</description>
+    <info type="text">sshd: 可能的端口转发失败.</info>
+	<description>sshd: Possible port forwarding failure.</description>
   </rule>
 
   <rule id="5733" level="0">
     <if_sid>5700</if_sid>
     <match>Invalid credentials</match>
-    <description>sshd: 用户输入了错误的密码.</description>
+    <info type="text">sshd: 用户输入了错误的密码.</info>
+	<description>sshd: User entered incorrect password.</description>
     <group>authentication_failures,gdpr_IV_35.7.d,gdpr_IV_32.2,gpg13_7.1,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,pci_dss_10.2.4,pci_dss_10.2.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="5734" level="0">
     <if_sid>5700</if_sid>
     <match>Could not load host key</match>
-    <description>sshd: sshd无法加载一个或多个主机密钥.</description>
+    <info type="text">sshd: sshd无法加载一个或多个主机密钥.||</info>
     <info>This may be related to an upgrade to OpenSSH.</info>
+	<description>sshd: sshd could not load one or more host keys.</description>
   </rule>
 
   <rule id="5735" level="0">
     <if_sid>5700</if_sid>
     <match>Write failed: Broken pipe</match>
-    <description>sshd: 一台主机失联导致写入失败.</description>
+    <info type="text">sshd: 一台主机失联导致写入失败.</info>
+	<description>sshd: Failed write due to one host disappearing.</description>
   </rule>
 
   <rule id="5736" level="0">
     <if_sid>5700</if_sid>
     <match>^error: setsockopt SO_KEEPALIVE: Connection reset by peer$|</match>
     <match>^error: accept: Software caused connection abort$</match>
-    <description>sshd: 连接重置或中止.</description>
+    <info type="text">sshd: 连接重置或中止.</info>
+	<description>sshd: Connection reset or aborted.</description>
   </rule>
 
   <rule id="5737" level="5">
     <if_sid>5700</if_sid>
     <match>^fatal: Cannot bind any address.$</match>
-    <description>sshd: 无法绑定到配置的地址.</description>
+    <info type="text">sshd: 无法绑定到配置的地址.</info>
+	<description>sshd: cannot bind to configured address.</description>
     <group>gdpr_IV_35.7.d,gpg13_4.3,hipaa_164.312.b,nist_800_53_AU.6,pci_dss_10.6.1,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="5738" level="5">
     <if_sid>5700</if_sid>
     <match>set_loginuid failed opening loginuid$</match>
-    <description>sshd: pam_loginuid无法打开loginuid.</description>
+    <info type="text">sshd: pam_loginuid无法打开loginuid.</info>
+	<description>sshd: pam_loginuid could not open loginuid.</description>
     <group>authentication_failed,gdpr_IV_35.7.d,gdpr_IV_32.2,gpg13_7.1,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,pci_dss_10.2.4,pci_dss_10.2.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="5739" level="4">
     <if_sid>5700</if_sid>
     <match>^error: Could not stat AuthorizedKeysCommand</match>
-    <description>sshd: 配置错误(AuthorizedKeysCommand)</description>
+    <info type="text">sshd: 配置错误(AuthorizedKeysCommand)</info>
+	<description>sshd: configuration error (AuthorizedKeysCommand)</description>
   </rule>
 
   <rule id="5740" level="4">
     <if_sid>5700</if_sid>
     <match>Connection reset by peer$</match>
-    <description>sshd: 连接被对端重置</description>
+    <info type="text">sshd: 连接被对端重置</info>
+	<description>sshd: connection reset by peer</description>
   </rule>
 
   <rule id="5741" level="4">
     <if_sid>5700</if_sid>
     <match>Connection refused$</match>
-    <description>sshd: 已拒绝连接</description>
+    <info type="text">sshd: 已拒绝连接</info>
+	<description>sshd: connection refused</description>
   </rule>
 
   <rule id="5742" level="4">
     <if_sid>5700</if_sid>
     <match>Connection timed out$</match>
-    <description>sshd: 连接超时</description>
+    <info type="text">sshd: 连接超时</info>
+	<description>sshd: connection timed out</description>
     <group>gdpr_IV_35.7.d,hipaa_164.312.a.1,nist_800_53_AC.2,pci_dss_8.1.5,tsc_CC6.1,</group>
   </rule>
 
   <rule id="5743" level="4">
     <if_sid>5700</if_sid>
     <match>No route to host$</match>
-    <description>sshd: 没有到主机的路由</description>
+    <info type="text">sshd: 没有到主机的路由</info>
+	<description>sshd: no route to host</description>
   </rule>
 
   <rule id="5744" level="4">
     <if_sid>5700</if_sid>
     <match>failure direct-tcpip$</match>
-    <description>sshd: 端口转发问题</description>
+    <info type="text">sshd: 端口转发问题</info>
+	<description>sshd: port forwarding issue</description>
   </rule>
 
   <rule id="5745" level="4">
     <if_sid>5700</if_sid>
     <match>Transport endpoint is not connected$</match>
-    <description>sshd: 传输端点未连接</description>
+    <info type="text">sshd: 传输端点未连接</info>
+	<description>sshd: transport endpoint is not connected</description>
   </rule>
 
   <rule id="5746" level="4">
     <if_sid>5700</if_sid>
     <match>get_remote_port failed$</match>
-    <description>sshd: 获取远程端口失败</description>
+    <info type="text">sshd: 获取远程端口失败</info>
+	<description>sshd: get_remote_port failed</description>
   </rule>
 
   <!-- http://www.gossamer-threads.com/lists/openssh/users/47438 -->
   <rule id="5747" level="6">
     <if_sid>5700</if_sid>
     <match>bad client public DH value</match>
-    <description>sshd: 错误的客户端公共DH值</description>
+    <info type="text">sshd: 错误的客户端公共DH值</info>
+	<description>sshd: bad client public DH value</description>
   </rule>
 
   <rule id="5748" level="6">
     <if_sid>5700</if_sid>
     <match>Corrupted MAC on input.</match>
-    <description>sshd: 输入时MAC损坏</description>
+    <info type="text">sshd: 输入时MAC损坏</info>
+	<description>sshd: corrupted MAC on input</description>
     <group>gdpr_IV_35.7.d,gpg13_4.3,hipaa_164.312.b,nist_800_53_AU.6,pci_dss_10.6.1,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="5749" level="4">
     <if_sid>5700</if_sid>
     <match>^Bad packet length</match>
-    <description>sshd: 错误的包长度</description>
+    <info type="text">sshd: 错误的包长度</info>
+	<description>sshd: bad packet length</description>
   </rule>
 
   <rule id="5750" level="0">
     <decoded_as>sshd</decoded_as>
     <if_sid>5700</if_sid>
     <match>Unable to negotiate with |Unable to negotiate a key|fatal: no matching</match>
-    <description>sshd: 无法与客户端“协商”.</description>
+    <info type="text">sshd: 无法与客户端“协商”.</info>
+	<description>sshd: could not negotiate with client.</description>
   </rule>
 
   <rule id="5751" level="1">
     <decoded_as>sshd</decoded_as>
     <if_sid>5700</if_sid>
     <match>no hostkey alg [preauth]</match>
-    <description>sshd: No hostkey alg.</description>
+    <info type="text">sshd: No hostkey alg.</info>
+	<description>sshd: No hostkey alg.</description>
   </rule>
 
   <rule id="5752" level="2">
     <if_sid>5750</if_sid>
     <match>no matching key exchange method found.|Unable to negotiate a key exchange method</match>
-    <description>sshd: 客户端未提供可接受的密钥交换方法.</description>
+    <info type="text">sshd: 客户端未提供可接受的密钥交换方法.</info>
+	<description>sshd: Client did not offer an acceptable key exchange method.</description>
   </rule>
 
   <rule id="5753" level="2">
     <if_sid>5750</if_sid>
     <match>no matching cipher found</match>
-    <description>sshd: 无法与客户端“协商”，没有匹配的密钥类型.</description>
+    <info type="text">sshd: 无法与客户端“协商”，没有匹配的密钥类型.</info>
+	<description>sshd: could not negotiate with client, no matching cipher.</description>
   </rule>
 
   <rule id="5754" level="1">
     <if_sid>5700</if_sid>
     <match>Failed to create session: </match>
-    <description>sshd: 创建会话失败.</description>
+    <info type="text">sshd: 创建会话失败.</info>
+	<description>sshd: failed to create a session.</description>
   </rule>
 
   <rule id="5755" level="3">
     <if_sid>5700</if_sid>
     <match>bad ownership or modes for file</match>
-    <description>sshd: 由于authorized_keys 的所有者/权限，身份验证被拒绝.</description>
+    <info type="text">sshd: 由于authorized_keys 的所有者/权限，身份验证被拒绝.</info>
+	<description>sshd: Authentication refused due to owner/permissions of authorized_keys.</description>
     <group>authentication_failed,gpg13_7.1,</group>
   </rule>
 
   <rule id="5756" level="0">
     <if_sid>5700</if_sid>
     <match> failed, subsystem not found$</match>
-    <description>sshd: subsystem请求失败.</description>
+    <info type="text">sshd: subsystem请求失败.</info>
+	<description>sshd: subsystem request failed.</description>
   </rule>
 
   <rule id="5757" level="0">
     <if_sid>5700</if_sid>
     <match>but this does not map back to the address - POSSIBLE BREAK-IN ATTEMPT!$</match>
-    <description>错误的DNS映射.</description>
+    <info type="text">错误的DNS映射.</info>
+	<description>Bad DNS mapping.</description>
   </rule>
 
   <rule id="5758" level="8">
     <if_sid>5700,5710</if_sid>
     <match>^error: maximum authentication attempts exceeded </match>
-    <description>超过最大身份验证尝试次数.</description>
+    <info type="text">超过最大身份验证尝试次数.</info>
+	<description>Maximum authentication attempts exceeded.</description>
     <mitre>
       <id>T1110</id>
     </mitre>
@@ -450,13 +508,15 @@
   <rule id="5759" level="2">
     <if_sid>5750</if_sid>
     <match>no matching mac found</match>
-    <description>sshd: 无法与客户端“协商”, 没有匹配的mac.</description>
+    <info type="text">sshd: 无法与客户端“协商”, 没有匹配的mac.</info>
+	<description>sshd: could not negotiate with client, no matching mac.</description>
   </rule>
 
   <rule id="5760" level="5">
     <if_sid>5700,5716</if_sid>
     <match>Failed password|Failed keyboard|authentication error</match>
-    <description>sshd: 认证失败.</description>
+    <info type="text">sshd: 认证失败.</info>
+	<description>sshd: authentication failed.</description>
     <mitre>
       <id>T1110.001</id>
       <id>T1021.004</id>
@@ -467,20 +527,23 @@
   <rule id="5761" level="0">
     <if_sid>5700</if_sid>
     <match>Disconnected from user</match>
-    <description>sshd: ssh连接关闭.</description>
+    <info type="text">sshd: ssh连接关闭.</info>
+	<description>sshd: ssh connection closed.</description>
     <group>gdpr_IV_32.2,hipaa_164.312.b,nist_800_53_AU.14,nist_800_53_AC.7,pci_dss_10.2.5,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
   </rule>
 
   <rule id="5762" level="4">
     <if_sid>5700</if_sid>
     <match>Connection reset</match>
-    <description>sshd: 连接重置</description>
+    <info type="text">sshd: 连接重置</info>
+	<description>sshd: connection reset</description>
   </rule>
 
   <rule id="5763" level="10" frequency="8" timeframe="120" ignore="60">
     <if_matched_sid>5760</if_matched_sid>
     <same_source_ip/>
-    <description>sshd: 试图通过暴力破解访问系统. 身份认证失败.</description>
+    <info type="text">sshd: 试图通过暴力破解访问系统. 身份认证失败.</info>
+	<description>sshd: brute force trying to get access to the system. Authentication failed.</description>
     <mitre>
       <id>T1110</id>
     </mitre>

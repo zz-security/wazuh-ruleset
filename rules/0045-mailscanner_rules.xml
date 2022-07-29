@@ -10,26 +10,30 @@
 <group name="syslog,mailscanner,">
   <rule id="3700" level="0">
     <decoded_as>mailscanner</decoded_as>
-    <description>mailscanner规则组</description>
+    <info type="text">mailscanner规则组</info>
+	<description>Grouping of mailscanner rules.</description>
   </rule>
 
   <rule id="3701" level="0">
     <if_sid>3700</if_sid>
     <action>not</action>
-    <description>mailscanner: 非垃圾邮件. 忽略.</description>
+    <info type="text">mailscanner: 非垃圾邮件. 忽略.</info>
+	<description>mailscanner: Non spam message. Ignored.</description>
   </rule>
 
   <rule id="3702" level="5">
     <if_sid>3700</if_sid>
     <action>spam</action>
-    <description>mailscanner: 检测到垃圾邮件</description>
+    <info type="text">mailscanner: 检测到垃圾邮件</info>
+	<description>mailscanner: spam detected.</description>
     <group>spam,</group>
   </rule>
 
   <rule id="3751" level="6" frequency="8" timeframe="180">
     <if_matched_sid>3702</if_matched_sid>
     <same_source_ip />
-    <description>mailscanner: 多次尝试发送垃圾邮件.</description>
+    <info type="text">mailscanner: 多次尝试发送垃圾邮件.</info>
+	<description>mailscanner: Multiple attempts of spam.</description>
     <mitre>
       <id>T1110</id>
       <id>T1114</id>
@@ -41,7 +45,8 @@
       <if_sid>1002</if_sid>
       <program_name>update.bad.phishing.sites</program_name>
       <match>^Phishing bad sites list updated</match>
-      <description>忽略</description>
+      <info type="text">忽略</info>
+	  <description>ignore</description>
   </rule>
 
 </group>

@@ -8,42 +8,48 @@
 <group name="wazuh,">
   <rule id="200" level="0">
     <decoded_as>wazuh</decoded_as>
-    <description>wazuh规则组</description>
+    <info type="text">wazuh规则组</info>
+	<description>Grouping of wazuh rules.</description>
   </rule>
 
   <!-- Agent buffer rules -->
   <rule id="201" level="0">
     <if_sid>200</if_sid>
     <match>^wazuh: Agent buffer: </match>
-    <description>代理事件队列规则</description>
+    <info type="text">代理事件队列规则</info>
+	<description>Agent event queue rule</description>
     <group>agent_flooding,</group>
   </rule>
 
   <rule id="202" level="7">
     <if_sid>201</if_sid>
     <field name="level">%</field>
-    <description>缓冲区中代理事件度列已达到$(level)</description>
+    <info type="text">缓冲区中代理事件队列已达到$(level)</info>
+	<description>Agent event queue is $(level) full.</description>
     <group>agent_flooding,pci_dss_10.6.1,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="203" level="9">
     <if_sid>201</if_sid>
     <field name="level">full</field>
-    <description>缓冲区中代理事件队列已满,事件可能丢失</description>
+    <info type="text">缓冲区中代理事件队列已满,事件可能丢失</info>
+	<description>Agent event queue is full. Events may be lost.</description>
     <group>agent_flooding,pci_dss_10.6.1,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="204" level="12">
     <if_sid>201</if_sid>
     <field name="level">flooded</field>
-    <description>缓冲区一直处于100%，容差时间内无法恢复到正常状态，触发Flooding状态警报。请检查代理配置。</description>
+    <info type="text">缓冲区一直处于100%，容差时间内无法恢复到正常状态，触发Flooding状态警报。请检查代理配置。</info>
+	<description>Agent event queue is flooded. Check the agent configuration.</description>
     <group>agent_flooding,pci_dss_10.6.1,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="205" level="3">
     <if_sid>201</if_sid>
     <field name="level">normal</field>
-    <description>缓冲区事件队列恢复到正常状态</description>
+    <info type="text">缓冲区事件队列恢复到正常状态</info>
+	<description>Agent event queue is back to normal load.</description>
     <group>agent_flooding,</group>
   </rule>
 
@@ -61,70 +67,80 @@
   <rule id="210" level="0">
     <if_sid>200</if_sid>
     <match>Upgrade procedure</match>
-    <description>远程更新规则告警</description>
+    <info type="text">远程更新规则告警</info>
+	<description>Remote upgrade alert</description>
     <group>upgrade,</group>
   </rule>
 
   <rule id="211" level="0">
     <if_sid>200</if_sid>
     <match>Custom installation</match>
-    <description>远程安装告警</description>
+    <info type="text">远程安装告警</info>
+	<description>Remote installation alert</description>
     <group>upgrade,</group>
   </rule>
 
   <rule id="212" level="3">
     <if_sid>210</if_sid>
     <status>started</status>
-    <description>开始远程更新</description>
+    <info type="text">开始远程更新</info>
+	<description>Remote upgrade started.</description>
     <group>upgrade,</group>
   </rule>
 
   <rule id="213" level="7">
     <if_sid>210</if_sid>
     <status>aborted</status>
-    <description>无法启动远程更新，报错信息: $(error).</description>
+    <info type="text">无法启动远程更新，报错信息: $(error).</info>
+	<description>Remote upgrade could not be launched. Error: $(error).</description>
     <group>upgrade,upgrade_failure,</group>
   </rule>
 
   <rule id="214" level="3">
     <if_sid>210</if_sid>
     <status>succeeded</status>
-    <description>成功完成远程更新</description>
+    <info type="text">成功完成远程更新</info>
+	<description>Remote upgrade finished successfully.</description>
     <group>upgrade,upgrade_success,</group>
   </rule>
 
   <rule id="215" level="6">
     <if_sid>210</if_sid>
     <status>failed</status>
-    <description>远程更新失败. 代理还原到之前的版本.</description>
+    <info type="text">远程更新失败. 代理还原到之前的版本.</info>
+	<description>Remote upgrade failed. Agent restored to previous version.</description>
     <group>upgrade,upgrade_failure,</group>
   </rule>
 
   <rule id="216" level="7">
     <if_sid>210</if_sid>
     <status>lost</status>
-    <description>远程更新失败. 代理断开连接.</description>
+    <info type="text">远程更新失败. 代理断开连接.</info>
+	<description>Remote upgrade failed. Agent disconnected.</description>
     <group>upgrade,upgrade_failure,</group>
   </rule>
 
   <rule id="217" level="3">
     <if_sid>211</if_sid>
     <status>started</status>
-    <description>开始自定义安装</description>
+    <info type="text">开始自定义安装</info>
+	<description>Custom installation started.</description>
     <group>upgrade,</group>
   </rule>
 
   <rule id="218" level="7">
     <if_sid>211</if_sid>
     <status>aborted</status>
-    <description>无法启动自定义安装. 报错信息: $(error).</description>
+    <info type="text">无法启动自定义安装. 报错信息: $(error).</info>
+	<description>Custom installation could not be launched. Error: $(error).</description>
     <group>upgrade,upgrade_failure,</group>
   </rule>
 
   <rule id="220" level="7">
     <if_sid>200</if_sid>
     <match>^wazuh: Invalid remote configuration: </match>
-    <description>由于远程配置中$(module) 模块故障，代理无法重启。</description>
+    <info type="text">由于远程配置中$(module) 模块故障，代理无法重启。</info>
+	<description>The agent could not restart due to a $(module) failure in the remote configuration</description>
     <group>agent_restarting,configuration_failure,</group>
   </rule>
 
@@ -132,13 +148,15 @@
   <rule id="221" level="0">
     <category>ossec</category>
     <decoded_as>syscollector</decoded_as>
-    <description>Syscollector 事件.</description>
+    <info type="text">Syscollector 事件.</info>
+	<description>Syscollector event.</description>
   </rule>
 
   <rule id="222" level="7">
     <if_sid>200</if_sid>
     <match>^wazuh: Could not unmerge shared file.</match>
-    <description>由于取消合并文件时出错，代理无法重新启动</description>
+    <info type="text">由于取消合并文件时出错，代理无法重新启动</info>
+	<description>The agent could not restart due to a error while unmerging files.</description>
     <group>agent_restarting,configuration_failure,</group>
   </rule>
 
@@ -147,35 +165,40 @@
     <if_sid>200</if_sid>
     <match>^wazuh: FIM DB: </match>
     <location>syscheck$</location>
-    <description>FIM DB规则</description>
+    <info type="text">FIM DB规则</info>
+	<description>FIM DB rule</description>
     <group>syscheck,fim_db_state,</group>
   </rule>
 
   <rule id="231" level="7">
     <if_sid>230</if_sid>
     <field name="alert_type">80_percentage</field>
-    <description>对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控，所有超出该限制的文件都不会被监控. 可以在本地代理或wazuh manager的集中配置文件中修改此设置</description>
+    <info type="text">对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控，所有超出该限制的文件都不会被监控. 可以在本地代理或wazuh manager的集中配置文件中修改此设置</info>
+	<description>The file limit set for this agent is $(file_limit). Now, $(file_count) files are being monitored and all files that come after the limit will not be monitored. Change this setting in centralized configuration or locally on the agent.</description>
     <group>syscheck,fim_db_state,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="232" level="9">
     <if_sid>230</if_sid>
     <field name="alert_type">90_percentage</field>
-    <description>对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控，所有超出该限制的文件都不会被监控. 可以在本地代理或wazuh manager的集中配置文件中修改此设置</description>
+    <info type="text">对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控，所有超出该限制的文件都不会被监控. 可以在本地代理或wazuh manager的集中配置文件中修改此设置</info>
+	<description>The file limit set for this agent is $(file_limit). Now, $(file_count) files are being monitored and all files that come after the limit will not be monitored. Change this setting in centralized configuration or locally on the agent.</description>
     <group>syscheck,fim_db_state,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="233" level="12">
     <if_sid>230</if_sid>
     <field name="alert_type">full</field>
-    <description>对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控，不再有文件会被监控. 可以在本地代理或wazuh manager的集中配置文件中修改此设置</description>
+    <info type="text">对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控，不再有文件会被监控. 可以在本地代理或wazuh manager的集中配置文件中修改此设置</info>
+	<description>The file limit set for this agent is $(file_limit). Now, $(file_count) files are being monitored and no more files will be monitored. Change this setting in centralized configuration or locally on the agent.</description>
     <group>syscheck,fim_db_state,gdpr_IV_35.7.d,</group>
   </rule>
 
   <rule id="234" level="3">
     <if_sid>230</if_sid>
     <field name="alert_type">normal</field>
-    <description>对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控</description>
+    <info type="text">对此代理设置的文件限制为 $(file_limit). 现在, $(file_count) 个文件正在被监控</info>
+	<description>The file limit set for this agent is $(file_limit). Now, $(file_count) files are being monitored.</description>
     <group>syscheck,fim_db_state,</group>
   </rule>
 
