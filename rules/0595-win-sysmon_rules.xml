@@ -1,0 +1,417 @@
+<!--
+  -  Windows Event Channel ruleset for the Sysmon channel 
+  -  Created by Wazuh, Inc.
+  -  Copyright (C) 2015, Wazuh Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<!--
+  -  ID range: 61600 - 62099
+-->
+
+<var name="MS_FREQ">8</var>
+
+<group name="windows,sysmon,">
+  <rule id="61600" level="0">
+    <if_sid>60004</if_sid>
+    <field name="win.system.severityValue">^INFORMATION$</field>
+    <info type="text">Windows Sysmon 信息事件</info>
+    <description>Windows Sysmon informational event</description>
+    <options>no_full_log</options>
+  </rule>
+
+  <rule id="61601" level="0">
+    <if_sid>60004</if_sid>
+    <field name="win.system.severityValue">^WARNING$</field>
+    <info type="text">Windows Sysmon 警告事件</info>
+    <description>Windows Sysmon warning event</description>
+    <options>no_full_log</options>
+    <group>gpg13_4.12,</group>
+  </rule>
+
+  <rule id="61602" level="5">
+    <if_sid>60004</if_sid>
+    <field name="win.system.severityValue">^ERROR$</field>
+    <info type="text">Windows Sysmon 错误事件</info>
+    <description>Windows Sysmon error event</description>
+    <options>no_full_log</options>
+    <group>system_error,gpg13_4.3,gdpr_IV_35.7.d,</group>
+  </rule>
+
+  <rule id="61603" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^1$</field>
+    <info type="text">Sysmon - 事件 1：进程创建 $(win.eventdata.description)</info>
+    <description>Sysmon - Event 1: Process creation $(win.eventdata.description)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event1,</group>
+  </rule>
+
+  <rule id="61604" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^2$</field>
+    <info type="text">Sysmon - 事件 2：进程将文件创建时间更改为 $(win.eventdata.sourceImage)</info>
+    <description>Sysmon - Event 2: A process changed a file creation time by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event2,</group>
+  </rule>
+
+  <rule id="61605" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^3$</field>
+    <info type="text">Sysmon - 事件 3：$(win.eventdata.sourceImage)的网络连接</info>
+    <description>Sysmon - Event 3: Network connection by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event3,</group>
+  </rule>
+
+  <rule id="61606" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^4$</field>
+    <info type="text">Sysmon - 事件 4：Sysmon 服务状态由 $(win.eventdata.sourceImage) 更改</info>
+    <description>Sysmon - Event 4: Sysmon service state changed by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event4,</group>
+  </rule>
+
+  <rule id="61607" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^5$</field>
+    <info type="text">Sysmon - 事件 5：进程由 $(win.eventdata.sourceImage) 终止</info>
+    <description>Sysmon - Event 5: Process terminated by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event5,</group>
+  </rule>
+
+  <rule id="61608" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^6$</field>
+    <info type="text">Sysmon - 事件 6：$(win.eventdata.sourceImage) 加载的驱动程序</info>
+    <description>Sysmon - Event 6: Driver loaded by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event6,</group>
+  </rule>
+
+  <rule id="61609" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^7$</field>
+    <info type="text">Sysmon - 事件 7：由 $(win.eventdata.sourceImage) 加载的图像</info>
+    <description>Sysmon - Event 7: Image loaded by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event7,</group>
+  </rule>
+
+  <rule id="61610" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^8$</field>
+    <info type="text">Sysmon - 事件 8：通过$(win.eventdata.sourceImage)创建远程线程</info>
+    <description>Sysmon - Event 8: CreateRemoteThread by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event8,</group>
+  </rule>
+
+  <rule id="61611" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^9$</field>
+    <info type="text">Sysmon - 事件 9：通过$(win.eventdata.sourceImage)原始存取读取</info>
+    <description>Sysmon - Event 9: RawAccessRead by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event9,</group>
+  </rule>
+
+  <rule id="61612" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^10$</field>
+    <info type="text">Sysmon - 事件 10：通过 $(win.eventdata.sourceImage) 处理访问</info>
+    <description>Sysmon - Event 10: ProcessAccess by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event_10,</group>
+  </rule>
+
+  <rule id="61613" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^11$</field>
+    <info type="text">Sysmon - 事件 11：通过 $(win.eventdata.sourceImage) 创建文件</info>
+    <description>Sysmon - Event 11: FileCreate by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event_11,</group>
+  </rule>
+
+  <rule id="61614" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^12$</field>
+    <info type="text">Sysmon - 事件 12：通过 $(win.eventdata.sourceImage) 注册事件(对象创建和删除)</info>
+    <description>Sysmon - Event 12: RegistryEvent (Object create and delete) by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event_12,</group>
+  </rule>
+
+  <rule id="61615" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^13$</field>
+    <info type="text">Sysmon - 事件 13：通过 $(win.eventdata.sourceImage) 注册事件(Value Set)</info>
+    <description>Sysmon - Event 13: RegistryEvent (Value Set) by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event_13,</group>
+  </rule>
+
+  <rule id="61616" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^14$</field>
+    <info type="text">Sysmon - 事件 14：通过 $(win.eventdata.sourceImage) 注册事件(键和值重命名)</info>
+    <description>Sysmon - Event 14: RegistryEvent (Key and Value Rename) by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event_14,</group>
+  </rule>
+
+  <rule id="61617" level="0">
+    <if_sid>61600</if_sid>
+    <field name="win.system.eventID">^15$</field>
+    <info type="text">Sysmon - 事件 15：通过 $(win.eventdata.sourceImage) 文件创建哈希流</info>
+    <description>Sysmon - Event 15: FileCreateStreamHash by $(win.eventdata.sourceImage)</description>
+    <options>no_full_log</options>
+    <group>sysmon_event_15,</group>
+  </rule>
+</group>
+
+<group name="windows,sysmon,sysmon_process-anomalies,">
+  <rule id="61618" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.image">svchost.exe</field>
+    <info type="text">Sysmon - 可疑进程 - svchost.exe</info>
+    <description>Sysmon - Suspicious Process - svchost.exe</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="61619" level="0">
+    <if_sid>61618</if_sid>
+    <field name="win.eventdata.parentImage">\\services.exe</field>
+    <info type="text">Sysmon - 合法父映像 - svchost.exe</info>
+    <description>Sysmon - Legitimate Parent Image - svchost.exe</description>
+  </rule>
+
+  <rule id="61620" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.image">lsm.exe</field>
+    <info type="text">Sysmon - 可疑进程 - lsm.exe</info>
+    <description>Sysmon - Suspicious Process - lsm.exe</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="61621" level="0">
+    <if_sid>61620</if_sid>
+    <field name="win.eventdata.parentImage">wininit.exe</field>
+    <info type="text">Sysmon - 合法父映像 - lsm.exe</info>
+    <description>Sysmon - Legitimate Parent Image - lsm.exe</description>
+  </rule>
+
+  <rule id="61622" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.parentImage">lsm.exe</field>
+    <info type="text">Sysmon - 可疑进程 - lsm.exe 是父映像</info>
+    <description>Sysmon - Suspicious Process - lsm.exe is a Parent Image</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="61623" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.image">csrss.exe</field>
+    <info type="text">Sysmon - 可疑进程 - csrss.exe</info>
+    <description>Sysmon - Suspicious Process - csrss.exe</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="61624" level="0">
+    <if_sid>61623</if_sid>
+    <field name="win.eventdata.parentImage">smss.exe</field>
+    <info type="text">Sysmon - 合法父映像 - csrss.exe</info>
+    <description>Sysmon - Legitimate Parent Image - csrss.exe</description>
+  </rule>
+
+  <rule id="61625" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.image">lsass.exe</field>
+    <info type="text">Sysmon - 可疑进程 - lsass</info>
+    <description>Sysmon - Suspicious Process - lsass</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="61626" level="0">
+    <if_sid>61625</if_sid>
+    <field name="win.eventdata.parentImage">wininit.exe</field>
+    <info type="text">Sysmon - 合法父映像 - lsass.exe</info>
+    <description>Sysmon - Legitimate Parent Image - lsass.exe</description>
+  </rule>
+
+  <rule id="61627" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.parentImage">lsass.exe</field>
+    <info type="text">Sysmon - 可疑进程 - lsass.exe是父映像</info>
+    <description>Sysmon - Suspicious Process - lsass.exe is a Parent Image</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="61628" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.image">winlogon.exe</field>
+    <info type="text">Sysmon - 可疑进程 - winlogon.exe</info>
+    <description>Sysmon - Suspicious Process - winlogon.exe</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="61629" level="0">
+    <if_sid>61628</if_sid>
+    <field name="win.eventdata.parentImage">smss.exe</field>
+    <info type="text">Sysmon - 合法父映像 - winlogon.exe</info>
+    <description>Sysmon - Legitimate Parent Image - winlogon.exe</description>
+  </rule>
+
+  <rule id="61630" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.image">wininit.exe</field>
+    <info type="text">Sysmon - 可疑进程 - wininit</info>
+    <description>Sysmon - Suspicious Process - wininit</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="61631" level="0">
+    <if_sid>61630</if_sid>
+    <field name="win.eventdata.parentImage">smss.exe</field>
+    <info type="text">Sysmon - 合法父映像 - wininit.exe</info>
+    <description>Sysmon - Legitimate Parent Image - wininit.exe</description>
+  </rule>
+
+  <rule id="61632" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.image">smss.exe</field>
+    <info type="text">Sysmon - 可疑进程 - smss.exe</info>
+    <description>Sysmon - Suspicious Process - smss.exe</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="61633" level="0">
+    <if_sid>61632</if_sid>
+    <field name="win.eventdata.parentImage">system</field>
+    <info type="text">Sysmon - 合法父映像 - smss.exe</info>
+    <description>Sysmon - Legitimate Parent Image - smss.exe</description>
+  </rule>
+
+  <rule id="61634" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.image">taskhost.exe</field>
+    <info type="text">Sysmon - 可疑进程 - taskhost.exe</info>
+    <description>Sysmon - Suspicious Process - taskhost.exe</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="61635" level="0">
+    <if_sid>61634</if_sid>
+    <field name="win.eventdata.parentImage">services.exe|svchost.exe</field>
+    <info type="text">Sysmon - 合法父映像 - taskhost.exe</info>
+    <description>Sysmon - Legitimate Parent Image - taskhost.exe</description>
+  </rule>
+
+  <rule id="61636" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.image">/services.exe</field>
+    <info type="text">Sysmon - 可疑进程 - services.exe</info>
+    <description>Sysmon - Suspicious Process - services.exe</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="61637" level="0">
+    <if_sid>61636</if_sid>
+    <field name="win.eventdata.parentImage">wininit.exe</field>
+    <info type="text">Sysmon - 合法父映像 - services.exe</info>
+    <description>Sysmon - Legitimate Parent Image - services.exe</description>
+  </rule>
+
+  <rule id="61638" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.image">dllhost.exe</field>
+    <info type="text">Sysmon - 可疑进程 - dllhost.exe</info>
+    <description>Sysmon - Suspicious Process - dllhost.exe</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="61639" level="0">
+    <if_sid>61638</if_sid>
+    <field name="win.eventdata.parentImage">svchost.exe|services.exe</field>
+    <info type="text">Sysmon - 合法父映像 - dllhost.exe</info>
+    <description>Sysmon - Legitimate Parent Image - dllhost.exe</description>
+  </rule>
+
+  <rule id="61640" level="12">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.image">\\explorer.exe</field>
+    <info type="text">Sysmon - 可疑进程 - explorer.exe</info>
+    <description>Sysmon - Suspicious Process - explorer.exe</description>
+    <mitre>
+      <id>T1055</id>
+    </mitre>
+    <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+  <rule id="61641" level="0">
+    <if_sid>61640</if_sid>
+    <field name="win.eventdata.parentImage">userinit.exe</field>
+    <info type="text">Sysmon - 合法父映像 - explorer.exe</info>
+    <description>Sysmon - Legitimate Parent Image - explorer.exe</description>
+  </rule>
+</group>
+
+<!-- Rules for multiple events -->
+
+<group name="windows,sysmon,">
+
+  <rule id="61642" level="10" frequency="$MS_FREQ" timeframe="120">
+    <if_matched_sid>61601</if_matched_sid>
+    <info type="text">Sysmon多次警告事件</info>
+    <description>Multiple Sysmon warning events </description>
+    <options>no_full_log</options>
+  </rule>
+
+  <rule id="61643" level="10" frequency="$MS_FREQ" timeframe="240">
+    <if_matched_sid>61602</if_matched_sid>
+    <info type="text">Sysmon多次错误事件</info>
+    <description>Multiple Sysmon error events</description>
+    <options>no_full_log</options>
+  </rule>
+
+</group>

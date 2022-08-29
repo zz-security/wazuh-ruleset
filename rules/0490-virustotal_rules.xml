@@ -1,0 +1,66 @@
+<!--
+  -  VirusTotal integration rules
+  -  Created by Wazuh, Inc.
+  -  Copyright (C) 2015, Wazuh Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<!-- ID: 87100 - 87199 -->
+
+<group name="virustotal,">
+
+    <rule id="87100" level="0">
+        <decoded_as>json</decoded_as>
+        <field name="integration">virustotal</field>
+        <info type="text">VirusTotal(可疑文件分析服务网站)集成消息。</info>
+        <description>VirusTotal integration messages.</description>
+        <options>no_full_log</options>
+    </rule>
+
+    <rule id="87101" level="3">
+        <if_sid>87100</if_sid>
+        <field name="virustotal.error">204</field>
+        <info type="text">VirusTotal(可疑文件分析服务网站)：错误：已达到公共 API 请求速率限制</info>
+        <description>VirusTotal: Error: Public API request rate limit reached</description>
+        <options>no_full_log</options>
+    </rule>
+
+    <rule id="87102" level="3">
+        <if_sid>87100</if_sid>
+        <field name="virustotal.error">403</field>
+        <info type="text">VirusTotal(可疑文件分析服务网站)：错误：检查凭据</info>
+        <description>VirusTotal: Error: Check credentials</description>
+        <group>gdpr_IV_35.7.d,gdpr_IV_32.2,</group>
+        <options>no_full_log</options>
+    </rule>
+
+    <rule id="87103" level="3">
+        <if_sid>87100</if_sid>
+        <field name="virustotal.found">0</field>
+        <info type="text">VirusTotal(可疑文件分析服务网站)：警报 - VirusTotal 数据库中没有记录</info>
+        <description>VirusTotal: Alert - No records in VirusTotal database</description>
+        <options>no_full_log</options>
+    </rule>
+
+    <rule id="87104" level="3">
+        <if_sid>87100</if_sid>
+        <field name="virustotal.found">1</field>
+        <field name="virustotal.malicious">0</field>
+        <info type="text">VirusTotal(可疑文件分析服务网站)：警报 - $(virustotal.source.file) - 未发现阳性结果</info>
+        <description>VirusTotal: Alert - $(virustotal.source.file) - No positives found</description>
+        <options>no_full_log</options>
+    </rule>
+
+    <rule id="87105" level="12">
+        <if_sid>87100</if_sid>
+        <field name="virustotal.malicious">1</field>
+        <info type="text">VirusTotal(可疑文件分析服务网站)：警报 - $(virustotal.source.file) - $(virustotal.positives) 引擎检测到此文件</info>
+        <description>VirusTotal: Alert - $(virustotal.source.file) - $(virustotal.positives) engines detected this file</description>
+        <group>pci_dss_10.6.1,pci_dss_11.4,gdpr_IV_35.7.d,</group>
+        <options>no_full_log</options>
+        <mitre>
+            <id>T1203</id>
+        </mitre>
+    </rule>
+
+</group>

@@ -1,0 +1,76 @@
+<!--
+  Copyright (C) 2015, Wazuh Inc.
+-->
+
+<!-- 
+  Sysmon Event ID 3 rules: 92101 - 92150
+-->
+
+<group name="sysmon_eid3_detections,">
+
+  <rule id="92101" level="6">
+    <if_group>sysmon_event3</if_group>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\powershell\.exe</field>
+    <field name="win.eventdata.destinationPort">^135$</field>
+    <info type="text">来自 Powershell 进程的可疑 DCOM/RPC 活动。</info>
+    <description>Suspicious DCOM/RPC activity from Powershell process.</description>
+    <mitre>
+      <id>T1110</id>
+    </mitre>
+  </rule>
+
+  <rule id="92102" level="6">
+    <if_group>sysmon_event3</if_group>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\powershell\.exe</field>
+    <field name="win.eventdata.destinationPort">^389$</field>
+    <info type="text">来自 Powershell 进程的 LDAP 活动，可能的远程系统发现。</info>
+    <description>LDAP activity from Powershell process, possible remote system discovery.</description>
+    <mitre>
+      <id>T1018</id>
+    </mitre>
+  </rule>
+
+  <rule id="92103" level="3">
+    <if_group>sysmon_event3</if_group>
+    <field name="win.eventdata.image" type="pcre2">^System$</field>
+    <field name="win.eventdata.destinationPort" type="pcre2">^445$</field>
+    <info type="text">通过 SMB 端口的 Windows 系统进程活动 - 可能对 Windows 管理员共享进行可疑访问。</info>
+    <description>Windows System process activity over SMB port - Possible suspicious access to Windows admin shares.</description>
+    <mitre>
+      <id>T1021.002</id>
+    </mitre>
+  </rule>
+
+  <rule id="92104" level="4">
+    <if_group>sysmon_event3</if_group>
+    <field name="win.eventdata.image" type="pcre2">\\(c|w)script\.exe</field>
+    <field name="win.eventdata.protocol" type="pcre2">tcp</field>
+    <info type="text">脚本通过 TCP 协议生成可疑网络活动。</info>
+    <description>Script generated suspicious network activity over TCP protocol.</description>
+    <mitre>
+      <id>T1095</id>
+    </mitre>
+  </rule>
+
+  <rule id="92105" level="0">
+    <if_group>sysmon_event3</if_group>
+    <field name="win.eventdata.destinationPort" type="pcre2">3389</field>
+    <info type="text">检测到从 $(win.eventdata.sourceIp) 到 $(win.eventdata.destinationIp) 的 RDP 端口网络活动。</info>
+    <description>Detected RDP port network activity from $(win.eventdata.sourceIp) to $(win.eventdata.destinationIp).</description>
+    <mitre>
+      <id>T1021.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="92106" level="15">
+    <if_sid>92105</if_sid>
+    <field name="win.eventdata.destinationIp" type="pcre2">0:0:0:0:0:0:0:1|127\.0\.0\.1</field>
+    <field name="win.eventdata.sourceIp" type="pcre2">0:0:0:0:0:0:0:1|127\.0\.0\.1</field>
+    <info type="text">使用 RDP 端口从到环回地址的网络活动，可能利用反向隧道。</info>
+    <description>Network activity using RDP port from-to loopback address, possible exploit using reverse tunneling.</description>
+    <mitre>
+      <id>T1021.001</id>
+    </mitre>
+  </rule>
+
+</group>

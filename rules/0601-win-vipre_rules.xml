@@ -1,0 +1,560 @@
+<!--
+  -  Vipre rules
+  -  Created by Wazuh, Inc.
+  -  Copyright (C) 2015, Wazuh Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+
+<group name="vipre,">
+
+<rule id="90499" level="3">
+    <if_sid>60600</if_sid>
+    <match>SBAMSvc</match>
+    <info type="text">Vipre信息性消息</info>
+    <description>Vipre informational message</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90500" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4097$</field>
+    <info type="text">系统关机完成</info>
+    <description>System shutdown complete</description>
+    <options>no_full_log</options>
+</rule>
+  
+  
+<rule id="90501" level="7">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4098$</field>
+    <info type="text">用户启动关机</info>
+    <description>User initiated shutdown</description>
+    <mitre>
+      <id>T1529</id>
+    </mitre>
+    <options>no_full_log</options>
+</rule>
+  
+<rule id="90502" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4099$</field>
+    <info type="text">服务启动应用程序版本</info>
+    <description>Service started application version</description>
+    <options>no_full_log</options>
+</rule>
+ 
+<rule id="90503" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4100$</field>
+    <info type="text">服务暂停</info>
+    <description>Service paused</description>
+    <options>no_full_log</options>
+</rule>
+ 
+<rule id="90504" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4101$</field>
+    <info type="text">服务已恢复</info>
+    <description>Service resumed</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90505" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4102$</field>
+    <info type="text">一个或多个威胁网络文件的传输失败</info>
+    <description>The transfer of one or more threatNet files failed</description>
+    <options>no_full_log</options>
+</rule>   
+ 
+<rule id="90506" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4103$</field>
+    <info type="text">发生转移</info>
+    <description>Transfer occured</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90507" level="6">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4104$</field>
+    <info type="text">ThreatNet 控制器启动失败</info>
+    <description>The start of the ThreatNet controller failed</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90508" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4105$</field>
+    <info type="text">启用主动保护</info>
+    <description>Active protection enabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90509" level="7">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4106$</field>
+    <info type="text">主动保护已禁用</info>
+    <description>Active protection disabled</description>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90510" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4108$</field>
+    <info type="text">无法启用主动保护</info>
+    <description>Active protection could not be enabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90511" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4109$</field>
+    <info type="text">无法禁用主动保护</info>
+    <description>Active protection could not be disabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90512" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4110$</field>
+    <info type="text">主动保护需要重新启动才能完全保护您的计算机</info>
+    <description>Active protection requires a reboot to fully protect your computer</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90513" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4111$</field>
+    <info type="text">无法启用主动保护，因为没有威胁定义</info>
+    <description>Active protection could not be enabled because there are no threat definitions</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90514" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4112$</field>
+    <info type="text">已下载手动软件更新</info>
+    <description>Manual software update downloaded</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90515" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4113$</field>
+    <info type="text">已下载预定的软件更新</info>
+    <description>Scheduled software update downloaded</description>
+    <options>no_full_log</options>
+</rule>
+ 
+<rule id="90516" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4114$</field>
+    <info type="text">Vipre 无法完成软件更新检查</info>
+    <description>Vipre was unable to complete the check for software updates</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90517" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4115$</field>
+    <info type="text">Vipre 无法完成软件更新检查。它将在下一次更新事件中重试</info>
+    <description>Vipre was unable to complete the check for software updates. It will retry on the next update event</description>
+    <options>no_full_log</options>
+</rule>
+ 
+<rule id="90518" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4116$</field>
+    <info type="text">软件更新控制器启动失败</info>
+    <description>The start of the software update controller failed</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90519" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4121$</field>
+    <info type="text">已应用定义更新</info>
+    <description>Definitions update applied</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90520" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4122$</field>
+    <info type="text">定义更新已取消</info>
+    <description>Definitions update cancelled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90521" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4123$</field>
+    <info type="text">Vipre 无法完成检查威胁定义更新</info>
+    <description>Vipre was unable to complete the check for threat definitions updates</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90522" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4124$</field>
+    <info type="text">Vipre 无法完成对威胁定义更新的检查。它将在下一次更新事件中重试</info>
+    <description>Vipre was unable to complete the check for threat definitions updates. It will retry on the next update event</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90523" level="6">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4125$</field>
+    <info type="text">威胁定义控制器启动失败</info>
+    <description>Start of threat definitions controller failed</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90524" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4126$</field>
+    <info type="text">无法更新威胁定义，因为您的注册已过期</info>
+    <description>Cannot update threat definitions because your registration is expired</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90525" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4129$</field>
+    <info type="text">已完成计划的深度扫描</info>
+    <description>Completed scheduled deep scan</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90526" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4130$</field>
+    <info type="text">完成手动深度扫描</info>
+    <description>Completed manual deep scan</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90527" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4131$</field>
+    <info type="text">已完成预定的快速扫描</info>
+    <description>Completed scheduled quick scan</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90528" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4132$</field>
+    <info type="text">完成手动快速扫描</info>
+    <description>Completed manual quick scan</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90529" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4133$</field>
+    <info type="text">已完成预定的自定义扫描</info>
+    <description>Completed scheduled custom scan</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90530" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4134$</field>
+    <info type="text">完成手动自定义扫描</info>
+    <description>Completed manual custom scan</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90531" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4135$</field>
+    <info type="text">扫描已取消</info>
+    <description>Scan cancelled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90532" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4136$</field>
+    <info type="text">需要重启</info>
+    <description>Reboot required</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90533" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4137$</field>
+    <info type="text">由于没有威胁定义，您的计算机扫描失败</info>
+    <description>A scan of your computer failed because there are no threat definitions</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90534" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4138$</field>
+    <info type="text">扫描控制器启动失败</info>
+    <description>Start of the scan controller failed</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90535" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4139$</field>
+    <info type="text">项目已被隔离</info>
+    <description>An item has been quarantined</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90536" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4140$</field>
+    <info type="text">项目已从隔离区恢复</info>
+    <description>An item has been restored from quarantine</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90537" level="6">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4141$</field>
+    <info type="text">一个项目已从隔离区中删除</info>
+    <description>An item has been deleted from quarantine</description>
+    <mitre>
+        <id>T1070.004</id>
+    </mitre>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90538" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4142$</field>
+    <info type="text">隔离区已被清除</info>
+    <description>The quarantine has been purged</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90539" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4143$</field>
+    <info type="text">无法启动隔离控制器</info>
+    <description>The quarantine controller could not be started</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90540" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4145$</field>
+    <info type="text">启用电子邮件 AV</info>
+    <description>Email AV enabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90541" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4146$</field>
+    <info type="text">电子邮件 AV 已禁用</info>
+    <description>Email AV disabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90542" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4147$</field>
+    <info type="text">电子邮件保护已启用，但未加载驱动程序</info>
+    <description>Email protection is enabled but the drivers are not loaded</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90543" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4148$</field>
+    <info type="text">电子邮件项目扫描失败</info>
+    <description>The scan of an email item failed</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90544" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4149$</field>
+    <info type="text">电子邮件项目扫描失败，因为没有威胁定义</info>
+    <description>The scan of an email item failed because there are no threat definitions</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90545" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4250$</field>
+    <info type="text">注册状态改变</info>
+    <description>Registration state changed</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90546" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4151$</field>
+    <info type="text">注册控制器无法启动</info>
+    <description>The registration controller could not be started</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90547" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4153$</field>
+    <info type="text">扫描控件无法完成其扫描</info>
+    <description>The scan control could not complete its scan</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90548" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4159$</field>
+    <info type="text">由于机器已关闭，因此错过了计划的扫描</info>
+    <description>A scheduled scan was missed because the machine was powered off</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90549" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4160$</field>
+    <info type="text">项目隔离失败</info>
+    <description>Quarantine of an item failed</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90550" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4161$</field>
+    <info type="text">从隔离区还原项目失败</info>
+    <description>Restore of an item from quarantine failed</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90551" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4162$</field>
+    <info type="text">从隔离区删除失败</info>
+    <description>Delete of an from quarantine failed</description>
+    <options>no_full_log</options>
+</rule>
+
+
+<rule id="90552" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4163$</field>
+    <info type="text">隔离区清除失败</info>
+    <description>The quarantine purge failed</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90553" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4165$</field>
+    <info type="text">启用防火墙</info>
+    <description>Firewall enabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90554" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4166$</field>
+    <info type="text">禁用防火墙</info>
+    <description>Firewall disabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90555" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4167$</field>
+    <info type="text">启用 IDS</info>
+    <description>IDS enabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90556" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4168$</field>
+    <info type="text">禁用 IDS</info>
+    <description>IDS disabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90557" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4169$</field>
+    <info type="text">启用网页过滤</info>
+    <description>Web filtering enabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90558" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4170$</field>
+    <info type="text">禁用网页过滤</info>
+    <description>Web filtering disabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90559" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4171$</field>
+    <info type="text">启用了不良网站阻止功能</info>
+    <description>Bad web site blocking enabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90560" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4172$</field>
+    <info type="text">禁用了不良网站阻止功能</info>
+    <description>Bad web site blocking disabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90561" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4173$</field>
+    <info type="text">启用 HIPS</info>
+    <description>HIPS enabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90562" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4174$</field>
+    <info type="text">禁用 HIPS</info>
+    <description>HIPS disabled</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90563" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4175$</field>
+    <info type="text">防火墙恢复所有流量</info>
+    <description>Firewall resume all traffic</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90564" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4176$</field>
+    <info type="text">防火墙阻止所有流量</info>
+    <description>Firewall stops all traffic</description>
+    <options>no_full_log</options>
+</rule>
+
+<rule id="90565" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^4177$</field>
+    <info type="text">主动保护阻止进程访问文件</info>
+    <description>Active protection blocked a process from accessing a file</description>
+    <options>no_full_log</options>
+</rule>
+
+</group>
+
+

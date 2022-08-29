@@ -1,0 +1,26 @@
+<!--
+  Copyright (C) 2015, Wazuh Inc.
+-->
+
+<!-- 
+  Rules for:
+    OracleDB 12c ID: 89100 - 89199
+-->
+
+<group name="oracle,oracledb,">
+
+  <rule id="89100" level="3">
+    <decoded_as>oracledb-log</decoded_as>
+    <info type="text">OracleDB 事务。</info>
+    <description>OracleDB transaction.</description>
+    <group>hipaa_164.312.b,pci_dss_10.6.2,</group>
+  </rule>
+
+  <rule id="89101" level="7">
+    <decoded_as>oracledb-alerts</decoded_as>
+    <info type="text">Oracle 数据库警报。</info>
+    <description>Oracle DB alerts.</description>
+    <group>hipaa_164.312.b,pci_dss_10.6.1,</group>
+  </rule>
+
+</group>

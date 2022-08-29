@@ -1,0 +1,287 @@
+<!--
+  -  Copyright (C) 2015, Wazuh Inc.
+-->
+
+<!-- 
+  Sysmon Event ID 1 rules: 92000 - 92100
+-->
+
+<group name="sysmon_eid1_detections,">
+
+  <rule id="92000" level="4">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.parentImage" type="pcre2">(?i)\\(c|w)script\.exe</field>
+    <info type="text">脚本解释器催生了一个新进程。</info>
+    <description>Scripting interpreter spawned a new process.</description>
+    <mitre>
+      <id>T1059.005</id>
+    </mitre>
+  </rule>
+
+  <rule id="92001" level="6">
+    <if_sid>92000</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)\\(c|w)script\.exe.+\.(bat|cmd|lnk|pif|vbs|vbe|js|wsh|ps1)</field>
+    <info type="text">脚本解释器产生了新的脚本解释器。</info>
+    <description>Scripting interpreter spawned new scripting interpreter.</description>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+  </rule>
+
+  <rule id="92002" level="6">
+    <if_sid>92000</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">\\cmd\.exe</field>
+    <info type="text">脚本解释器产生了 Windows 命令外壳实例。</info>
+    <description>Scripting interpreter spawned Windows command shell instance.</description>
+    <mitre>
+      <id>T1059.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="92003" level="6">
+    <if_sid>92000</if_sid>
+    <field name="win.eventdata.image" type="pcre2">(?i)[c-z]:(\\\\Users\\\\Public\\\\|\\\\Users\\\\.+\\\\AppData\\\\local\\\\temp)</field>
+    <info type="text">脚本解释器从可疑路径生成了一个进程。</info>
+    <description>Scripting interpreter spawned a process from a suspicious path.</description>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+  </rule>
+
+  <rule id="92004" level="4">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.commandLine" type="pcre2">\\cmd\.exe</field>
+    <field name="win.eventdata.parentImage" type="pcre2">(?i)\\powershell\.exe</field>
+    <info type="text">Powershell 进程产生了 Windows 命令 shell 实例。</info>
+    <description>Powershell process spawned Windows command shell instance.</description>
+    <mitre>
+      <id>T1059.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="92005" level="4">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)\\(c|w)script\.exe.+[c-z]:\\(Windows\\Temp)|Users\\.+\.(bat|cmd|lnk|pif|vbs|vbe|js|wsh|ps1)</field>
+    <field name="win.eventdata.parentCommandLine" type="pcre2">(?i)cmd\.exe.+/(c|k)</field>
+    <info type="text">命令 shell 使用 /c 修饰符启动脚本。</info>
+    <description>Command shell started script with /c modifier.</description>
+    <mitre>
+      <id>T1059</id>
+    </mitre>
+  </rule>
+
+  <rule id="92006" level="6">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\csc\.exe</field>
+    <field name="win.eventdata.parentCommandLine" type="pcre2">(?i)powershell.+ExecutionPolicy\s+bypass</field>
+    <info type="text">使用 CSC.exe 编译代码的 Powershell 脚本，可能是恶意软件丢弃。</info>
+    <description>Powershell script compiling code using CSC.exe, possible malware drop.</description>
+    <mitre>
+      <id>T1027.004</id>
+    </mitre>
+  </rule>
+
+  <rule id="92007" level="3">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.image" type="pcre2">(?i)\\powershell\.exe</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)Set-MpPreference</field>
+    <info type="text">Powershell 命令可能篡改 Windows Defender 配置。</info>
+    <description>Possible tampering on Windows Defender configuration by Powershell command.</description>
+    <mitre>
+      <id>T1562</id>
+    </mitre>
+  </rule>
+
+  <rule id="92008" level="12">
+    <if_sid>92007</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)(DisableRealtimeMonitoring|drtm)\s+(\$true|1)</field>
+    <info type="text">Powershell 命令禁用了 Windows Defender 实时监控。</info>
+    <description>Windows Defender real time monitoring was disabled by Powershell command.</description>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="92009" level="13">
+    <if_sid>92007</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)(DisableIntrusionPreventionSystem|dips)\s+(\$true|1)</field>
+    <info type="text">Powershell 命令禁用了 Windows Defender 入侵防御系统。</info>
+    <description>Windows Defender Intrusion prevention system was disabled by Powershell command.</description>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="92010" level="13">
+    <if_sid>92007</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)(DisableIOAVProtection|dioavp)\s+(\$true|1)</field>
+    <info type="text">Powershell 命令禁用了 Windows Defender 下载的文件扫描。</info>
+    <description>Windows Defender downloaded file scanning was disabled by Powershell command.</description>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="92011" level="13">
+    <if_sid>92007</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)(DisableScriptScanning|dscrptsc)\s+(\$true|1)</field>
+    <info type="text">Powershell 命令禁用了 Windows Defender 脚本扫描。</info>
+    <description>Windows Defender script scanning was disabled by Powershell command.</description>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="92012" level="13">
+    <if_sid>92007</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)EnableControlledFolderAccess\s+(disabled|AuditMode)</field>
+    <info type="text">Powershell 命令禁用了 Windows Defender 控制的文件夹访问。</info>
+    <description>Windows Defender Controlled folder access was disabled by Powershell command.</description>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="92013" level="13">
+    <if_sid>92007</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)EnableNetworkProtection\s+(disabled|AuditMode)</field>
+    <info type="text">Powershell 命令禁用了 Windows Defender 网络保护。</info>
+    <description>Windows Defender network protection was disabled by Powershell command.</description>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="92014" level="13">
+    <if_sid>92007</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)MAPSReporting\s+(disabled|AuditMode)</field>
+    <info type="text">Microsoft Active Protection Service (MAPS) 已被 Powershell 命令禁用。</info>
+    <description>Microsoft Active Protection Service (MAPS) was disabled by Powershell command.</description>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="92015" level="13">
+    <if_sid>92007</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)SubmitSamplesConsent\s+NeverSend</field>
+    <info type="text">Powershell 命令禁用了 Windows Defender 示例提交。</info>
+    <description>Windows Defender sample submit was disabled by Powershell command.</description>
+    <mitre>
+      <id>T1562.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="92016" level="13">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">(?i)CertUtil\.exe</field>
+    <field name="win.eventdata.image" type="pcre2" negate="yes">(?i)CertUtil\.exe</field>
+    <info type="text">使用不同的文件名伪装 CertUtil.exe。可能用于解码恶意软件。</info>
+    <description>Masqueraded CertUtil.exe with a different file name. Possible use to decode malware.</description>
+    <mitre>
+      <id>T1036.003</id>
+      <id>T1140</id>
+    </mitre>
+  </rule>
+
+  <rule id="92017" level="13">
+    <if_sid>92016</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)decode\s+(.+)\s+.+\.exe</field>
+    <info type="text">伪装的 CertUtil.exe 用于解码二进制文件。</info>
+    <description>Masqueraded CertUtil.exe used to decode binary file.</description>
+    <mitre>
+      <id>T1036.003</id>
+      <id>T1140</id>
+    </mitre>
+  </rule>
+
+  <rule id="92018" level="13">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">(?i)CertUtil\.exe</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)decode\s+(.+)\s+.+\.exe</field>
+    <info type="text">CertUtil.exe 用于解码二进制文件。</info>
+    <description>CertUtil.exe used to decode binary file.</description>
+    <mitre>
+      <id>T1140</id>
+    </mitre>
+  </rule>
+
+  <rule id="92019" level="13">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">(?i)MsMpEng\.exe</field>
+    <field name="win.eventdata.image" type="pcre2" negate="yes">(?i)[c-z]:\\\\(ProgramData\\\\Microsoft|Program Files)\\\\Windows Defender</field>
+    <info type="text">Windows Defender 从可疑路径执行，可能是 DLL 侧载。</info>
+    <description>Windows Defender executed from suspicious path, possible DLL side-loading.</description>
+    <mitre>
+      <id>T1574.002</id>
+    </mitre>
+  </rule>
+
+  <rule id="92020" level="6">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">PSCP</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)-scp</field>
+    <info type="text">使用 pscp.exe 通过 SSH 将文件复制到其他系统。</info>
+    <description>A file was copied to other system over SSH using pscp.exe.</description>
+    <mitre>
+      <id>T1021.004</id>
+    </mitre>
+  </rule>
+
+  <rule id="92021" level="3">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">(?i)PowerShell\.EXE</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)(Remove-Item|ri|rm|rmdir|del|erase|rd)\b</field>
+    <info type="text">Powershell 用于删除文件或目录。</info>
+    <description>Powershell was used to delete files or directories.</description>
+    <mitre>
+      <id>T1070.004</id>
+    </mitre>
+  </rule>
+
+  <rule id="92022" level="3">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">qwinsta</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)\/server</field>
+    <info type="text">从远程桌面服务会话中收集用户信息。</info>
+    <description>Gathered user information from Remote Desktop Service sessions.</description>
+    <mitre>
+      <id>T1033</id>
+    </mitre>
+  </rule>
+  
+  <rule id="92023" level="8">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">(?i)PowerShell.EXE</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)\\\\HarddiskVolumeShadowCopy.+\\\\(SAM|SECURITY)</field>
+    <info type="text">带有 VSS 和 Windows SAM 配置单元的可疑 Powershell 活动。</info>
+    <description>Suspicious Powershell activity with VSS and Windows SAM hive.</description>
+    <mitre>
+      <id>T1003.002</id>
+      <id>T1059.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="92024" level="14">
+    <if_sid>92023</if_sid>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)\[System.IO.File\]::Copy</field>
+    <info type="text">Powershell 用于从 VSS 复制 SAM 配置单元。</info>
+    <description>Powershell used to copy SAM hive from VSS.</description>
+    <mitre>
+      <id>T1003.002</id>
+      <id>T1059.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="92025" level="14">
+    <if_group>sysmon_event1</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">(?i)reg.EXE</field>
+    <field name="win.eventdata.commandLine" type="pcre2">(?i)save.+\\\\SAM</field>
+    <info type="text">Reg.exe 用于转储 SAM 配置单元。</info>
+    <description>Reg.exe used to dump SAM hive.</description>
+    <mitre>
+      <id>T1003.002</id>
+    </mitre>
+  </rule>
+
+</group>

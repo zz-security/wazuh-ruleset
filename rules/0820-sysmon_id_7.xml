@@ -1,0 +1,47 @@
+<!--
+  Copyright (C) 2015, Wazuh Inc.
+-->
+
+<!-- 
+  Sysmon Event ID 7 rules: 92151 - 92199
+-->
+
+<group name="sysmon_eid7_detections,">
+
+  <rule id="92151" level="12">
+    <if_group>sysmon_event7</if_group>
+    <field name="win.eventdata.originalFileName" type="pcre2">(?i)System.Management.Automation.dll</field>
+    <field name="win.eventdata.image" type="pcre2" negate="yes">(?i)[c-z]\:\\\\Windows\\\\Microsoft.NET\\.+\\csc\\.exe$</field>
+    <field name="win.eventdata.image" type="pcre2" negate="yes">(?i)(devenv|node|SSMS|VSLauncher)\.exe$</field>
+    <field name="win.eventdata.image" type="pcre2" negate="yes">(?i)(sdiagnhost|SmartAudio3)\.exe$</field>
+    <field name="win.eventdata.image" type="pcre2" negate="yes">(?i)(pwsh\.dll|powershell(_ise)?\.exe)$</field>
+    <info type="text">二进制加载的 PowerShell 自动化库 - 可疑进程可能执行非托管 Powershell</info>
+    <description>Binary loaded PowerShell automation library - Possible unmanaged Powershell execution by suspicious process</description>
+    <mitre>
+      <id>T1059.001</id>
+    </mitre>
+  </rule>
+
+  <rule id="92152" level="6">
+    <if_group>sysmon_event7</if_group>
+    <field name="win.eventdata.imageLoaded" type="pcre2">(?i)[c-z]:\\\\Windows\\\\System32\\\\spool\\\\drivers</field>
+    <field name="win.eventdata.image" type="pcre2">spoolsv\.exe$</field>
+    <info type="text">打印机后台处理程序服务加载了一个 dll 文件。可能的 PrintNightmare 漏洞利用：CVE-2021-34527</info>
+    <description>Printer spooler service loaded a dll file. Possible PrintNightmare exploit: CVE-2021-34527</description>
+    <mitre>
+      <id>T1210</id>
+    </mitre>
+  </rule>
+
+  <rule id="92153" level="10">
+    <if_group>sysmon_event7</if_group>
+    <field name="win.eventdata.imageLoaded" type="pcre2">(?i)vaultcli.dll</field>
+    <field name="win.eventdata.image" type="pcre2" negate="yes">(?i)VaultCmd\.exe$</field>
+    <info type="text">可疑进程加载了 VaultCli.dll 模块。可能用于转储存储的密码。</info>
+    <description>Suspicious process loaded VaultCli.dll module. Possible use to dump stored passwords.</description>
+    <mitre>
+      <id>T1555</id>
+    </mitre>
+  </rule>
+
+</group>

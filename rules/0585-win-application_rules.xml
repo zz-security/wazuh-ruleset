@@ -1,0 +1,3942 @@
+<!--
+  Copyright (C) 2015, Wazuh Inc.
+-->
+
+<!-- 
+  Rules for:
+    The Windows event channel - application channel ID: 60600 - 61099
+-->
+
+<var name="MS_FREQ">8</var>
+
+<group name="windows,windows_application,">
+
+  <rule id="60600" level="0">
+    <if_sid>60003</if_sid>
+    <field name="win.system.severityValue">^INFORMATION$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows应用信息事件。</info>
+    <description>Windows application informational event.</description>
+  </rule>
+
+  <rule id="60601" level="0">
+    <if_sid>60003</if_sid>
+    <field name="win.system.severityValue">^WARNING$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows应用警告事件。</info>
+    <description>Windows application warning event.</description>
+    <group>gpg13_4.12,</group>
+  </rule>
+
+  <rule id="60602" level="9">
+    <if_sid>60003</if_sid>
+    <field name="win.system.severityValue">^ERROR$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows应用错误事件。</info>
+    <description>Windows application error event.</description>
+    <group>gdpr_IV_35.7.d,gpg13_4.3,system_error,</group>
+  </rule>
+
+  <!--  Chrome remote desktop  -->
+  <rule id="60603" level="5">
+    <if_sid>60602</if_sid>
+    <field name="win.system.providerName">^chromoting$</field>
+    <field name="win.system.message">\.*Access denied for client</field>
+    <options>no_full_log</options>
+    <info type="text">Chrome 远程桌面尝试 - 拒绝访问 $(win.eventdata.data)。</info>
+    <description>Chrome remote desktop attempt - access denied $(win.eventdata.data).</description>
+    <group>gdpr_IV_32.2,gdpr_IV_35.7.d,</group>
+  </rule>
+
+  <rule id="60604" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^chromoting$</field>
+    <field name="win.system.eventID">^1$</field>
+    <options>no_full_log</options>
+    <info type="text">Chrome 远程桌面尝试 - 客户端已连接 $(win.eventdata.data)。</info>
+    <description>Chrome remote desktop attempt - Client connected $(win.eventdata.data).</description>
+    <group>gdpr_IV_32.2,</group>
+  </rule>
+
+  <rule id="60605" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^chromoting$</field>
+    <field name="win.system.eventID">^2$</field>
+    <options>no_full_log</options>
+    <info type="text">Chrome 远程桌面尝试 - 断开连接 ($(win.eventdata.data))。</info>
+    <description>Chrome remote desktop attempt - disconnected ($(win.eventdata.data)).</description>
+    <group>gdpr_IV_32.2,</group>
+  </rule>
+
+  <rule id="60606" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^chromoting$</field>
+    <field name="win.system.eventID">^5$</field>
+    <options>no_full_log</options>
+    <info type="text">Chrome 远程桌面尝试 - 从 $(win.eventdata.data) 开始连接。</info>
+    <description>Chrome remote desktop attempt - started connection from $(win.eventdata.data).</description>
+    <group>gdpr_IV_32.2,</group>
+  </rule>
+
+  <rule id="60607" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-Defrag$</field>
+    <field name="win.system.eventID">^258$</field>
+    <options>no_full_log</options>
+    <info type="text">磁盘碎片整理程序成功完成分析。</info>
+    <description>Disk defragmenter successfully completed an analysis.</description>
+  </rule>
+
+  <rule id="60608" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Windows Error Reporting$</field>
+    <field name="win.system.eventID">^1001$</field>
+    <options>no_full_log</options>
+    <info type="text">报告签名的摘要事件。</info>
+    <description>Summary event of the report's signatures.</description>
+  </rule>
+
+  <rule id="60609" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^MsiInstaller$</field>
+    <options>no_full_log</options>
+    <info type="text">MsiInstaller 事件的分组。</info>
+    <description>Group of MsiInstaller events.</description>
+  </rule>
+
+  <rule id="60610" level="3">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1040$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 安装程序开始安装过程。</info>
+    <description>Windows installer began an installation process.</description>
+  </rule>
+
+  <rule id="60611" level="3">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^11724$|^1034$</field>
+    <options>no_full_log</options>
+    <info type="text">应用程序卸载 $(win.eventdata.data)。</info>
+    <description>Application uninstalled $(win.eventdata.data).</description>
+  </rule>
+
+  <rule id="60612" level="3">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^11707$|^1033$</field>
+    <options>no_full_log</options>
+    <info type="text">应用程序安装 $(win.eventdata.data)。</info>
+    <description>Application installed $(win.eventdata.data).</description>
+  </rule>
+
+  <rule id="60613" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1001$</field>
+    <options>no_full_log</options>
+    <info type="text">产品组件请求失败。</info>
+    <description>Request for product component failed.</description>
+  </rule>
+
+  <rule id="60614" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1002$</field>
+    <options>no_full_log</options>
+    <info type="text">键中的意外值或缺失值。</info>
+    <description>Unexpected or missing value in key.</description>
+  </rule>
+
+  <rule id="60615" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1003$</field>
+    <options>no_full_log</options>
+    <info type="text">子项中的意外值或缺失值。</info>
+    <description>Unexpected or missing value in subkey.</description>
+  </rule>
+
+  <rule id="60616" level="3">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1005$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 安装程序重新启动以完成配置。</info>
+    <description>Windows installer restarted to complete a configuration.</description>
+  </rule>
+
+  <rule id="60617" level="4">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1007$</field>
+    <options>no_full_log</options>
+    <info type="text">软件限制政策不允许安装。</info>
+    <description>Installation not permitted by software restriction policy.</description>
+  </rule>
+
+  <rule id="60618" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1008$</field>
+    <options>no_full_log</options>
+    <info type="text">由于软件限制策略处理中的错误而不允许安装。</info>
+    <description>Installation not permitted due to an error in software restriction policy processing.</description>
+  </rule>
+
+  <rule id="60619" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1012$</field>
+    <options>no_full_log</options>
+    <info type="text">此版本不支持 64 位软件包部署。</info>
+    <description>64-bit packages deployment is not supported for this version.</description>
+  </rule>
+
+  <rule id="60620" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1014$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 安装程序代理信息未正确注册。</info>
+    <description>Windows installer proxy information not correctly registered.</description>
+  </rule>
+
+  <rule id="60621" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1015$</field>
+    <options>no_full_log</options>
+    <info type="text">MsiInstaller：无法连接到服务器。</info>
+    <description>MsiInstaller: Failed to connect to server.</description>
+  </rule>
+
+  <rule id="60622" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1016$</field>
+    <options>no_full_log</options>
+    <info type="text">产品特征组件检测失败。</info>
+    <description>Detection of product feature component failed.</description>
+  </rule>
+
+  <rule id="60623" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1018$|^1023$</field>
+    <options>no_full_log</options>
+    <info type="text">无法安装应用程序。</info>
+    <description>Application cannot be installed.</description>
+  </rule>
+
+  <rule id="60624" level="3">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1019$</field>
+    <options>no_full_log</options>
+    <info type="text">更新已成功移除。</info>
+    <description>Update successfully removed.</description>
+  </rule>
+
+  <rule id="60625" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1020$|^1021$</field>
+    <options>no_full_log</options>
+    <info type="text">无法删除更新。</info>
+    <description>Update could not be removed.</description>
+  </rule>
+
+  <rule id="60626" level="3">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1022$</field>
+    <options>no_full_log</options>
+    <info type="text">更新安装成功。</info>
+    <description>Update installed successfully.</description>
+  </rule>
+
+  <rule id="60627" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1024$</field>
+    <options>no_full_log</options>
+    <info type="text">无法安装更新。</info>
+    <description>Update could not be installed.</description>
+  </rule>
+
+  <rule id="60628" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1025$</field>
+    <options>no_full_log</options>
+    <info type="text">另一个程序正在使用的文件。</info>
+    <description>File in use by another program.</description>
+  </rule>
+
+  <rule id="60629" level="7">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1026$|^1027$</field>
+    <options>no_full_log</options>
+    <info type="text">配置数据注册表项、子项或配置数据缓存文件夹未得到正确保护。</info>
+    <description>The configuration data registry key, sub key or configuration data cache folder were not secured properly.</description>
+  </rule>
+
+  <rule id="60630" level="3">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1029$</field>
+    <options>no_full_log</options>
+    <info type="text">产品安装或更新需要重新启动才能使所有更改生效。</info>
+    <description>The product installation or update required a restart for all changes to take effect.</description>
+  </rule>
+
+  <rule id="60631" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1030$</field>
+    <options>no_full_log</options>
+    <info type="text">应用程序尝试安装受保护 Windows 文件的更新版本。</info>
+    <description>The application tried to install a more recent version of the protected Windows file.</description>
+  </rule>
+
+  <rule id="60632" level="3">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1031$</field>
+    <options>no_full_log</options>
+    <info type="text">装配组件正在使用中。</info>
+    <description>Assembly component is in use.</description>
+  </rule>
+
+  <rule id="60633" level="5">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1032$</field>
+    <options>no_full_log</options>
+    <info type="text">安装期间更新的环境变量产生错误。</info>
+    <description>Environment variables updated during installation generated an error.</description>
+  </rule>
+
+  <rule id="60634" level="3">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1033$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 安装程序安装了产品。</info>
+    <description>Windows installer installed the product.</description>
+  </rule>
+
+  <rule id="60635" level="3">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1035$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 安装程序重新配置了产品。</info>
+    <description>Windows installer reconfigured the product.</description>
+  </rule>
+
+  <rule id="60636" level="3">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1036$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 安装程序安装了更新。</info>
+    <description>Windows installer installed an update.</description>
+  </rule>
+
+  <rule id="60637" level="3">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1037$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 安装程序删除了更新。</info>
+    <description>Windows installer removed an update.</description>
+  </rule>
+
+  <rule id="60638" level="0">
+    <if_sid>60609</if_sid>
+    <field name="win.system.eventID">^1038$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 安装程序需要重新启动系统。</info>
+    <description>Windows installer requires a system restart.</description>
+  </rule>
+
+  <rule id="60639" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^LocationNotifications$</field>
+    <field name="win.system.eventID">^1$</field>
+    <options>no_full_log</options>
+    <info type="text">程序从位置传感器或默认位置访问信息。</info>
+    <description>A program accessed information from a location sensor or default location.</description>
+  </rule>
+
+  <rule id="60640" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-Security-SPP$</field>
+    <options>no_full_log</options>
+    <info type="text">SPP事件的分组。</info>
+    <description>Group of SPP events.</description>
+  </rule>
+
+  <rule id="60641" level="5">
+    <if_sid>60640</if_sid>
+    <field name="win.system.eventID">^903$</field>
+    <options>no_full_log</options>
+    <info type="text">软件保护服务停止。</info>
+    <description>Software protection service stopped.</description>
+    <mitre>
+      <id>T1489</id>
+    </mitre>
+  </rule>
+
+  <rule id="60642" level="3">
+    <if_sid>60640</if_sid>
+    <field name="win.system.eventID">^16384$</field>
+    <options>no_full_log</options>
+    <info type="text">软件保护服务计划成功。</info>
+    <description>Software protection service scheduled successfully.</description>
+  </rule>
+
+  <rule id="60643" level="3">
+    <if_sid>60640</if_sid>
+    <field name="win.system.eventID">^8197$</field>
+    <options>no_full_log</options>
+    <info type="text">SLUI.exe 启动。</info>
+    <description>SLUI.exe launched.</description>
+  </rule>
+
+  <rule id="60644" level="3">
+    <if_sid>60640</if_sid>
+    <field name="win.system.eventID">^1016$</field>
+    <options>no_full_log</options>
+    <info type="text">购买证明安装成功。</info>
+    <description>Proof of purchase installed successfully.</description>
+  </rule>
+
+  <rule id="60645" level="3">
+    <if_sid>60640</if_sid>
+    <field name="win.system.eventID">^8225$</field>
+    <options>no_full_log</options>
+    <info type="text">现有调度程序数据与预期数据不匹配。</info>
+    <description>The existing scheduler data does not match the expected data.</description>
+  </rule>
+
+  <rule id="60646" level="5">
+    <if_sid>60602</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-Security-SPP$</field>
+    <field name="win.system.eventID">^8198$</field>
+    <options>no_full_log</options>
+    <info type="text">许可证激活 (slui.exe) 失败。</info>
+    <description>License activation (slui.exe) failed.</description>
+  </rule>
+
+  <rule id="60647" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Application Hang$</field>
+    <field name="win.system.eventID">^1002$</field>
+    <options>no_full_log</options>
+    <info type="text">应用程序停止响应，程序关闭。</info>
+    <description>Application stopped responding, program closed.</description>
+    <mitre>
+      <id>T1489</id>
+    </mitre>
+  </rule>
+
+  <rule id="60648" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-Search$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 查询事件的分组。</info>
+    <description>Group of Windows search events.</description>
+  </rule>
+
+  <rule id="60649" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3007$</field>
+    <options>no_full_log</options>
+    <info type="text">性能监控无法初始化。</info>
+    <description>Performance monitoring cannot be initialized.</description>
+  </rule>
+
+  <rule id="60650" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3014$</field>
+    <options>no_full_log</options>
+    <info type="text">系统中加载的组件产生的内部错误。</info>
+    <description>Internal error generated by a component loaded in the system.</description>
+  </rule>
+
+  <rule id="60651" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3024$</field>
+    <options>no_full_log</options>
+    <info type="text">无法开始更新，因为无法访问内容源。</info>
+    <description>Cannot start update because the content sources cannot be accessed.</description>
+  </rule>
+
+  <rule id="60652" level="9">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3025$</field>
+    <options>no_full_log</options>
+    <info type="text">严重错误：系统资源不足。</info>
+    <description>Critical Error: System low on resources.</description>
+  </rule>
+
+  <rule id="60653" level="7">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3026$</field>
+    <options>no_full_log</options>
+    <info type="text">建议状态更改失败：系统资源不足。</info>
+    <description>Advise Status Change Failed: System low on resources.</description>
+  </rule>
+
+  <rule id="60654" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3034$</field>
+    <options>no_full_log</options>
+    <info type="text">注册表版本与预期版本不匹配。</info>
+    <description>Registry version does not match with the expected one.</description>
+  </rule>
+
+  <rule id="60655" level="3">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3052$</field>
+    <options>no_full_log</options>
+    <info type="text">请求停止抓取。</info>
+    <description>Crawl requested to be stopped.</description>
+  </rule>
+
+  <rule id="60656" level="7">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3085$</field>
+    <options>no_full_log</options>
+    <info type="text">申请入网账号无效。</info>
+    <description>Application network access account invalid.</description>
+  </rule>
+
+  <rule id="60657" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3087$</field>
+    <options>no_full_log</options>
+    <info type="text">无法刷新收集器文件。</info>
+    <description>Cannot flush gatherer files.</description>
+  </rule>
+
+  <rule id="60658" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3088$</field>
+    <options>no_full_log</options>
+    <info type="text">无法更新检查点记录。</info>
+    <description>Cannot update checkpoint record.</description>
+  </rule>
+
+  <rule id="60659" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3089$</field>
+    <options>no_full_log</options>
+    <info type="text">无法保存收集器文件。</info>
+    <description>Cannot save gatherer files.</description>
+  </rule>
+
+  <rule id="60660" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3090$</field>
+    <options>no_full_log</options>
+    <info type="text">无法从上一个检查点恢复收集器文件。</info>
+    <description>Cannot restore gatherer files from the previous checkpoint.</description>
+  </rule>
+
+  <rule id="60661" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3091$</field>
+    <options>no_full_log</options>
+    <info type="text">无法读取检查点记录。</info>
+    <description>Cannot read checkpoint record.</description>
+  </rule>
+
+  <rule id="60662" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^3099$</field>
+    <options>no_full_log</options>
+    <info type="text">无法正常终止通知。</info>
+    <description>Unable to terminate notifications normally.</description>
+  </rule>
+
+  <rule id="60663" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^7011$</field>
+    <options>no_full_log</options>
+    <info type="text">目录位置无效。</info>
+    <description>Directory location invalid.</description>
+  </rule>
+
+  <rule id="60664" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^7013$</field>
+    <options>no_full_log</options>
+    <info type="text">磁盘已满，更新暂停。</info>
+    <description>Disk full, update paused.</description>
+  </rule>
+
+  <rule id="60665" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^7040$</field>
+    <options>no_full_log</options>
+    <info type="text">无法读取索引数据。</info>
+    <description>Index data cannot be read.</description>
+  </rule>
+
+  <rule id="60666" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^7066$</field>
+    <options>no_full_log</options>
+    <info type="text">缺少目录配置。</info>
+    <description>Missing directory configuration.</description>
+  </rule>
+
+  <rule id="60667" level="5">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^7068$</field>
+    <options>no_full_log</options>
+    <info type="text">无法读取注册表，缺少​​注册表项。</info>
+    <description>Cannot read registry, registry keys missing.</description>
+    <mitre>
+      <id>T1112</id>
+    </mitre>
+  </rule>
+
+  <rule id="60668" level="3">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^1003$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 搜索服务已启动。</info>
+    <description>The Windows search service started.</description>
+  </rule>
+
+  <rule id="60669" level="3">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^1013$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 搜索服务正常停止。</info>
+    <description>The Windows search service stopped normally.</description>
+    <mitre>
+      <id>T1489</id>
+    </mitre>
+  </rule>
+
+  <rule id="60670" level="3">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^7064$</field>
+    <options>no_full_log</options>
+    <info type="text">由于未加载计数器或无法打开共享内存对象，无法初始化性能监控。</info>
+    <description>Performance monitoring cannot be initialized because the counters are not loaded or the shared memory object cannot be opened.</description>
+  </rule>
+
+  <rule id="60671" level="3">
+    <if_sid>60648</if_sid>
+    <field name="win.system.eventID">^1010$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 搜索服务成功删除了旧的搜索索引。</info>
+    <description>The Windows search service removed the old search index successfully.</description>
+  </rule>
+
+  <rule id="60672" level="5">
+    <if_sid>60601</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-Search$</field>
+    <field name="win.system.eventID">^1008$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 搜索服务试图删除旧的搜索索引。</info>
+    <description>The Windows Search Service attempted to remove the old search index.</description>
+  </rule>
+
+  <rule id="60673" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^1$</field>
+    <field name="win.system.providerName">^Microsoft-Windows-Search-ProfileNotify$</field>
+    <options>no_full_log</options>
+    <info type="text">为响应用户配置文件删除成功删除了用户的 Windows 搜索服务索引数据。</info>
+    <description>Windows Search Service indexed data for user successfully removed in response to user profile deletion.</description>
+    <group>gdpr_IV_32.2,</group>
+  </rule>
+
+  <rule id="60674" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.eventID">^16$</field>
+    <field name="win.system.providerName">^Microsoft-Windows-Search-ProfileNotify$</field>
+    <options>no_full_log</options>
+    <info type="text">为用户创建默认配置。</info>
+    <description>Created default configuration for user.</description>
+    <group>gdpr_IV_32.2,</group>
+  </rule>
+
+  <rule id="60675" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^VSS$</field>
+    <options>no_full_log</options>
+    <info type="text">VSS事件的分组。</info>
+    <description>Group of VSS events.</description>
+  </rule>
+
+  <rule id="60676" level="3">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^8224$</field>
+    <options>no_full_log</options>
+    <info type="text">由于空闲超时，VSS 服务正在关闭。</info>
+    <description>The VSS service is shutting down due to idle timeout.</description>
+  </rule>
+
+  <rule id="60677" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^11$|^13$</field>
+    <options>no_full_log</options>
+    <info type="text">COM 服务器无法启动。</info>
+    <description>COM server cannot be started.</description>
+  </rule>
+
+  <rule id="60678" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^12$</field>
+    <options>no_full_log</options>
+    <info type="text">DeleteVolumeMountPoint 返回的意外错误。</info>
+    <description>Unexpected error returned by DeleteVolumeMountPoint.</description>
+  </rule>
+
+  <rule id="60679" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^14$</field>
+    <options>no_full_log</options>
+    <info type="text">注册表用户名定义产生的错误。</info>
+    <description>Error generated by registry user name definition.</description>
+  </rule>
+
+  <rule id="60680" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^15$|^16$|^17$</field>
+    <options>no_full_log</options>
+    <info type="text">无法解释注册表中指定的用户名。</info>
+    <description>Cannot interpret user name specified in registry.</description>
+  </rule>
+
+  <rule id="60681" level="3">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^18$</field>
+    <options>no_full_log</options>
+    <info type="text">安全模式不支持卷影复制。</info>
+    <description>Safe mode does not support shadow copy.</description>
+  </rule>
+
+  <rule id="60682" level="4">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^19$</field>
+    <options>no_full_log</options>
+    <info type="text">EventSystem 服务被禁用或试图在安全模式下启动。</info>
+    <description>The EventSystem service is disabled or attempting to start during safe mode.</description>
+    <mitre>
+      <id>T1543.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="60683" level="7">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^20$|^21$</field>
+    <options>no_full_log</options>
+    <info type="text">卷影复制服务：COM+ 数据库损坏，写入者将不会收到事件。</info>
+    <description>Volume Shadow Copy Service: COM+ database corrupted, writers will not receive events.</description>
+    <mitre>
+      <id>T1543.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="60684" level="3">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^26$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统服务或 COM+ 系统应用程序服务已禁用。</info>
+    <description>COM+ event system service or COM+ system application service disabled.</description>
+  </rule>
+
+  <rule id="60685" level="3">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^27$</field>
+    <options>no_full_log</options>
+    <info type="text">卷影复制服务已禁用。</info>
+    <description>Volume shadow copy service disabled.</description>
+  </rule>
+
+  <rule id="60686" level="3">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^28$</field>
+    <options>no_full_log</options>
+    <info type="text">Microsoft 软件卷影复制提供程序服务已禁用。</info>
+    <description>Microsoft software shadow copy provider service disabled.</description>
+  </rule>
+
+  <rule id="60687" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^2004$</field>
+    <options>no_full_log</options>
+    <info type="text">卷影复制 6 超时。</info>
+    <description>Shadow copy 6 timeout.</description>
+  </rule>
+
+  <rule id="60688" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^4001$</field>
+    <options>no_full_log</options>
+    <info type="text">找不到用于创建卷影副本的差异区域。</info>
+    <description>Cannot find Diff area for creating shadow copies.</description>
+  </rule>
+
+  <rule id="60689" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^4609$</field>
+    <options>no_full_log</options>
+    <info type="text">在 EventSystem 服务的内部处理期间检测到错误的返回代码。</info>
+    <description>Bad return code detected during internal processing of the EventSystem service.</description>
+    <mitre>
+      <id>T1543.003</id>
+    </mitre>
+  </rule>
+
+  <rule id="60690" level="4">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^5002$</field>
+    <options>no_full_log</options>
+    <info type="text">系统可能资源不足。</info>
+    <description>System may be low on resources.</description>
+  </rule>
+
+  <rule id="60691" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^5013$</field>
+    <options>no_full_log</options>
+    <info type="text">EventLogs 调用的例程 BackupEventLogW 失败。</info>
+    <description>Routine BackupEventLogW called by EventLogs failed.</description>
+  </rule>
+
+  <rule id="60692" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^6004$</field>
+    <options>no_full_log</options>
+    <info type="text">Sqllib 错误：数据库不简单。</info>
+    <description>Sqllib error: Database not simple.</description>
+  </rule>
+
+  <rule id="60693" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^6005$</field>
+    <options>no_full_log</options>
+    <info type="text">SQL 卷影复制配置错误。</info>
+    <description>SQL Shadow Copy configuration error.</description>
+  </rule>
+
+  <rule id="60694" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^6008$</field>
+    <options>no_full_log</options>
+    <info type="text">Sqllib 错误：无法创建 VDS 对象。</info>
+    <description>Sqllib error: Failed to create VDS object.</description>
+  </rule>
+
+  <rule id="60695" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^6013$</field>
+    <options>no_full_log</options>
+    <info type="text">Sqllib 错误：调用 IDBInitialize 时遇到 OLEDB 错误。</info>
+    <description>Sqllib error: OLEDB Error encountered calling IDBInitialize.</description>
+  </rule>
+
+  <rule id="60696" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^7001$</field>
+    <options>no_full_log</options>
+    <info type="text">VssAdmin：无法创建卷影副本。</info>
+    <description>VssAdmin: Unable to create a shadow copy.</description>
+  </rule>
+
+  <rule id="60697" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^8193$</field>
+    <options>no_full_log</options>
+    <info type="text">意外错误调用例程。</info>
+    <description>Unexpected error calling routine.</description>
+  </rule>
+
+  <rule id="60698" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^8194$</field>
+    <options>no_full_log</options>
+    <info type="text">查询 IVssWriterCallback 接口的意外错误。</info>
+    <description>Unexpected error querying for the IVssWriterCallback interface.</description>
+  </rule>
+
+  <rule id="60699" level="3">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^8211$</field>
+    <options>no_full_log</options>
+    <info type="text">Writer 尝试在安全模式下订阅。</info>
+    <description>Writer attempted to subscribe in safe mode.</description>
+  </rule>
+
+  <rule id="60700" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^8213$</field>
+    <options>no_full_log</options>
+    <info type="text">卷影复制服务：写入者没有足够的权限来创建卷影副本。</info>
+    <description>Volume Shadow Copy Service: Writers do not have enough privileges to create shadow copy.</description>
+  </rule>
+
+  <rule id="60701" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^8213$</field>
+    <options>no_full_log</options>
+    <info type="text">集群服务不在具有足够访问权限的用户下运行。</info>
+    <description>Cluster service does not run under a user with sufficient access rights.</description>
+  </rule>
+
+  <rule id="60702" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^8224$</field>
+    <options>no_full_log</options>
+    <info type="text">由于空闲超时，VSS 服务正在关闭。</info>
+    <description>The VSS service is shutting down due to idle timeout.</description>
+  </rule>
+
+  <rule id="60703" level="3">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^8225$</field>
+    <options>no_full_log</options>
+    <info type="text">由于来自服务控制管理器的关闭事件，VSS 服务正在关闭。</info>
+    <description>The VSS service is shutting down due to a shutdown event from the service control manager.</description>
+  </rule>
+
+  <rule id="60704" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^12289$</field>
+    <options>no_full_log</options>
+    <info type="text">OFO：无法删除目录。</info>
+    <description>OFO: Directory can't be removed.</description>
+  </rule>
+
+  <rule id="60705" level="5">
+    <if_sid>60602</if_sid>
+    <field name="win.system.providerName">^VSS$</field>
+    <field name="win.system.eventID">^12290$</field>
+    <options>no_full_log</options>
+    <info type="text">卷影复制服务警告：ESENT 错误。</info>
+    <description>Volume Shadow Copy Service Warning: ESENT ERROR.</description>
+  </rule>
+
+  <rule id="60706" level="5">
+    <if_sid>60602</if_sid>
+    <field name="win.system.providerName">^VSS$</field>
+    <field name="win.system.eventID">^12291$</field>
+    <options>no_full_log</options>
+    <info type="text">创建或使用 COM+ Writers 发布者界面时出错。</info>
+    <description>Error creating or using the COM+ Writers publisher interface.</description>
+  </rule>
+
+  <rule id="60707" level="5">
+    <if_sid>60602</if_sid>
+    <field name="win.system.providerName">^VSS$</field>
+    <field name="win.system.eventID">^12292$</field>
+    <options>no_full_log</options>
+    <info type="text">使用 CLSID 创建卷影副本提供程序 COM 类时出错。</info>
+    <description>Error creating the shadow copy provider COM class with CLSID.</description>
+  </rule>
+
+  <rule id="60708" level="5">
+    <if_sid>60602</if_sid>
+    <field name="win.system.providerName">^VSS$</field>
+    <field name="win.system.eventID">^12293$</field>
+    <options>no_full_log</options>
+    <info type="text">在卷影副本提供程序上调用例程时出错。</info>
+    <description>Error calling a routine on a shadow copy provider.</description>
+  </rule>
+
+  <rule id="60709" level="4">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^12296$|^12297$|^12298$</field>
+    <options>no_full_log</options>
+    <info type="text">系统可能资源不足。</info>
+    <description>System may be low on resources.</description>
+  </rule>
+
+  <rule id="60710" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^12301$</field>
+    <options>no_full_log</options>
+    <info type="text">Writer 没有响应 GatherWriterStatus 调用。</info>
+    <description>Writer did not respond to a GatherWriterStatus call.</description>
+  </rule>
+
+  <rule id="60711" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^12302$</field>
+    <options>no_full_log</options>
+    <info type="text">在尝试联系卷影复制服务编写者时检测到内部不一致。</info>
+    <description>Internal inconsistency detected in trying to contact shadow copy service writers.</description>
+  </rule>
+
+  <rule id="60712" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^12305$</field>
+    <options>no_full_log</options>
+    <info type="text">卷/磁盘未连接或未找到。</info>
+    <description>Volume/disk not connected or not found.</description>
+  </rule>
+
+  <rule id="60713" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^12310$</field>
+    <options>no_full_log</options>
+    <info type="text">无法提交卷影副本。</info>
+    <description>Could not commit shadow copy.</description>
+  </rule>
+
+  <rule id="60714" level="5">
+    <if_sid>60675</if_sid>
+    <field name="win.system.eventID">^12348$</field>
+    <options>no_full_log</options>
+    <info type="text">VSS 被拒绝访问根目录。</info>
+    <description>VSS was denied access to the root.</description>
+  </rule>
+
+  <rule id="60715" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^System Restore$</field>
+    <options>no_full_log</options>
+    <info type="text">系统还原事件的分组。</info>
+    <description>Group of system restore events.</description>
+  </rule>
+
+  <rule id="60716" level="4">
+    <if_sid>60715</if_sid>
+    <field name="win.system.eventID">^8216$</field>
+    <options>no_full_log</options>
+    <info type="text">跳过为 $(win.eventdata.data) 创建还原点，因为有可用的先前还原点。</info>
+    <description>Skipped creation of restore point for $(win.eventdata.data) as there is a previous restore point available.</description>
+  </rule>
+
+  <rule id="60717" level="5">
+    <if_sid>60715</if_sid>
+    <field name="win.system.eventID">^8193$</field>
+    <options>no_full_log</options>
+    <info type="text">创建还原点失败。</info>
+    <description>Failed to create restore point.</description>
+  </rule>
+
+  <rule id="60718" level="3">
+    <if_sid>60715</if_sid>
+    <field name="win.system.eventID">^8194$</field>
+    <options>no_full_log</options>
+    <info type="text">成功创建还原点。</info>
+    <description>Restore point successfully created.</description>
+  </rule>
+
+  <rule id="60719" level="3">
+    <if_sid>60715</if_sid>
+    <field name="win.system.eventID">^8196$</field>
+    <options>no_full_log</options>
+    <info type="text">启用系统还原。</info>
+    <description>System restore enabled.</description>
+  </rule>
+
+  <rule id="60720" level="3">
+    <if_sid>60715</if_sid>
+    <field name="win.system.eventID">^8198$</field>
+    <options>no_full_log</options>
+    <info type="text">成功初始化系统还原。</info>
+    <description>Successfully initialized system restore.</description>
+  </rule>
+
+  <rule id="60721" level="3">
+    <if_sid>60715</if_sid>
+    <field name="win.system.eventID">^8201$</field>
+    <options>no_full_log</options>
+    <info type="text">成功恢复系统。</info>
+    <description>Successfully restored system.</description>
+  </rule>
+
+  <rule id="60722" level="3">
+    <if_sid>60715</if_sid>
+    <field name="win.system.eventID">^8211$</field>
+    <options>no_full_log</options>
+    <info type="text">已成功创建计划还原点。</info>
+    <description>Successfully created scheduled restore point.</description>
+  </rule>
+
+  <rule id="60723" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Application Error$</field>
+    <options>no_full_log</options>
+    <info type="text">应用程序错误事件组。</info>
+    <description>Group of application error events.</description>
+  </rule>
+
+  <rule id="60724" level="5">
+    <if_sid>60723</if_sid>
+    <field name="win.system.eventID">^100$|^1000$|^1001$|^1004$</field>
+    <options>no_full_log</options>
+    <info type="text">应用程序出错。</info>
+    <description>Application faulted.</description>
+  </rule>
+
+  <rule id="60725" level="5">
+    <if_sid>60723</if_sid>
+    <field name="win.system.eventID">^1010$</field>
+    <options>no_full_log</options>
+    <info type="text">故障桶报告。</info>
+    <description>Fault bucket report.</description>
+  </rule>
+
+  <rule id="60726" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-WMI$</field>
+    <options>no_full_log</options>
+    <info type="text">WMI事件的分组。</info>
+    <description>Group of WMI events.</description>
+  </rule>
+
+  <rule id="60727" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^10$</field>
+    <options>no_full_log</options>
+    <info type="text">无法激活事件过滤器。</info>
+    <description>Event filter could not be activated.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60728" level="5">
+    <if_sid>60602</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-WMI$</field>
+    <field name="win.system.eventID">^29$</field>
+    <options>no_full_log</options>
+    <info type="text">无法初始化 WMI 服务。</info>
+    <description>WMI service could not be initialized.</description>
+  </rule>
+
+  <rule id="60729" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^43$</field>
+    <options>no_full_log</options>
+    <info type="text">WMI ADAP 无法连接到命名空间。</info>
+    <description>WMI ADAP failed to connect to namespace.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60730" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^5611$</field>
+    <options>no_full_log</options>
+    <info type="text">检测到不一致的系统关闭。</info>
+    <description>Inconsistent system shutdown detected.</description>
+    <mitre>
+      <id>T1529</id>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60731" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^5601$</field>
+    <options>no_full_log</options>
+    <info type="text">WMI 服务未能加载存储库文件。</info>
+    <description>The WMI service failed to load the repository files.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60732" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^5612$</field>
+    <options>no_full_log</options>
+    <info type="text">配额达到警告值，WMI 停止 WMIPRVSE.EXE。</info>
+    <description>A quota reached a warning value, WMI stopped WMIPRVSE.EXE.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60733" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^4$</field>
+    <options>no_full_log</options>
+    <info type="text">尝试加载 MOF 时遇到错误。</info>
+    <description>Error encountered trying to load MOF.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60734" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^21$</field>
+    <options>no_full_log</options>
+    <info type="text">事件提供者试图注册一个语法无效的查询。</info>
+    <description>Event provider attempted to register a syntactically invalid query.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60735" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^22$</field>
+    <options>no_full_log</options>
+    <info type="text">事件提供者试图注册一个内在事件查询。</info>
+    <description>Event provider attempted to register an intrinsic event query.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60736" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^23$|^24$|^25$</field>
+    <options>no_full_log</options>
+    <info type="text">事件提供者试图注册查询。</info>
+    <description>Event provider attempted to register query.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60737" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^43$</field>
+    <options>no_full_log</options>
+    <info type="text">WMI ADAP 无法连接到命名空间。</info>
+    <description>WMI ADAP failed to connect to namespace.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60738" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^48$</field>
+    <options>no_full_log</options>
+    <info type="text">WMI ADAP 无法保存对象。</info>
+    <description>WMI ADAP was unable to save object.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60739" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^58$|^59$</field>
+    <options>no_full_log</options>
+    <info type="text">WMI ADAP 无法创建 Win32_Perf 基类。</info>
+    <description>WMI ADAP was unable to create the Win32_Perf base class.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60740" level="3">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^63$</field>
+    <options>no_full_log</options>
+    <info type="text">提供程序已在 WMI 命名空间中注册。</info>
+    <description>The provider has been registered in the WMI namespace.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60741" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^5600$</field>
+    <options>no_full_log</options>
+    <info type="text">WMI 服务检测到与 WMI 存储库不一致。</info>
+    <description>The WMI service detected an inconsistency with the WMI repository.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60742" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^5601$</field>
+    <options>no_full_log</options>
+    <info type="text">WMI 服务未能加载存储库文件。</info>
+    <description>The WMI service failed to load the repository files.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60743" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^5605$</field>
+    <options>no_full_log</options>
+    <info type="text">拒绝访问命名空间。</info>
+    <description>Access to namespace denied.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60744" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^5606$</field>
+    <options>no_full_log</options>
+    <info type="text">WMI 服务无法为命名空间异步传递结果。</info>
+    <description>WMI service could not deliver results asynchronously for the namespace.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60745" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^5612$</field>
+    <options>no_full_log</options>
+    <info type="text">WMI 停止了 WMIRPVSE.EXE，因为配额达到了警告值。</info>
+    <description>WMI stopped WMIPRVSE.EXE because a quota reached a warning value.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60746" level="5">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^5614$</field>
+    <options>no_full_log</options>
+    <info type="text">WMI 服务在服务启动期间无法找到存储库文件。</info>
+    <description>WMI service was unable to locate the repository files during the service startup.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60747" level="3">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^5615$</field>
+    <options>no_full_log</options>
+    <info type="text">WMI 服务启动成功。</info>
+    <description>WMI service started successfully.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60748" level="3">
+    <if_sid>60726</if_sid>
+    <field name="win.system.eventID">^5616$</field>
+    <options>no_full_log</options>
+    <info type="text">WMI 核心、提供程序子系统和事件子系统初始化成功。</info>
+    <description>WMI core, provider subsystem and event subsystem initialized successfully.</description>
+    <mitre>
+      <id>T1047</id>
+    </mitre>
+  </rule>
+
+  <rule id="60749" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-EventSystem$</field>
+    <options>no_full_log</options>
+    <info type="text">EventSystem 事件的分组。</info>
+    <description>Group of EventSystem events.</description>
+  </rule>
+
+  <rule id="60750" level="3">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4625$</field>
+    <field name="win.eventdata.param1">\.+</field>
+    <options>no_full_log</options>
+    <info type="text">EventSystem 抑制了 $(win.eventdata.param1) 秒的重复日志条目。</info>
+    <description>EventSystem supressed duplicate log entries for $(win.eventdata.param1) seconds.</description>
+  </rule>
+
+  <rule id="60751" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4354$|^4356$</field>
+    <options>no_full_log</options>
+    <info type="text">事件系统未能为订阅者创建实例。</info>
+    <description>Event system failed to create an instance for the subscriber.</description>
+  </rule>
+
+  <rule id="60752" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4357$</field>
+    <options>no_full_log</options>
+    <info type="text">无法触发 EventObjectChange 事件，查询条件包含错误。</info>
+    <description>EventObjectChange event could not be fired, query criteria contains an error.</description>
+  </rule>
+
+  <rule id="60753" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4358$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统无法触发 EventObjectChange 事件。</info>
+    <description>The COM+ event system could not fire an EventObjectChange event.</description>
+  </rule>
+
+  <rule id="60754" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4359$</field>
+    <options>no_full_log</options>
+    <info type="text">无法加载 EventClass 中指定的类型库。</info>
+    <description>The type library specified in EventClass could not be loaded.</description>
+  </rule>
+
+  <rule id="60755" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4361$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统检测到损坏的 IEventClass 对象。</info>
+    <description>The COM+ event system detected a corrupt IEventClass object.</description>
+  </rule>
+
+  <rule id="60756" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4362$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统检测到损坏的 IEventSubscription 对象。</info>
+    <description>The COM+ event system detected a corrupt IEventSubscription object.</description>
+  </rule>
+
+  <rule id="60757" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4609$|^4610$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统在其内部处理期间检测到错误的返回码。</info>
+    <description>The COM+ event system detected a bad return code during its internal processing.</description>
+  </rule>
+
+  <rule id="60758" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4611$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统在其内部处理期间检测到意外的空指针。</info>
+    <description>The COM+ event system detected an unexpected null pointer during its internal processing.</description>
+  </rule>
+
+  <rule id="60759" level="9">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4612$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统在其内部处理期间内存不足。</info>
+    <description>The COM+ event system ran out of memory during its internal processing.</description>
+  </rule>
+
+  <rule id="60760" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4613$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统检测到来自 Win32 API 调用的意外错误。</info>
+    <description>The COM+ event system detected an unexpected error from a Win32 API call.</description>
+  </rule>
+
+  <rule id="60761" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4614$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统检测到其内部状态不一致。</info>
+    <description>The COM+ event system detected an inconsistency in its internal state.</description>
+  </rule>
+
+  <rule id="60762" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4615$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统捕捉到异常。</info>
+    <description>The COM+ event system caught an exception.</description>
+  </rule>
+
+  <rule id="60763" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4616$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统发现访问冲突。</info>
+    <description>The COM+ event system caught an access violation.</description>
+  </rule>
+
+  <rule id="60764" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4619$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统无法存储每用户订阅。</info>
+    <description>The COM+ event system could not store the per-user subscription.</description>
+  </rule>
+
+  <rule id="60765" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4620$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统在尝试查询对象时检测到错误，因为条件字符串包含错误。</info>
+    <description>The COM+ event system detected an error trying to query object because the criteria string contained an error.</description>
+  </rule>
+
+  <rule id="60766" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4621$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统无法移除对象。</info>
+    <description>The COM+ event system could not remove the object.</description>
+  </rule>
+
+  <rule id="60767" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4622$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统无法封送订阅者进行订阅。</info>
+    <description>The COM+ event system could not marshal the subscriber for subscription.</description>
+  </rule>
+
+  <rule id="60768" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4623$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统未能创建 MultiInterfacePublisherFilter 的实例。</info>
+    <description>The COM+ event system failed to create an instance of the MultiInterfacePublisherFilter.</description>
+  </rule>
+
+  <rule id="60769" level="5">
+    <if_sid>60749</if_sid>
+    <field name="win.system.eventID">^4624$</field>
+    <options>no_full_log</options>
+    <info type="text">COM+ 事件系统无法将筛选条件应用于订阅，因为条件字符串包含错误。</info>
+    <description>The COM+ event system could not apply the filter criteria to subscription because the criteria string contained an error.</description>
+  </rule>
+
+  <rule id="60770" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Desktop Window Manager$</field>
+    <options>no_full_log</options>
+    <info type="text">桌面窗口管理器事件的分组。</info>
+    <description>Group of desktop window manager events.</description>
+  </rule>
+
+  <rule id="60771" level="5">
+    <if_sid>60770</if_sid>
+    <field name="win.system.eventID">^9002$</field>
+    <options>no_full_log</options>
+    <info type="text">无法启动桌面窗口管理器。</info> 
+    <description>Unable to start desktop window manager.</description>
+  </rule>
+
+  <rule id="60772" level="5">
+    <if_sid>60770</if_sid>
+    <field name="win.system.eventID">^9003$</field>
+    <options>no_full_log</options>
+    <info type="text">由于未使用复合主题，无法启动桌面窗口管理器。</info> 
+    <description>Unable to start desktop window manager due to composited theme not used.</description>
+  </rule>
+
+  <rule id="60773" level="5">
+    <if_sid>60770</if_sid>
+    <field name="win.system.eventID">^9009$</field>
+    <options>no_full_log</options>
+    <info type="text">桌面窗口管理器退出代码 $(win.eventdata.data)。</info> 
+    <description>Desktop window manager exited with code $(win.eventdata.data).</description>
+  </rule>
+
+  <rule id="60774" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-Winlogon$</field>
+    <options>no_full_log</options>
+    <info type="text">Winlogon 事件的分组。</info> 
+    <description>Group of Winlogon events.</description>
+  </rule>
+
+  <rule id="60775" level="5">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^6000$</field>
+    <options>no_full_log</options>
+    <info type="text">$(win.eventdata.data) 无法处理通知事件。</info>
+    <description>$(win.eventdata.data) was unavailable to handle a notification event.</description>
+  </rule>
+
+  <rule id="60776" level="7">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^6003$</field>
+    <options>no_full_log</options>
+    <info type="text">$(win.eventdata.data) 无法处理关键通知事件。</info>
+    <description>$(win.eventdata.data) was unavailable to handle a critical notification event.</description>
+  </rule>
+
+  <rule id="60777" level="3">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^7002$</field>
+    <options>no_full_log</options>
+    <info type="text">客户体验改善计划的用户注销通知。</info>
+    <description>User logoff notification for customer experience improvement program.</description>
+  </rule>
+
+  <rule id="60778" level="5">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^1002$</field>
+    <options>no_full_log</options>
+    <info type="text">外壳意外停止。</info>
+    <description>The shell stopped unexpectedly.</description>
+    <mitre>
+      <id>T1489</id>
+    </mitre>
+  </rule>
+
+  <rule id="60779" level="5">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^4002$</field>
+    <options>no_full_log</options>
+    <info type="text">应用于登录用户的登录时间限制策略。</info>
+    <description>Logon hours restriction policy applied to the logged on user.</description>
+  </rule>
+
+  <rule id="60780" level="5">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^4003$</field>
+    <options>no_full_log</options>
+    <info type="text">桌面切换失败。</info>
+    <description>Desktop switch failed.</description>
+  </rule>
+
+  <rule id="60781" level="5">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^4005$|^4006$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 登录过程意外终止。</info>
+    <description>Windows logon process terminated unexpectedly.</description>
+  </rule>
+
+  <rule id="60782" level="5">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^4007$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 登录过程未能断开用户会话。</info>
+    <description>Windows logon process failed to disconnect the user session.</description>
+  </rule>
+
+  <rule id="60783" level="3">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^4101$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 许可证已验证。</info>
+    <description>Windows license validated.</description>
+  </rule>
+
+  <rule id="60784" level="5">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^4102$</field>
+    <options>no_full_log</options>
+    <info type="text">无效的 Windows 许可证。</info>
+    <description>Invalid Windows license.</description>
+  </rule>
+
+  <rule id="60785" level="5">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^4103$</field>
+    <options>no_full_log</options>
+    <info type="text">许可证激活失败。</info>
+    <description>License activation failed.</description>
+  </rule>
+
+  <rule id="60786" level="5">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^6001$</field>
+    <options>no_full_log</options>
+    <info type="text">winlogon 通知订阅者失败的通知事件。</info>
+    <description>The winlogon notification subscriber failed a notification event.</description>
+  </rule>
+
+  <rule id="60787" level="5">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^6002$</field>
+    <options>no_full_log</options>
+    <info type="text">Winlogon 通知订阅者注册无法加载。</info>
+    <description>Winlogon notification subscriber registration cannot be loaded.</description>
+  </rule>
+
+  <rule id="60788" level="9">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^6004$</field>
+    <options>no_full_log</options>
+    <info type="text">winlogon 通知订阅者未能完成关键通知事件。</info>
+    <description>The winlogon notification subscriber failed a critical notification event.</description>
+  </rule>
+
+  <rule id="60789" level="5">
+    <if_sid>60774</if_sid>
+    <field name="win.system.eventID">^4004$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 登录进程未能终止当前登录的用户进程。</info>
+    <description>The Windows logon process has failed to terminate currently logged on user's processes.</description>
+  </rule>
+
+  <rule id="60790" level="4">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-User Profiles Service$</field>
+    <field name="win.system.eventID">^1530$</field>
+    <options>no_full_log</options>
+    <info type="text">注册表文件仍在被其他应用程序或服务使用。</info>
+    <description>The registry file is still in use by other applications or services.</description>
+  </rule>
+
+  <rule id="60791" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^User Profile$</field>
+    <options>no_full_log</options>
+    <info type="text">用户配置文件事件的分组。</info>
+    <description>Group of user profile events.</description>
+  </rule>
+
+  <rule id="60792" level="5">
+    <if_sid>60791</if_sid>
+    <field name="win.system.eventID">^1508$</field>
+    <options>no_full_log</options>
+    <info type="text">无法加载注册表。</info>
+    <description>Unable to load registry.</description>
+  </rule>
+
+  <rule id="60793" level="5">
+    <if_sid>60791</if_sid>
+    <field name="win.system.eventID">^1511$</field>
+    <options>no_full_log</options>
+    <info type="text">找不到本地配置文件，使用临时配置文件登录。</info>
+    <description>Cannot find local profile, logging with temporary profile.</description>
+  </rule>
+
+  <rule id="60794" level="3">
+    <if_sid>60791</if_sid>
+    <field name="win.system.eventID">^1525$</field>
+    <options>no_full_log</options>
+    <info type="text">在漫游配置文件共享上启用了脱机缓存。</info>
+    <description>Offline caching enabled on the roaming profile share.</description>
+  </rule>
+
+  <rule id="60795" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^ESENT$</field>
+    <options>no_full_log</options>
+    <info type="text">ESENT事件的分组。</info>
+    <description>Group of ESENT events.</description>
+  </rule>
+
+  <rule id="60796" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^103$</field>
+    <options>no_full_log</options>
+    <info type="text">数据库引擎停止了一个实例。</info>
+    <description>The database engine stopped an instance.</description>
+  </rule>
+
+  <rule id="60797" level="3">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^327$</field>
+    <options>no_full_log</options>
+    <info type="text">数据库引擎分离了一个数据库。</info>
+    <description>The database engine detached a database.</description>
+  </rule>
+
+  <rule id="60798" level="3">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^326$</field>
+    <options>no_full_log</options>
+    <info type="text">数据库引擎附加了一个数据库。</info>
+    <description>The database engine attached a database.</description>
+  </rule>
+
+  <rule id="60799" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^0$</field>
+    <options>no_full_log</options>
+    <info type="text">意外的 Win32 错误。</info>
+    <description>Unexpected Win32 error.</description>
+  </rule>
+
+  <rule id="60800" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^215$</field>
+    <options>no_full_log</options>
+    <info type="text">备份被客户端中断或连接失败。</info>
+    <description>The backup was interrupted by the client or the connection failed.</description>
+  </rule>
+
+  <rule id="60801" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^404$|^405$</field>
+    <options>no_full_log</options>
+    <info type="text">发生同步读取页面校验和错误。</info>
+    <description>Synchronous read page checksum error occurred.</description>
+  </rule>
+
+  <rule id="60802" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^412$</field>
+    <options>no_full_log</options>
+    <info type="text">无法读取日志头。</info>
+    <description>Unable to read log header.</description>
+  </rule>
+
+  <rule id="60803" level="3">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^100$</field>
+    <options>no_full_log</options>
+    <info type="text">数据库引擎已启动。</info>
+    <description>Database engine started.</description>
+  </rule>
+
+  <rule id="60804" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^101$</field>
+    <options>no_full_log</options>
+    <info type="text">数据库引擎已停止。</info>
+    <description>Database engine stopped.</description>
+  </rule>
+
+  <rule id="60805" level="3">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^102$</field>
+    <options>no_full_log</options>
+    <info type="text">数据库引擎正在启动一个新实例。</info>
+    <description>The database engine is starting a new instance.</description>
+  </rule>
+
+  <rule id="60806" level="3">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^210$</field>
+    <options>no_full_log</options>
+    <info type="text">开始完整备份。</info>
+    <description>Starting full backup.</description>
+  </rule>
+
+  <rule id="60807" level="3">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^300$</field>
+    <options>no_full_log</options>
+    <info type="text">数据库引擎正在启动恢复步骤。</info>
+    <description>The database engine is initiating recovery steps.</description>
+  </rule>
+
+  <rule id="60808" level="3">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^301$</field>
+    <options>no_full_log</options>
+    <info type="text">数据库引擎正在重播日志文件 C:\Winnt\system32\wins\j50.log。</info>
+    <description>The database engine is replaying log file C:\Winnt\system32\wins\j50.log.</description>
+  </rule>
+
+  <rule id="60809" level="3">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^302$</field>
+    <options>no_full_log</options>
+    <info type="text">数据库引擎已完成恢复步骤。</info>
+    <description>The database engine has completed recovery steps.</description>
+  </rule>
+
+  <rule id="60810" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^411$</field>
+    <options>no_full_log</options>
+    <info type="text">日志版本戳与数据库引擎版本戳不匹配。</info>
+    <description>Log version stamp does not match database engine version stamp.</description>
+  </rule>
+
+  <rule id="60811" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^427$</field>
+    <options>no_full_log</options>
+    <info type="text">数据库引擎无法访问文件。</info>
+    <description>The database engine could not access a file.</description>
+  </rule>
+
+  <rule id="60812" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^439$</field>
+    <options>no_full_log</options>
+    <info type="text">无法写入阴影头文件。</info>
+    <description>Unable to write a shadowed header file.</description>
+  </rule>
+
+  <rule id="60813" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^454$</field>
+    <options>no_full_log</options>
+    <info type="text">无法读取日志头。</info>
+    <description>Unable to read the log header.</description>
+  </rule>
+
+  <rule id="60814" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^474$</field>
+    <options>no_full_log</options>
+    <info type="text">由于页面校验和不匹配，数据库页面读取验证失败。</info>
+    <description>The database page read failed verification due to a page checksum mismatch.</description>
+  </rule>
+
+  <rule id="60815" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^476$</field>
+    <options>no_full_log</options>
+    <info type="text">数据库页面读取验证失败。</info>
+    <description>Failed verification for database page read.</description>
+  </rule>
+
+  <rule id="60816" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^489$</field>
+    <options>no_full_log</options>
+    <info type="text">尝试打开文件进行只读访问失败，出现系统错误。</info>
+    <description>An attempt to open the file for read only access failed with system error.</description>
+    <mitre>
+      <id>T1203</id>
+    </mitre>
+  </rule>
+
+  <rule id="60817" level="3">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^609$</field>
+    <options>no_full_log</options>
+    <info type="text">已启动数据库的索引清理。</info>
+    <description>Index cleanup of database initiated.</description>
+  </rule>
+
+  <rule id="60818" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^614$</field>
+    <options>no_full_log</options>
+    <info type="text">表 ConfigTable 的二级索引 WReplicaSetNameIndex 可能已损坏。</info>
+    <description>The secondary index WReplicaSetNameIndex of table ConfigTable may be corrupt.</description>
+  </rule>
+
+  <rule id="60819" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^623$</field>
+    <options>no_full_log</options>
+    <info type="text">此实例的版本存储已达到其最大大小。</info>
+    <description>The version store for this instance has reached its maximum size.</description>
+  </rule>
+
+  <rule id="60820" level="3">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^2001$</field>
+    <options>no_full_log</options>
+    <info type="text">卷影副本 2 冻结已开始。</info>
+    <description>Shadow copy 2 freeze started.</description>
+  </rule>
+
+  <rule id="60821" level="4">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^2003$</field>
+    <options>no_full_log</options>
+    <info type="text">卷影副本 2 冻结已停止。</info>
+    <description>Shadow copy 2 freeze stopped.</description>
+  </rule>
+
+  <rule id="60822" level="5">
+    <if_sid>60795</if_sid>
+    <field name="win.system.eventID">^12290$</field>
+    <options>no_full_log</options>
+    <info type="text">卷影复制服务警告：无法执行备份。</info>
+    <description>Volume Shadow Copy Service Warning: Could not perform a backup.</description>
+  </rule>
+
+  <rule id="60823" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-CEIP$</field>
+    <field name="win.system.eventID">^1005$</field>
+    <options>no_full_log</options>
+    <info type="text">客户体验改善计划数据成功整合。</info>
+    <description>Customer experience improvement program data successfully consolidated.</description>
+  </rule>
+
+  <rule id="60824" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-CAPI2$</field>
+    <options>no_full_log</options>
+    <info type="text">CAPI2事件的分组。</info>
+    <description>Group of CAPI2 events.</description>
+  </rule>
+
+  <rule id="60825" level="3">
+    <if_sid>60824</if_sid>
+    <field name="win.system.eventID">^3$|^5$|^8$</field>
+    <options>no_full_log</options>
+    <info type="text">第三方根自动更新检索失败。</info>
+    <description>Failed auto update retrieval of third-party root.</description>
+  </rule>
+
+  <rule id="60826" level="5">
+    <if_sid>60824</if_sid>
+    <field name="win.system.eventID">^11$|^4107$</field>
+    <options>no_full_log</options>
+    <info type="text">从自动更新 cab 中提取第三方根列表失败。</info>
+    <description>Failed extract of third-party root list from auto update cab.</description>
+  </rule>
+
+  <rule id="60827" level="5">
+    <if_sid>60824</if_sid>
+    <field name="win.system.eventID">^513$</field>
+    <options>no_full_log</options>
+    <info type="text">加密服务在处理 Onidentify 调用时失败。</info>
+    <description>Cryptographic services failed while processing the Onidentify call.</description>
+  </rule>
+
+  <rule id="60828" level="3">
+    <if_sid>60824</if_sid>
+    <field name="win.system.eventID">^1$</field>
+    <options>no_full_log</options>
+    <info type="text">第三方根证书自动更新成功。</info>
+    <description>Successful auto update of third-party root certificate.</description>
+  </rule>
+
+  <rule id="60829" level="3">
+    <if_sid>60824</if_sid>
+    <field name="win.system.eventID">^2$</field>
+    <options>no_full_log</options>
+    <info type="text">第三方根列表cab自动更新检索成功。</info>
+    <description>Successful auto update retrieval of third-party root list cab.</description>
+  </rule>
+
+  <rule id="60830" level="3">
+    <if_sid>60824</if_sid>
+    <field name="win.system.eventID">^4$</field>
+    <options>no_full_log</options>
+    <info type="text">第三方根证书自动更新检索成功。</info>
+    <description>Successful auto update retrieval of third-party root certificate.</description>
+  </rule>
+
+  <rule id="60831" level="4">
+    <if_sid>60824</if_sid>
+    <field name="win.system.eventID">^6$</field>
+    <options>no_full_log</options>
+    <info type="text">达到 crypt32 事件阈值。</info>
+    <description>Reached crypt32 threshold of events.</description>
+  </rule>
+
+  <rule id="60832" level="3">
+    <if_sid>60824</if_sid>
+    <field name="win.system.eventID">^7$</field>
+    <options>no_full_log</options>
+    <info type="text">第三方根列表序号自动更新检索成功。</info>
+    <description>Successful auto update retrieval of third-party root list sequence number.</description>
+  </rule>
+
+  <rule id="60833" level="3">
+    <if_sid>60824</if_sid>
+    <field name="win.system.eventID">^12$</field>
+    <options>no_full_log</options>
+    <info type="text">第三方根证书自动删除成功。</info>
+    <description>Successful auto delete of third-party root certificate.</description>
+  </rule>
+
+  <rule id="60834" level="3">
+    <if_sid>60824</if_sid>
+    <field name="win.system.eventID">^13$</field>
+    <options>no_full_log</options>
+    <info type="text">第三方根证书自动属性更新成功。</info>
+    <description>Successful auto property update of third-party root certificate.</description>
+  </rule>
+
+  <rule id="60835" level="5">
+    <if_sid>60824</if_sid>
+    <field name="win.system.eventID">^256$</field>
+    <options>no_full_log</options>
+    <info type="text">加密服务未能初始化目录数据库。</info>
+    <description>The cryptographic services failed to initialize the Catalog Database.</description>
+  </rule>
+
+  <rule id="60836" level="5">
+    <if_sid>60824</if_sid>
+    <field name="win.system.eventID">^257$</field>
+    <options>no_full_log</options>
+    <info type="text">加密服务未能初始化目录数据库。 ESENT 错误。</info>
+    <description>The cryptographic services failed to initialize the Catalog Database. ESENT error.</description>
+  </rule>
+
+  <rule id="60837" level="5">
+    <if_sid>60824</if_sid>
+    <field name="win.system.eventID">^512$</field>
+    <options>no_full_log</options>
+    <info type="text">加密服务未能初始化 VSS 备份“系统编写器”对象。</info>
+    <description>The cryptographic services failed to initialize the VSS backup "System Writer" object.</description>
+  </rule>
+
+  <rule id="60838" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-MSDTC$</field>
+    <options>no_full_log</options>
+    <info type="text">MSDTC事件的分组。</info>
+    <description>Group of MSDTC events.</description>
+  </rule>
+
+  <rule id="60839" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4098$</field>
+    <options>no_full_log</options>
+    <info type="text">无法将 MS DTC 错误代码转换为相应的 MS DTC 错误消息。</info>
+    <description>Unable to translate the MS DTC error code to the appropiate MS DTC error message.</description>
+  </rule>
+
+  <rule id="60840" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4099$</field>
+    <options>no_full_log</options>
+    <info type="text">管理此系统上的 MS DTC 的权限被拒绝。</info>
+    <description>Permission denied to manage the MS DTC on this system.</description>
+  </rule>
+
+  <rule id="60841" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4100$</field>
+    <options>no_full_log</options>
+    <info type="text">处理来自服务控制管理器的控制请求时发生异常。</info>
+    <description>Exception occurred while processing control requests from the service control manager.</description>
+  </rule>
+
+  <rule id="60842" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4101$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 与本地 DTC 具有相同的唯一标识。</info>
+    <description>The MS DTC has the same unique identity as the local one.</description>
+  </rule>
+
+  <rule id="60843" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4102$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器无法初始化。</info>
+    <description>MS DTC transaction manager could not be initialized.</description>
+  </rule>
+
+  <rule id="60844" level="9">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4103$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 内存不足。</info>
+    <description>MS DTC run out of memory.</description>
+  </rule>
+
+  <rule id="60845" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4102$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器无法初始化。</info>
+    <description>MS DTC transaction manager could not be initialized.</description>
+  </rule>
+
+  <rule id="60846" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4105$</field>
+    <options>no_full_log</options>
+    <info type="text">微软分布式事务协调器服务成功移除。</info>
+    <description>Microsoft distributed transaction coordinator service successfully removed.</description>
+  </rule>
+
+  <rule id="60847" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4106$</field>
+    <options>no_full_log</options>
+    <info type="text">无法安装 MS DTC 服务。</info>
+    <description>Could not install the MS DTC service.</description>
+  </rule>
+
+  <rule id="60848" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4107$</field>
+    <options>no_full_log</options>
+    <info type="text">无法删除 MS DTC 服务。</info>
+    <description>MS DTC service could not be removed.</description>
+  </rule>
+
+  <rule id="60849" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4113$</field>
+    <options>no_full_log</options>
+    <info type="text">未找到 MS DTC 日志路径。</info>
+    <description>MS DTC log path not found.</description>
+  </rule>
+
+  <rule id="60850" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4114$</field>
+    <options>no_full_log</options>
+    <info type="text">无法加载 MS DTC 事务管理器。</info>
+    <description>MS DTC transaction manager could not be loaded.</description>
+  </rule>
+
+  <rule id="60851" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4116$</field>
+    <options>no_full_log</options>
+    <info type="text">无法创建 MS DTC 名称对象。</info>
+    <description>MS DTC name object could not be created.</description>
+  </rule>
+
+  <rule id="60852" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4117$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 用户界面服务器对象无法初始化。</info>
+    <description>MS DTC user interface server object could not be initialized.</description>
+  </rule>
+
+  <rule id="60853" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4118$</field>
+    <options>no_full_log</options>
+    <info type="text">无法加载 MS DTC 用户界面服务器对象。</info>
+    <description>MS DTC user interface server object could not be loaded.</description>
+  </rule>
+
+  <rule id="60854" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4119$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 用户界面服务器对象不支持请求的界面。</info>
+    <description>MS DTC user interface server object does not support the requested interface.</description>
+  </rule>
+
+  <rule id="60855" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4120$</field>
+    <options>no_full_log</options>
+    <info type="text">无法加载 MS DTC 用户界面名称对象。</info>
+    <description>MS DTC user interface name object could not be loaded.</description>
+  </rule>
+
+  <rule id="60856" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4121$</field>
+    <options>no_full_log</options>
+    <info type="text">无法加载 MS DTC 日志管理器 DLL。</info>
+    <description>MS DTC log manager DLL could not be loaded.</description>
+  </rule>
+
+  <rule id="60857" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4124$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 日志文件无法解压缩。</info>
+    <description>MS DTC log file could not be decompressed.</description>
+  </rule>
+
+  <rule id="60858" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4125$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 日志文件已满，无法接受新的日志记录。</info>
+    <description>MS DTC log file is full and cannot accept new log records.</description>
+  </rule>
+
+  <rule id="60859" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4126$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 日志文件属性无效。</info>
+    <description>MS DTC log file attributes are invalid.</description>
+  </rule>
+
+  <rule id="60860" level="4">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4127$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 日志文件已包装。</info>
+    <description>MS DTC log file has wrapped.</description>
+  </rule>
+
+  <rule id="60861" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4129$</field>
+    <options>no_full_log</options>
+    <info type="text">XA 事务管理器试图定位“GetXaSwitch”函数。</info>
+    <description>XA transaction manager attempted to locate the "GetXaSwitch" function.</description>
+  </rule>
+
+  <rule id="60862" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4137$</field>
+    <options>no_full_log</options>
+    <info type="text">无法强制交易结果。</info>
+    <description>Could not force transaction outcome.</description>
+  </rule>
+
+  <rule id="60863" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4138$</field>
+    <options>no_full_log</options>
+    <info type="text">指定的事务网桥 CLSID 不是有效的 GUID。</info>
+    <description>The specified transaction bridge CLSID is not a valid GUID.</description>
+  </rule>
+
+  <rule id="60864" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4137$</field>
+    <options>no_full_log</options>
+    <info type="text">无法强制交易结果。</info>
+    <description>Could not force transaction outcome.</description>
+  </rule>
+
+  <rule id="60865" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4139$</field>
+    <options>no_full_log</options>
+    <info type="text">创建事务桥时出错。</info>
+    <description>An error occurred creating the transaction bridge.</description>
+  </rule>
+
+  <rule id="60866" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4140$</field>
+    <options>no_full_log</options>
+    <info type="text">初始化事务桥时出错。</info>
+    <description>An error occurred initializing the transaction bridge.</description>
+  </rule>
+
+  <rule id="60867" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4141$</field>
+    <options>no_full_log</options>
+    <info type="text">启动事务桥接时发生错误。</info>
+    <description>An error occurred starting the transaction bridge.</description>
+  </rule>
+
+  <rule id="60868" level="4">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4142$</field>
+    <options>no_full_log</options>
+    <info type="text">一个日志客户端报告了一个检查点。</info>
+    <description>A log client has reported taking a checkpoint.</description>
+  </rule>
+
+  <rule id="60869" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4147$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 已确定群集服务已配置。</info>
+    <description>MS DTC has determined that the cluster service is configured.</description>
+  </rule>
+
+  <rule id="60870" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4149$</field>
+    <options>no_full_log</options>
+    <info type="text">未找到交易。</info>
+    <description>Transaction not found.</description>
+  </rule>
+
+  <rule id="60871" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4150$</field>
+    <options>no_full_log</options>
+    <info type="text">该交易不是子交易。</info>
+    <description>The transaction is not a child transaction.</description>
+  </rule>
+
+  <rule id="60872" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4151$</field>
+    <options>no_full_log</options>
+    <info type="text">MSDTC TM 无法确定传入连接请求是否来自远程计算机。</info>
+    <description>The MSDTC TM could not determine if an incoming connection request is from a remote machine.</description>
+  </rule>
+
+  <rule id="60873" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4152$</field>
+    <options>no_full_log</options>
+    <info type="text">事务未提交或仍有资源管理器或从属 MS DTC 事务管理器连接。</info>
+    <description>Either the transaction is not committed or there are resource managers or subordinate MS DTC transaction managers still connected.</description>
+  </rule>
+
+  <rule id="60874" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4153$</field>
+    <options>no_full_log</options>
+    <info type="text">由于未知错误，无法解决交易。</info>
+    <description>Could not resolve the transaction due to an unknown error.</description>
+  </rule>
+
+  <rule id="60875" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4154$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 日志文件不可读。</info>
+    <description>The MS DTC log file is unreadable.</description>
+  </rule>
+
+  <rule id="60876" level="7">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4155$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 遇到内部错误并正在终止。</info>
+    <description>MS DTC encountered an internal error and is terminating.</description>
+  </rule>
+
+  <rule id="60877" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4157$</field>
+    <options>no_full_log</options>
+    <info type="text">无法停止 MS DTC 服务或其依赖服务之一。</info>
+    <description>Could not stop the MS DTC service or one of its dependent services.</description>
+  </rule>
+
+  <rule id="60878" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4160$</field>
+    <options>no_full_log</options>
+    <info type="text">无效的命令行参数。</info>
+    <description>Invalid command line arguments.</description>
+  </rule>
+
+  <rule id="60879" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4162$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 日志文件是不兼容的版本。</info>
+    <description>The MS DTC log file is an incompatible version.</description>
+  </rule>
+
+  <rule id="60880" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4165$</field>
+    <options>no_full_log</options>
+    <info type="text">未选择事务。</info>
+    <description>No transaction selected.</description>
+  </rule>
+
+  <rule id="60881" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4166$</field>
+    <options>no_full_log</options>
+    <info type="text">超过了 MS DTC 日志文件可以容纳的最大活动事务数。</info>
+    <description>Exceeded maximum number of active transactions that the MS DTC log file can accomodate.</description>
+  </rule>
+
+  <rule id="60882" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4169$|^4170$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器处于不一致的状态，无法继续。</info>
+    <description>MS DTC transaction manager is in an inconsistent state and cannot proceed.</description>
+  </rule>
+
+  <rule id="60883" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4171$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器日志写入失败。</info>
+    <description>MS DTC transaction manager log write failed.</description>
+  </rule>
+
+  <rule id="60884" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4172$|^4173$|^4174$|^4175$|^4176$|^4177$|^4178$|^4179$|^4180$|^4181$|^4182$|^4181$|^4182$|^4183$|^4184$|^4185$|^4186$|^4187$|^4188$|^4189$|^4190$|^4191$|^4192$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器启动失败。</info>
+    <description>MS DTC transaction manager start failed.</description>
+  </rule>
+
+  <rule id="60885" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4193$</field>
+    <options>no_full_log</options>
+    <info type="text">资源管理器执行了恢复。</info>
+    <description>A resource manager performed recovery.</description>
+  </rule>
+
+  <rule id="60886" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4194$</field>
+    <options>no_full_log</options>
+    <info type="text">无法创建 MS DTC XA 事务管理器对象。</info>
+    <description>MS DTC XA transaction Manager object could not be created.</description>
+  </rule>
+
+  <rule id="60887" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4196$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器无法启动。</info>
+    <description>MS DTC XA transaction manager could not start.</description>
+  </rule>
+
+  <rule id="60888" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4198$</field>
+    <options>no_full_log</options>
+    <info type="text">找不到 MS DTC TIP 网关联系人对象。</info>
+    <description>Could not locate the MS DTC TIP gateway contact object.</description>
+  </rule>
+
+  <rule id="60889" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4199$</field>
+    <options>no_full_log</options>
+    <info type="text">无法创建 MS DTC TIP 网关初始化对象。</info>
+    <description>MS DTC TIP gateway initialization object could not be created.</description>
+  </rule>
+
+  <rule id="60890" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4200$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC TIP网关初始化失败。</info>
+    <description>MS DTC TIP gateway failed to initialize.</description>
+  </rule>
+
+  <rule id="60891" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4201$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC TIP网关启动失败。</info>
+    <description>MS DTC TIP gateway failed to start.</description>
+  </rule>
+
+  <rule id="60892" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4208$</field>
+    <options>no_full_log</options>
+    <info type="text">尝试启动 MS DTC 时无法初始化 COM。</info>
+    <description>Failed to initialize COM while trying to start MS DTC.</description>
+  </rule>
+
+  <rule id="60893" level="9">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4209$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 组件中出现严重错误，进程终止。</info>
+    <description>A critical error occurred in an MS DTC component, process terminating.</description>
+    <mitre>
+      <id>T1489</id>
+    </mitre>
+  </rule>
+
+  <rule id="60894" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4211$</field>
+    <options>no_full_log</options>
+    <info type="text">未能将调用方提供的 TIP 事务 URL 转换为有效的 MS DTC 事务 ID。</info>
+    <description>Failed to convert the caller provided TIP transaction URL into a valid MS DTC transaction ID.</description>
+  </rule>
+
+  <rule id="60895" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4212$|^4213$</field>
+    <options>no_full_log</options>
+    <info type="text">无法获取 OLE 事务代理的文件名。</info>
+    <description>Unable to get the file name for the OLE transactions proxy.</description>
+  </rule>
+
+  <rule id="60896" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4214$</field>
+    <options>no_full_log</options>
+    <info type="text">OLE 事务代理 DLL 中缺少 DllGetTransactionManagerCore 函数。</info>
+    <description>The DllGetTransactionManagerCore function is missing from the OLE transactions proxy DLL.</description>
+  </rule>
+
+  <rule id="60897" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4215$</field>
+    <options>no_full_log</options>
+    <info type="text">无法连接到远程 MS DTC 事务管理器系统上的注册表。</info>
+    <description>Failed to connect to the registry on the remote MS DTC transaction manager's system.</description>
+  </rule>
+
+  <rule id="60898" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4216$</field>
+    <options>no_full_log</options>
+    <info type="text">未能打开包含事务管理器列表的注册表项。</info>
+    <description>Failed to open the registry key containing the list of transaction managers.</description>
+  </rule>
+
+  <rule id="60899" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4217$</field>
+    <options>no_full_log</options>
+    <info type="text">无法从注册表中读取默认事务管理器的名称。</info>
+    <description>Failed to read the name of the default transaction manager from the registry.</description>
+  </rule>
+
+  <rule id="60900" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4224$</field>
+    <options>no_full_log</options>
+    <info type="text">无法打开包含 OLE 事务代理 DLL 名称的注册表项。</info>
+    <description>Failed to open the registry key containing the name of the OLE transactions proxy DLL.</description>
+  </rule>
+
+  <rule id="60901" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4225$</field>
+    <options>no_full_log</options>
+    <info type="text">无法从注册表中读取 OLE 事务代理 DLL 的名称。</info>
+    <description>Failed to read the name of the OLE transactions proxy DLL from the registry.</description>
+  </rule>
+
+  <rule id="60902" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4226$</field>
+    <options>no_full_log</options>
+    <info type="text">无法通过 MS DTC 代理 DLL 启动 MS DTC。</info>
+    <description>Failed to start MS DTC via the MS DTC proxy DLL.</description>
+  </rule>
+
+  <rule id="60903" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4227$</field>
+    <options>no_full_log</options>
+    <info type="text">无法启动 MS DTC，因为集群支持初始化失败。</info>
+    <description>Unable to start MS DTC because initialization of cluster support failed.</description>
+  </rule>
+
+  <rule id="60904" level="8">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4229$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC TIP 网关非法转换。</info>
+    <description>MS DTC TIP gateway illegal transition.</description>
+  </rule>
+
+  <rule id="60905" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4230$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC TIP 网关无效值。</info>
+    <description>MS DTC TIP gateway invalid value.</description>
+  </rule>
+
+  <rule id="60906" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4231$|^4232$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC TIP 网关在调用 CoCreateInstance 时遇到错误。</info>
+    <description>MS DTC TIP gateway encountered error calling CoCreateInstance.</description>
+  </rule>
+
+  <rule id="60907" level="9">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4233$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 组件无法为关键操作分配内存。</info>
+    <description>An MS DTC component was unable to allocate memory for a critical operation.</description>
+  </rule>
+
+  <rule id="60908" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4240$|4241$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器发送了一个提示“ABORT COMMAND”。</info>
+    <description>The MS DTC transaction manager sent a TIP "ABORT COMMAND".</description>
+  </rule>
+
+  <rule id="60909" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4242$|4243$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器发送了一个提示“PUSH COMMAND”。</info>
+    <description>The MS DTC transaction manager sent a TIP "PUSH COMMAND".</description>
+  </rule>
+
+  <rule id="60910" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4244$|^4245$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器发送了一个提示“PREPARE COMMAND”。</info>
+    <description>The MS DTC transaction manager sent a TIP "PREPARE COMMAND".</description>
+  </rule>
+
+  <rule id="60911" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4246$|^4247$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器发送了一个提示“COMMIT、QUERY 或 RECONNECT COMMAND”。</info>
+    <description>The MS DTC transaction manager sent a TIP "COMMIT, QUERY, or RECONNECT COMMAND".</description>
+  </rule>
+
+  <rule id="60912" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4248$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器收到提示“ERROR COMMAND”。</info>
+    <description>The MS DTC transaction manager received a TIP "ERROR COMMAND".</description>
+  </rule>
+
+  <rule id="60913" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4249$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器收到一个未知或意外的活动事务的 TIP 命令。</info>
+    <description>The MS DTC transaction manager received an unknown or unexpected TIP command for an active transaction.</description>
+  </rule>
+
+  <rule id="60914" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4352$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器收到“Prepared”事务的提示“ERROR COMMAND”。</info>
+    <description>The MS DTC transaction manager received a TIP "ERROR COMMAND" for a "Prepared" transaction.</description>
+  </rule>
+
+  <rule id="60915" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4353$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器收到“Prepared”事务的意外或未知 TIP 命令。</info>
+    <description>The MS DTC transaction manager received an unexpected or unknown TIP command for a "Prepared" transaction.</description>
+  </rule>
+
+  <rule id="60916" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4356$</field>
+    <options>no_full_log</options>
+    <info type="text">无法初始化 MS DTC 通信管理器。</info>
+    <description>Failed to initialize the MS DTC Communication Manager.</description>
+  </rule>
+
+  <rule id="60917" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4357$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 无法与远程系统上的 MS DTC 通信。</info>
+    <description>MS DTC is unable to communicate with MS DTC on a remote system.</description>
+  </rule>
+
+  <rule id="60918" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4358$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 连接管理器无法向 RPC 注册以使用 TCP/IP 或 UDP/IP。</info>
+    <description>The MS DTC connection manager is unable to register with RPC to use TCP/IP or UDP/IP.</description>
+  </rule>
+
+  <rule id="60919" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4359$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 无法与远程系统上的 MS DTC 通信。</info>
+    <description>MS DTC is unable to communicate with MS DTC on a remote system.</description>
+  </rule>
+
+  <rule id="60920" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4360$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 无法分配控制台。</info>
+    <description>MS DTC was not able to allocate a console.</description>
+  </rule>
+
+  <rule id="60921" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4361$</field>
+    <options>no_full_log</options>
+    <info type="text">检测到未完全初始化的 MS DTC 日志文件。</info>
+    <description>An incompletely initialized MS DTC log file was detected.</description>
+  </rule>
+
+  <rule id="60922" level="9">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4362$</field>
+    <options>no_full_log</options>
+    <info type="text">非法转换导致致命错误。</info>
+    <description>Illegal transition caused fatal error.</description>
+  </rule>
+
+  <rule id="60923" level="9">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4363$</field>
+    <options>no_full_log</options>
+    <info type="text">内存不足导致致命错误。</info>
+    <description>Out of memory caused fatal error.</description>
+  </rule>
+
+  <rule id="60924" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4367$</field>
+    <options>no_full_log</options>
+    <info type="text">同步对象上发生意外事件。</info>
+    <description>Unexpected event occurred on synchronization object.</description>
+  </rule>
+
+  <rule id="60925" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4368$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器中发生意外错误。</info>
+    <description>Unexpected error occurred in the MS DTC XA transaction manager.</description>
+  </rule>
+
+  <rule id="60926" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4370$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 无法绑定到 TIP 套接字。</info>
+    <description>MS DTC was unable to bind to the TIP socket.</description>
+  </rule>
+
+  <rule id="60927" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4371$|^4372$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器向另一个事务管理器发送了一个提示“PULL COMMAND”。</info>
+    <description>The MS DTC transaction manager sent a TIP "PULL COMMAND" to another transaction manager.</description>
+  </rule>
+
+  <rule id="60928" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4374$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器收到活动事务的提示“ERROR COMMAND”。</info>
+    <description>The MS DTC transaction manager received a TIP "ERROR COMMAND" for an active transaction.</description>
+  </rule>
+
+  <rule id="60929" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4375$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器收到一个未知或意外的活动事务的 TIP 命令。</info>
+    <description>The MS DTC transaction manager received an unknown or unexpected TIP command for an active transaction.</description>
+  </rule>
+
+  <rule id="60930" level="4">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4378$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 的现有群集资源配置不正确。</info>
+    <description>The existing cluster resource for MS DTC is not configured correctly.</description>
+  </rule>
+
+  <rule id="60931" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4379$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 的现有群集资源是较新版本。</info>
+    <description>The existing cluster resource for MS DTC is of a newer version.</description>
+  </rule>
+
+  <rule id="60932" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4380$</field>
+    <options>no_full_log</options>
+    <info type="text">在此节点上安装 MS DTC 曾经是安装了更新版本的 MS DTC 的集群的一部分。</info>
+    <description>The installation of MS DTC on this node used to be a part of cluster that had a newer version of MS DTC installed.</description>
+  </rule>
+
+  <rule id="60933" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4381$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 无法确定与本地注册表中的群集支持相关的数据版本。</info>
+    <description>MS DTC was unable to determine the version of the data associated with cluster support in the local registry.</description>
+  </rule>
+
+  <rule id="60934" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4386$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 无法启动，因为它未能在集群安装后初始化日志文件以供其首次使用。</info>
+    <description>MS DTC cannot start because it failed to initialize the log file for its first usage after a cluster install.</description>
+  </rule>
+
+  <rule id="60935" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4399$</field>
+    <options>no_full_log</options>
+    <info type="text">无法建立连接以跟踪事务。</info>
+    <description>Could not establish connection to trace transaction.</description>
+  </rule>
+
+  <rule id="60936" level="4">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4400$</field>
+    <options>no_full_log</options>
+    <info type="text">未选择事务。</info>
+    <description>No transaction is selected.</description>
+  </rule>
+
+  <rule id="60937" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4401$</field>
+    <options>no_full_log</options>
+    <info type="text">未发现事务。</info>
+    <description>Transaction not found.</description>
+  </rule>
+
+  <rule id="60938" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4402$</field>
+    <options>no_full_log</options>
+    <info type="text">事务管理器的版本与此功能不兼容。</info>
+    <description>The version of the transaction manager is not compatible for this feature.</description>
+  </rule>
+
+  <rule id="60939" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4403$</field>
+    <options>no_full_log</options>
+    <info type="text">尝试将事务转储到跟踪文件失败。</info>
+    <description>The attempt to dump the transaction to a trace file failed.</description>
+  </rule>
+
+  <rule id="60940" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4404$</field>
+    <options>no_full_log</options>
+    <info type="text">跟踪基础设施的初始化失败。</info>
+    <description>The initialization of the tracing infrastructure failed.</description>
+  </rule>
+
+  <rule id="60941" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4405$</field>
+    <options>no_full_log</options>
+    <info type="text">尝试创建新的跟踪会话失败。</info>
+    <description>The attempt to create a new trace session failed.</description>
+  </rule>
+
+  <rule id="60942" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4406$</field>
+    <options>no_full_log</options>
+    <info type="text">尝试停止现有跟踪会话失败。</info>
+    <description>The attempt to stop the existing trace session failed.</description>
+  </rule>
+
+  <rule id="60943" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4407$</field>
+    <options>no_full_log</options>
+    <info type="text">尝试刷新现有跟踪数据失败。</info>
+    <description>The attempt to flush the existing trace data failed.</description>
+  </rule>
+
+  <rule id="60944" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4408$</field>
+    <options>no_full_log</options>
+    <info type="text">尝试更新现有跟踪会话的最大缓冲区计数失败。</info>
+    <description>The attempt to update the maximum buffer count of the existing trace session failed.</description>
+  </rule>
+
+  <rule id="60945" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4409$</field>
+    <options>no_full_log</options>
+    <info type="text">基础设施报告到目前为止丢失的跟踪事件数等于 $(win.eventdata.data)。</info>
+    <description>The infrastructure has reported that the number of trace events that have been lost until now is equal to $(win.eventdata.data).</description>
+  </rule>
+
+  <rule id="60946" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4410$</field>
+    <options>no_full_log</options>
+    <info type="text">为更新跟踪设置而启动的线程失败。</info>
+    <description>The thread launched to update the trace settings has failed.</description>
+  </rule>
+
+  <rule id="60947" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4411$</field>
+    <options>no_full_log</options>
+    <info type="text">尝试设置跟踪特定的注册表设置失败。</info>
+    <description>The attempt to set the trace specific registry settings failed.</description>
+  </rule>
+
+  <rule id="60948" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4412$</field>
+    <options>no_full_log</options>
+    <info type="text">未能创建新的跟踪会话。</info>
+    <description>Failed to create a new trace session.</description>
+  </rule>
+
+  <rule id="60949" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4413$</field>
+    <options>no_full_log</options>
+    <info type="text">未能停止现存的跟踪会话。</info>
+    <description>Failed to stop the existing trace session.</description>
+  </rule>
+
+  <rule id="60950" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4414$</field>
+    <options>no_full_log</options>
+    <info type="text">未能刷新现存的跟踪会话。</info>
+    <description>Failed to flush the existing trace data.</description>
+  </rule>
+
+  <rule id="60951" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4415$</field>
+    <options>no_full_log</options>
+    <info type="text">无法更新现有跟踪会话的最大缓冲区计数。</info>
+    <description>Failed to update the maximum buffer count of the existing trace session.</description>
+  </rule>
+
+  <rule id="60952" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4416$</field>
+    <options>no_full_log</options>
+    <info type="text">未能更新注册表中的所有跟踪设置。</info>
+    <description>Failed to update all the trace settings in the registry.</description>
+  </rule>
+
+  <rule id="60953" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4417$</field>
+    <options>no_full_log</options>
+    <info type="text">无法从注册表加载所有跟踪设置。</info>
+    <description>Failed to load all the trace settings from the registry.</description>
+  </rule>
+
+  <rule id="60954" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4418$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器启动失败。</info>
+    <description>MS DTC transaction manager start failed.</description>
+  </rule>
+
+  <rule id="60955" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4419$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 未能加载系统还原信息。</info>
+    <description>MS DTC failed to load the system restore information.</description>
+  </rule>
+
+  <rule id="60956" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4420$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 无法处理系统还原事件。</info>
+    <description>MS DTC failed to process a system restore event.</description>
+  </rule>
+
+  <rule id="60957" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4421$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 未能保存系统还原信息。</info>
+    <description>MS DTC failed to save the system restore information.</description>
+  </rule>
+
+  <rule id="60958" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4422$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 已处理系统还原事件。</info>
+    <description>MS DTC has processed a system restore event.</description>
+  </rule>
+
+  <rule id="60959" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4425$</field>
+    <options>no_full_log</options>
+    <info type="text">基础架构报告，由于缺少足够的缓冲区空间，尝试跟踪事件失败。</info>
+    <description>The infrastructure has reported that an attempt to trace an event has failed cause of lack of enough buffer space.</description>
+  </rule>
+
+  <rule id="60960" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4426$</field>
+    <options>no_full_log</options>
+    <info type="text">无法从注册表中读取所需的名称对象。</info>
+    <description>Failed to read the needed name objects from the registry.</description>
+  </rule>
+
+  <rule id="60961" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4427$</field>
+    <options>no_full_log</options>
+    <info type="text">无法初始化所需的名称对象。</info>
+    <description>Failed to initialize the needed name objects.</description>
+  </rule>
+
+  <rule id="60962" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4428$</field>
+    <options>no_full_log</options>
+    <info type="text">未能停止 MSDTC 服务或其依赖服务之一。</info>
+    <description>Failed to stop MSDTC service or one of its dependent services.</description>
+  </rule>
+
+  <rule id="60963" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4429$</field>
+    <options>no_full_log</options>
+    <info type="text">未能在 MS DTC 服务上设置安全属性。</info>
+    <description>Failed to set the security attributes on the MS DTC service.</description>
+  </rule>
+
+  <rule id="60964" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4431$</field>
+    <options>no_full_log</options>
+    <info type="text">无法停止 MS DTC 服务。</info>
+    <description>Failed to stop the MS DTC service.</description>
+  </rule>
+
+  <rule id="60965" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4432$</field>
+    <options>no_full_log</options>
+    <info type="text">无法重新启动 MS DTC 服务。</info>
+    <description>Failed to restart the MS DTC service.</description>
+  </rule>
+
+  <rule id="60966" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4433$|^4434$|^4435$|^4436$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务管理器处于不一致状态，无法继续。</info>
+    <description>The MS DTC transaction manager is in an inconsistent state and cannot proceed.</description>
+  </rule>
+
+  <rule id="60967" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4437$</field>
+    <options>no_full_log</options>
+    <info type="text">运行 MS DTC 的帐户无效。</info>
+    <description>The account that the MS DTC is running under is invalid.</description>
+  </rule>
+
+  <rule id="60968" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4438$</field>
+    <options>no_full_log</options>
+    <info type="text">在注册表中设置 MS DTC 服务帐户信息失败。</info>
+    <description>Failed to set the MS DTC service account information in the registry.</description>
+  </rule>
+
+  <rule id="60969" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4440$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 服务正在终止，因为它没有及时启动。</info>
+    <description>The MS DTC Service is terminating because it didn't startup in a timely manner.</description>
+  </rule>
+
+  <rule id="60970" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4441$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 组件遇到内部错误。</info>
+    <description>A MS DTC component has encountered an internal error.</description>
+  </rule>
+
+  <rule id="60971" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4442$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 无法启动，因为此版本的 dtc 低于允许的最低有效版本。</info>
+    <description>MS DTC was unable to start because this version of dtc is less than the least valid version allowable.</description>
+  </rule>
+
+  <rule id="60972" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4443$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 无法启动，因为此版本的 dtc 与安装在群集的另一个节点上的 MS DTC 版本不兼容。</info>
+    <description>MS DTC was unable to start because this version of dtc is not compatible with the version of MS DTC installed on another node of the cluster.</description>
+  </rule>
+
+  <rule id="60973" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4444$</field>
+    <options>no_full_log</options>
+    <info type="text">XA 事务管理器处于不一致状态，无法继续。</info>
+    <description>The XA transaction manager is in an inconsistent state and cannot proceed.</description>
+  </rule>
+
+  <rule id="60974" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4446$</field>
+    <options>no_full_log</options>
+    <info type="text">输入 MSDTC 日志存储警告限制。</info>
+    <description>Entering MSDTC log storage warning limits.</description>
+  </rule>
+
+  <rule id="60975" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4447$</field>
+    <options>no_full_log</options>
+    <info type="text">离开 MSDTC 日志存储警告限制。</info>
+    <description>Leaving MSDTC log storage warning limits.</description>
+  </rule>
+
+  <rule id="60976" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4448$</field>
+    <options>no_full_log</options>
+    <info type="text">KTMRM 服务加载系统还原信息失败。</info>
+    <description>KTMRM service failed to load the system restore information.</description>
+  </rule>
+
+  <rule id="60977" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4452$</field>
+    <options>no_full_log</options>
+    <info type="text">尝试冻结事务管理器失败。</info>
+    <description>Attempt to freeze the transaction manager failed.</description>
+  </rule>
+
+  <rule id="60978" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4453$</field>
+    <options>no_full_log</options>
+    <info type="text">尝试解冻事务管理器失败。</info>
+    <description>Attempt to thaw the transaction manager failed.</description>
+  </rule>
+
+  <rule id="60979" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4454$</field>
+    <options>no_full_log</options>
+    <info type="text">无法准备 MSDTC 进行成像。</info>
+    <description>Failed to prepare MSDTC for imaging.</description>
+  </rule>
+
+  <rule id="60980" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4455$</field>
+    <options>no_full_log</options>
+    <info type="text">连接到内核事务管理器时出现意外错误。</info>
+    <description>Unexpected error when connecting to the kernel transaction manager.</description>
+  </rule>
+
+  <rule id="60981" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4456$</field>
+    <options>no_full_log</options>
+    <info type="text">无法创建用于内核事务管理器的通信通道。</info>
+    <description>Unable to create a communication channel to the kernel transaction manager.</description>
+  </rule>
+
+  <rule id="60982" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4457$</field>
+    <options>no_full_log</options>
+    <info type="text">MSDTC 在 Windows 升级期间无法迁移其日志。</info>
+    <description>MSDTC was unable to migrate its log during Windows upgrade.</description>
+  </rule>
+
+  <rule id="60983" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4458$</field>
+    <options>no_full_log</options>
+    <info type="text">MSDTC 在迁移联系人标识符期间遇到错误。</info>
+    <description>MSDTC encountered an error during migration of contact identifiers.</description>
+  </rule>
+
+  <rule id="60984" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^4459$</field>
+    <options>no_full_log</options>
+    <info type="text">MSDTC 在 Windows 升级期间遇到错误。</info>
+    <description>MSDTC encountered an error during Windows upgrade.</description>
+  </rule>
+
+  <rule id="60985" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53252$</field>
+    <options>no_full_log</options>
+    <info type="text">已超过最大异步检查点数。</info>
+    <description>The maximum number of asynchronous checkpoints has been exceeded.</description>
+  </rule>
+
+  <rule id="60986" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53253$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到使用的最大日志缓冲区数。</info>
+    <description>The maximum number of log buffers in use has been reached.</description>
+  </rule>
+
+  <rule id="60987" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53256$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 在恢复时检测到脏日志页面，并且正在从其他页面重建状态。</info>
+    <description>MS DTC detected dirty log pages on recovery, and is reconstructing state from other pages.</description>
+  </rule>
+
+  <rule id="60988" level="9">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53267$</field>
+    <options>no_full_log</options>
+    <info type="text">收到未知的连接管理器消息类型。</info>
+    <description>Received unknown connection manager message type.</description>
+  </rule>
+
+  <rule id="60989" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53274$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器调用了 XA 资源管理器的 xa_commit 函数。</info>
+    <description>The MS DTC XA transaction manager called the XA resource manager's xa_commit function.</description>
+  </rule>
+
+  <rule id="60990" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53281$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器调用了 XA 资源管理器的 xa_open 函数。</info>
+    <description>The MS DTC XA transaction manager called the XA resource manager's xa_open function.</description>
+  </rule>
+
+  <rule id="60991" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53283$</field>
+    <options>no_full_log</options>
+    <info type="text">DTC 参数值信息。</info>
+    <description>DTC parameter values information.</description>
+  </rule>
+
+  <rule id="60992" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53284$</field>
+    <options>no_full_log</options>
+    <info type="text">XA 事务管理器试图加载 XA 资源管理器 DLL。</info>
+    <description>The XA transaction manager attempted to load the XA resource manager DLL.</description>
+  </rule>
+
+  <rule id="60993" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53285$</field>
+    <options>no_full_log</options>
+    <info type="text">XA 事务管理器试图在 XA 资源管理器 DLL 中定位“GetXaSwitch”函数。</info>
+    <description>The XA transaction manager attempted to locate the "GetXaSwitch" function in the XA resource manager DLL.</description>
+  </rule>
+
+  <rule id="60994" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53287$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 事务结果未预料到。</info>
+    <description>MS DTC transaction outcome is unexpected.</description>
+  </rule>
+
+  <rule id="60995" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53288$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器无法执行恢复。</info>
+    <description>The MS DTC XA transaction manager was unable to perform recovery.</description>
+  </rule>
+
+  <rule id="60996" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53294$|^53295$|^53296$</field>
+    <options>no_full_log</options>
+    <info type="text">启发式损坏信息。</info>
+    <description>Heuristic damage information.</description>
+  </rule>
+
+  <rule id="60997" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53297$</field>
+    <options>no_full_log</options>
+    <info type="text">XA 事务管理器尝试使用 XA 资源管理器执行恢复。</info>
+    <description>The XA transaction manager attempted to perform recovery with the XA resource manager.</description>
+  </rule>
+
+  <rule id="60998" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53298$</field>
+    <options>no_full_log</options>
+    <info type="text">XA 事务管理器调用了 XA 资源管理器的 xa_open 函数。</info>
+    <description>The XA transaction manager called the XA resource manager's xa_open function.</description>
+  </rule>
+
+  <rule id="60999" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53299$</field>
+    <options>no_full_log</options>
+    <info type="text">XA 事务管理器调用了 XA 资源管理器的 xa_close 函数。</info>
+    <description>The XA transaction manager called the XA resource manager's xa_close function.</description>
+  </rule>
+
+  <rule id="61000" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53300$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器调用了 XA 资源管理器的 xa_recover 函数。</info>
+    <description>The MS DTC XA transaction manager called the XA resource manager's xa_recover function.</description>
+  </rule>
+
+  <rule id="61001" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53301$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器调用了 XA 资源管理器的 xa_commit 函数。</info>
+    <description>The MS DTC XA transaction manager called the XA resource manager's xa_commit function.</description>
+  </rule>
+
+  <rule id="61002" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53302$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器调用了 XA 资源管理器的 xa_rollback 函数。</info>
+    <description>The MS DTC XA transaction manager called the XA resource manager's xa_rollback function.</description>
+  </rule>
+
+  <rule id="61003" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53303$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器调用了 XA 资源管理器的 xa_prepare 函数。</info>
+    <description>The MS DTC XA transaction manager called the XA resource manager's xa_prepare function.</description>
+  </rule>
+
+  <rule id="61004" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53304$</field>
+    <options>no_full_log</options>
+    <info type="text">XA 事务管理器在 XA 资源管理器 DLL 中调用了“GetXaSwitch”函数。</info>
+    <description>The XA transaction manager called the "GetXaSwitch" function in the XA resource manager DLL.</description>
+  </rule>
+
+  <rule id="61005" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53305$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器无法代表 XA 资源管理器向 MS DTC 事务管理器注册。</info>
+    <description>The MS DTC XA transaction manager could not enroll with the MS DTC transaction manager on behalf of the XA resource manager.</description>
+  </rule>
+
+  <rule id="61006" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53315$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器调用了 XA 资源管理器的 xa_commit 函数。</info>
+    <description>The MS DTC XA transaction manager called the XA resource manager's xa_commit function.</description>
+  </rule>
+
+  <rule id="61007" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53316$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器调用了 XA 资源管理器的 xa_rollback 函数。</info>
+    <description>The MS DTC XA transaction manager called the XA resource manager's xa_rollback function.</description>
+  </rule>
+
+  <rule id="61008" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53317$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器调用了 XA 资源管理器的 xa_prepare 函数。</info>
+    <description>The MS DTC XA transaction manager called the XA resource manager's xa_prepare function.</description>
+  </rule>
+
+  <rule id="61009" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53318$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器调用 XA 资源管理器的 xa_commit 函数并设置了 TMONEPHASE 标志。</info>
+    <description>The MS DTC XA transaction manager called the XA resource manager's xa_commit function with the TMONEPHASE flag set.</description>
+  </rule>
+
+  <rule id="61010" level="3">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53319$</field>
+    <options>no_full_log</options>
+    <info type="text">XaTmMinWarmRecoveryInterval 的值大于 XaTmMaxWarmRecoveryInterval 的值。</info>
+    <description>The value of XaTmMinWarmRecoveryInterval is greater than the value of XaTmMaxWarmRecoveryInterval.</description>
+  </rule>
+
+  <rule id="61011" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53320$</field>
+    <options>no_full_log</options>
+    <info type="text">在 MS DTC 安装期间，尝试保留旧日志文件失败。</info>
+    <description>During MS DTC installation, the attempt to preserve the old log file failed.</description>
+  </rule>
+
+  <rule id="61012" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53321$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 收到无效消息。</info>
+    <description>MS DTC has received an invalid message.</description>
+  </rule>
+
+  <rule id="61013" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53322$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC 组件中的连接管理器收到无效消息。</info>
+    <description>The connection manager in a MS DTC component has received an invalid message.</description>
+  </rule>
+
+  <rule id="61014" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53323$</field>
+    <options>no_full_log</options>
+    <info type="text">MS DTC XA 事务管理器尝试解密日志记录中的信息失败。</info>
+    <description>The MS DTC XA transaction manager failed attempting to decrypt information in a log record.</description>
+  </rule>
+
+  <rule id="61015" level="5">
+    <if_sid>60838</if_sid>
+    <field name="win.system.eventID">^53325$</field>
+    <options>no_full_log</options>
+    <info type="text">KtmRm 收到无效消息。</info>
+    <description>KtmRm has received an invalid message.</description>
+  </rule>
+
+  <rule id="61016" level="0">
+    <if_sid>60602</if_sid>
+    <field name="win.system.providerName">^.NET Runtime$</field>
+    <options>no_full_log</options>
+    <info type="text">.NET 运行事件的分组。</info>
+    <description>Group of .NET runtime events.</description>
+  </rule>
+
+  <rule id="61017" level="9">
+    <if_sid>61016</if_sid>
+    <field name="win.system.eventID">^1026$</field>
+    <options>no_full_log</options>
+    <info type="text">进程因未处理的异常而终止。</info>
+    <description>The process was terminated due to an unhandled exception.</description>
+    <mitre>
+      <id>T1489</id>
+    </mitre>
+  </rule>
+
+  <rule id="61018" level="5">
+    <if_sid>61016</if_sid>
+    <field name="win.system.eventID">^0$</field>
+    <options>no_full_log</options>
+    <info type="text">找不到源 .NET 运行时中事件 ID 0 的描述。</info>
+    <description>The description for event ID 0 in source .NET runtime cannot be found.</description>
+  </rule>
+
+  <rule id="61019" level="5">
+    <if_sid>61016</if_sid>
+    <field name="win.system.eventID">^1000$</field>
+    <options>no_full_log</options>
+    <info type="text">.NET 运行时加载失败。</info>
+    <description>.NET Runtime failed to load.</description>
+  </rule>
+
+  <rule id="61020" level="5">
+    <if_sid>61016</if_sid>
+    <field name="win.system.eventID">^1022$</field>
+    <options>no_full_log</options>
+    <info type="text">.NET 运行时 - CLR 2.0 不支持为 CLR 1.x 编写的分析器。</info>
+    <description>.NET Runtime - CLR 2.0 does not support profilers written for CLR 1.x.</description>
+  </rule>
+
+  <rule id="61021" level="9">
+    <if_sid>61016</if_sid>
+    <field name="win.system.eventID">^1023$</field>
+    <options>no_full_log</options>
+    <info type="text">.NET 运行时 - 致命的执行引擎错误。</info>
+    <description>.NET Runtime - Fatal execution engine error.</description>
+  </rule>
+
+  <rule id="61022" level="5">
+    <if_sid>60602</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-LocationProvider$</field>
+    <field name="win.system.eventID">^2006$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 位置提供程序数据库出错。</info>
+    <description>There was an error with the Windows location provider database.</description>
+  </rule>
+
+  <rule id="61023" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-LocationProvider$</field>
+    <field name="win.system.eventID">^2001$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 位置提供程序已启动。</info>
+    <description>Windows location provider started.</description>
+  </rule>
+
+  <rule id="61024" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-LocationProvider$</field>
+    <field name="win.system.eventID">^2003$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 位置提供程序已关闭。</info>
+    <description>The Windows location provider has shutdown.</description>
+  </rule>
+
+  <rule id="61025" level="3">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-UserModePowerService$</field>
+    <field name="win.system.eventID">^12$</field>
+    <options>no_full_log</options>
+    <info type="text">进程 $(win.eventdata.processPath) 已将策略方案从 $(win.eventdata.oldSchemeGuid) 重置为 $(win.eventdata.newSchemeGuid)。</info>
+    <description>Process $(win.eventdata.processPath) has reset policy scheme from $(win.eventdata.oldSchemeGuid) to $(win.eventdata.newSchemeGuid).</description>
+  </rule>
+
+  <rule id="61026" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Application Management$</field>
+    <options>no_full_log</options>
+    <info type="text">应用程序管理事件组。</info>
+    <description>Group of application management events.</description>
+  </rule>
+
+  <rule id="61027" level="3">
+    <if_sid>61026</if_sid>
+    <field name="win.system.eventID">^101$</field>
+    <options>no_full_log</options>
+    <info type="text">申请分配失败。</info>
+    <description>Assignment of application failed.</description>
+  </rule>
+
+  <rule id="61028" level="5">
+    <if_sid>61026</if_sid>
+    <field name="win.system.eventID">^103$</field>
+    <options>no_full_log</options>
+    <info type="text">从策略中删除应用程序的分配失败。</info>
+    <description>The removal of the assignment of application from policy failed.</description>
+  </rule>
+
+  <rule id="61029" level="3">
+    <if_sid>61026</if_sid>
+    <field name="win.system.eventID">^106$</field>
+    <options>no_full_log</options>
+    <info type="text">应用程序被配置为升级另一个应用程序。</info>
+    <description>Application was configured to upgrade another application.</description>
+  </rule>
+
+  <rule id="61030" level="5">
+    <if_sid>61026</if_sid>
+    <field name="win.system.eventID">^107$</field>
+    <options>no_full_log</options>
+    <info type="text">应用程序的安装程序执行失败。</info>
+    <description>The execution of the setup program for an application failed.</description>
+    <mitre>
+      <id>T1203</id>
+    </mitre>
+  </rule>
+
+  <rule id="61031" level="5">
+    <if_sid>61026</if_sid>
+    <field name="win.system.eventID">^108$</field>
+    <options>no_full_log</options>
+    <info type="text">未能将更改应用到软件安装设置。</info>
+    <description>Failed to apply changes to software installation settings.</description>
+  </rule>
+
+  <rule id="61032" level="3">
+    <if_sid>61026</if_sid>
+    <field name="win.system.eventID">^301$</field>
+    <options>no_full_log</options>
+    <info type="text">申请分配成功。</info>
+    <description>The assignment of an application succeeded.</description>
+  </rule>
+
+  <rule id="61033" level="3">
+    <if_sid>61026</if_sid>
+    <field name="win.system.eventID">^303$</field>
+    <options>no_full_log</options>
+    <info type="text">已成功删除应用程序的分配。</info>
+    <description>The removal of the assignment of an application succeeded.</description>
+  </rule>
+
+  <rule id="61034" level="3">
+    <if_sid>61026</if_sid>
+    <field name="win.system.eventID">^307$</field>
+    <options>no_full_log</options>
+    <info type="text">程序的 setup 命令启动成功。</info>
+    <description>The launch of the setup command for a program succeeded.</description>
+  </rule>
+
+  <rule id="61035" level="5">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^DNSCache$</field>
+    <field name="win.system.eventID">^11050$</field>
+    <options>no_full_log</options>
+    <info type="text">DNS 客户端服务无法联系任何 DNS 服务器进行重复尝试。</info>
+    <description>The DNS client service could not contact any DNS servers for a repeated number of attempts.</description>
+  </rule>
+
+  <rule id="61036" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Disk$</field>
+    <options>no_full_log</options>
+    <info type="text">磁盘事件的分组。</info>
+    <description>Group of disk events.</description>
+  </rule>
+
+  <rule id="61037" level="7">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^7$</field>
+    <options>no_full_log</options>
+    <info type="text">设备有坏的块。</info>
+    <description>A device has a bad block.</description>
+  </rule>
+
+  <rule id="61038" level="5">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^9$</field>
+    <options>no_full_log</options>
+    <info type="text">设备在超时期限内没有响应。</info>
+    <description>A device did not respond within the timeout period.</description>
+  </rule>
+
+  <rule id="61039" level="5">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^10$|^11$</field>
+    <options>no_full_log</options>
+    <info type="text">驱动程序检测到控制器错误。</info>
+    <description>The driver detected a controller error.</description>
+  </rule>
+
+  <rule id="61040" level="4">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^12$</field>
+    <options>no_full_log</options>
+    <info type="text">缺少配置信息中列出的条带集或卷集成员。</info>
+    <description>A stripe set or volume set member listed in the configuration information was missing.</description>
+  </rule>
+
+  <rule id="61041" level="4">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^13$</field>
+    <options>no_full_log</options>
+    <info type="text">容错驱动程序配置信息已损坏。</info>
+    <description>The fault tolerance driver configuration information is corrupted.</description>
+  </rule>
+
+  <rule id="61042" level="5">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^14$</field>
+    <options>no_full_log</options>
+    <info type="text">无法使用包含 \Device\MissingMirror1Member0 的 FT 集。</info>
+    <description>The FT set containing \Device\MissingMirror1Member0 cannot be used.</description>
+  </rule>
+
+  <rule id="61043" level="3">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^15$</field>
+    <options>no_full_log</options>
+    <info type="text">镜像初始化或同步开始。</info>
+    <description>Mirror initialization or synchronization started.</description>
+  </rule>
+
+  <rule id="61044" level="5">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^17$</field>
+    <options>no_full_log</options>
+    <info type="text">VDS 无法启动提供程序。</info>
+    <description>VDS fails to launch provider.</description>
+  </rule>
+
+  <rule id="61045" level="5">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^23$</field>
+    <options>no_full_log</options>
+    <info type="text">镜像初始化失败。</info>
+    <description>Initialization of mirror failed.</description>
+  </rule>
+
+  <rule id="61046" level="5">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^25$</field>
+    <options>no_full_log</options>
+    <info type="text">DCOM 错误。</info>
+    <description>DCOM error.</description>
+  </rule>
+
+  <rule id="61047" level="5">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^26$</field>
+    <options>no_full_log</options>
+    <info type="text">驱动器 c 的 diskeeper 碎片整理已停止：。</info>
+    <description>The diskeeper defragmentation has stopped for drive c:.</description>
+  </rule>
+
+  <rule id="61048" level="5">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^27$</field>
+    <options>no_full_log</options>
+    <info type="text">容错驱动程序检测到系统已脏关闭。</info>
+    <description>The fault tolerant driver detected the system was shutdown dirty.</description>
+    <mitre>
+      <id>T1529</id>
+    </mitre>
+  </rule>
+
+  <rule id="61049" level="5">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^32$</field>
+    <options>no_full_log</options>
+    <info type="text">驱动程序检测到设备 \Device\Harddisk2\DR2 已启用其写入缓存。</info>
+    <description>The driver detected that the device \Device\Harddisk2\DR2 has its write cache enabled.</description>
+  </rule>
+
+  <rule id="61050" level="3">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^33$</field>
+    <options>no_full_log</options>
+    <info type="text">使用设备 \device\harddisk0\partition2 上的纠错码恢复数据。</info>
+    <description>Data was recovered using error correction code on device \device\harddisk0\partition2.</description>
+  </rule>
+
+  <rule id="61051" level="5">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^34$</field>
+    <options>no_full_log</options>
+    <info type="text">驱动程序禁用了设备上的写入缓存。</info>
+    <description>The driver disabled the write cache on a device.</description>
+  </rule>
+
+  <rule id="61052" level="5">
+    <if_sid>61036</if_sid>
+    <field name="win.system.eventID">^41$</field>
+    <options>no_full_log</options>
+    <info type="text">磁盘上的文件系统结构已损坏且无法使用。</info>
+    <description>The file system structure on the disk is corrupt and unusable.</description>
+  </rule>
+
+  <rule id="61053" level="3">
+    <field name="win.system.providerName">^EventCreate$</field>
+    <field name="win.system.eventID">^100$</field>
+    <options>no_full_log</options>
+    <info type="text">在应用程序日志中创建的事件。</info>
+    <description>Event created in the application log.</description>
+  </rule>
+
+  <rule id="61054" level="0">
+    <if_sid>60600</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-EventCollector$</field>
+    <options>no_full_log</options>
+    <info type="text">EventCollector 事件的分组。</info>
+    <description>Group of EventCollector events.</description>
+  </rule>
+
+  <rule id="61055" level="5">
+    <if_sid>61054</if_sid>
+    <field name="win.system.eventID">^1$|^2$|^4$</field>
+    <options>no_full_log</options>
+    <info type="text">由于通信错误，无法在目标计算机上激活订阅。</info>
+    <description>The subscription could not be activated on target machine due to communication error.</description>
+  </rule>
+
+  <rule id="61056" level="5">
+    <if_sid>61054</if_sid>
+    <field name="win.system.eventID">^3$</field>
+    <options>no_full_log</options>
+    <info type="text">订阅已过期，将不再提供服务。</info>
+    <description>The subscription has expired and will no longer be serviced.</description>
+  </rule>
+
+  <rule id="61057" level="5">
+    <if_sid>61054</if_sid>
+    <field name="win.system.eventID">^6$</field>
+    <options>no_full_log</options>
+    <info type="text">订阅无法将事件从目标机器发布到此订阅的日志文件。</info>
+    <description>The subscription could not publish events from target machine to the log file of this subscription.</description>
+  </rule>
+
+  <rule id="61058" level="5">
+    <if_sid>61054</if_sid>
+    <field name="win.system.eventID">^501$</field>
+    <options>no_full_log</options>
+    <info type="text">来自目标机器的事件丢失并且无法传递。</info>
+    <description>An event from target machine is lost and could not be delivered.</description>
+  </rule>
+
+  <rule id="61059" level="5">
+    <if_sid>61054</if_sid>
+    <field name="win.system.eventID">^502$</field>
+    <options>no_full_log</options>
+    <info type="text">订阅检测丢弃的事件。</info>
+    <description>The subscription detects dropped events.</description>
+  </rule>
+
+  <rule id="61060" level="5">
+    <if_sid>60600,60601,60602</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-Perflib$</field>
+    <field name="win.system.eventID">^1008$</field>
+    <options>no_full_log</options>
+    <info type="text">服务远程访问的打开过程失败。</info>
+    <description>The open procedure for service remote access failed.</description>
+  </rule>
+
+  <rule id="61061" level="10" frequency="$MS_FREQ" timeframe="240">
+    <if_matched_sid>60602</if_matched_sid>
+    <options>no_full_log</options>
+    <info type="text">多个 Windows 错误应用程序事件。</info>
+    <description>Multiple Windows error application events.</description>
+  </rule>
+
+  <rule id="61062" level="10" frequency="$MS_FREQ" timeframe="120">
+    <if_matched_sid>60601</if_matched_sid>
+    <options>no_full_log</options>
+    <info type="text">多个 Windows 警告应用程序事件。</info>
+    <description>Multiple Windows warning application events.</description>
+  </rule>
+
+  <rule id="61063" level="0">
+    <if_sid>60601</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-SoftwareRestrictionPolicies$</field>
+    <options>no_full_log</options>
+    <info type="text">Microsoft-Windows-SoftwareRestrictionPolicies 事件的分组。</info>
+    <description>Group of Microsoft-Windows-SoftwareRestrictionPolicies events.</description>
+  </rule>
+
+  <rule id="61064" level="5">
+    <if_sid>61063</if_sid>
+    <field name="win.system.eventID">^865$</field>
+    <options>no_full_log</options>
+    <info type="text">默认软件限制策略级别由您的管理员限制访问。</info>
+    <description>Access restricted by your administrator by the default software restriction policy level.</description>
+  </rule>
+
+  <rule id="61065" level="5">
+    <if_sid>61063</if_sid>
+    <field name="win.system.eventID">^866$</field>
+    <options>no_full_log</options>
+    <info type="text">管理员使用策略规则按位置限制访问。</info>
+    <description>Access restricted by your administrator by location with policy rule .</description>
+  </rule>
+
+  <rule id="61066" level="5">
+    <if_sid>61063</if_sid>
+    <field name="win.system.eventID">^867$</field>
+    <options>no_full_log</options>
+    <info type="text">软件发布者政策限制您的管理员访问。</info>
+    <description>Access restricted by your administrator by software publisher policy.</description>
+  </rule>
+
+  <rule id="61067" level="5">
+    <if_sid>61063</if_sid>
+    <field name="win.system.eventID">^868$</field>
+    <options>no_full_log</options>
+    <info type="text">您的管理员通过策略规则限制访问。</info>
+    <description>Access restricted by your administrator by policy rule.</description>
+  </rule>
+
+  <rule id="61068" level="5">
+    <if_sid>61063</if_sid>
+    <field name="win.system.eventID">^882$</field>
+    <options>no_full_log</options>
+    <info type="text">您的管理员通过策略规则限制访问。</info>
+    <description>Access restricted by your administrator by policy rule.</description>
+  </rule>
+
+  <rule id="61069" level="0">
+    <if_sid>60003</if_sid>
+    <field name="win.system.severityValue">^AUDIT_FAILURE$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 应用程序审核失败事件。</info>
+    <description>Windows application audit failure event.</description>
+    <group>gpg13_4.12,</group>
+  </rule>
+
+  <rule id="61070" level="0">
+    <if_sid>60003</if_sid>
+    <field name="win.system.severityValue">^AUDIT_SUCCESS$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 应用程序审核成功事件。</info>
+    <description>Windows application audit success event.</description>
+    <group>gpg13_4.12,</group>
+  </rule>
+
+  <!-- MS SQL rules -->
+  <rule id="61071" level="5">
+    <if_sid>61069</if_sid>
+    <field name="win.system.eventID">^18456$</field>
+    <options>no_full_log</options>
+    <info type="text">MS SQL 服务器登录失败。</info>
+    <description>MS SQL server logon failure.</description>
+    <group>authentication_failed,gdpr_IV_32.2,gdpr_IV_35.7.d,gpg13_7.1,hipaa_164.312.b,nist_800_53_AC.7,nist_800_53_AU.14,pci_dss_10.2.4,pci_dss_10.2.5,tsc_CC6.1,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="61072" level="3">
+    <if_sid>61070</if_sid>
+    <field name="win.system.eventID">^18454$|^18453$</field>
+    <options>no_full_log</options>
+    <info type="text">MS SQL 服务器登录成功。</info>
+    <description>MS SQL server logon success.</description>
+    <mitre>
+      <id>T1078</id>
+    </mitre>
+    <group>authentication_success,gdpr_IV_32.2,gpg13_7.1,gpg13_7.2,hipaa_164.312.b,nist_800_53_AC.7,nist_800_53_AU.14,pci_dss_10.2.5,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+</group>

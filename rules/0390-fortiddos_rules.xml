@@ -1,0 +1,847 @@
+<!--
+  Copyright (C) 2015, Wazuh Inc.
+-->
+
+<!-- 
+  Rules for:
+    FortiDDOS ID: 44401 - 44599
+    
+  Reference:
+    https://help.fortinet.com/fddos/4-3-0/FortiDDoS/log_ref.htm
+-->
+
+<group name="fortinet,">
+
+  <rule id="44400" level="0">
+    <decoded_as>fortiddos-like</decoded_as>
+    <info type="text">FortiNet规则。</info>
+    <description>FortiNet Rules.</description>
+  </rule>
+
+</group>
+
+<group name="fortiddos,">
+
+  <rule id="44401" level="0">
+    <if_sid>44400</if_sid>
+    <field name="devid">^FI\S+|^FDD\S+</field>
+    <info type="text">FortiDDOS(飞塔DDOS防护解决方案)规则。</info>
+    <description>FortiDDOS Rules.</description>
+  </rule>
+
+  <rule id="44402" level="0">
+    <if_sid>44401</if_sid>
+    <field name="evecode">^1$</field>
+    <options>no_full_log</options>
+    <info type="text">第 3 层事件组。</info>
+    <description>Group of layer 3 events.</description>
+  </rule>
+
+  <rule id="44403" level="0">
+    <if_sid>44401</if_sid>
+    <field name="evecode">^2$</field>
+    <options>no_full_log</options>
+    <info type="text">第 4 层事件组。</info>
+    <description>Group of layer 4 events.</description>
+  </rule>
+
+  <rule id="44404" level="0">
+    <if_sid>44401</if_sid>
+    <field name="evecode">^4$</field>
+    <options>no_full_log</options>
+    <info type="text">第 7 层事件组。</info>
+    <description>Group of layer 7 events.</description>
+  </rule>
+
+  <rule id="44405" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^0$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到协议的有效速率限制。</info>
+    <description>Effective rate limit for the protocol has been reached.</description>
+  </rule>
+
+  <rule id="44406" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^1$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到片段阈值的有效速率限制。</info>
+    <description>Effective rate limit for the fragment threshold has been reached.</description>
+  </rule>
+
+  <rule id="44407" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^4$</field>
+    <options>no_full_log</options>
+    <description>Drops due to predefined IP header rules: Invalid header length (less than 5 words) total length less than 20 bytes End of Header before the data offset (while parsing options) length field in the LSRR or SSRR IP option is other than (3+(n*4)) where n is a value greater than or equal to 1 Pointer in the LSRR or SSRR IP option is other than (n*4) where n is a value greater than or equal to 1.</description>
+  </rule>
+
+  <rule id="44408" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^6$</field>
+    <options>no_full_log</options>
+    <info type="text">源跟踪 (ST) 表中的哈希冲突问题。</info>
+    <description>An issue with hash collisions in the source tracking (ST) table.</description>
+  </rule>
+
+  <rule id="44409" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^7$</field>
+    <options>no_full_log</options>
+    <info type="text">源跟踪 (ST) 表内部逻辑或内存存在问题。</info>
+    <description>An issue with the source tracking (ST) table internal logic or memory.</description>
+  </rule>
+
+  <rule id="44410" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^8$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到最活跃源阈值的有效速率限制。源IP地址被报告。</info>
+    <description>Effective rate limit for the most-active-source threshold has been reached. Source IP address is reported.</description>
+  </rule>
+
+  <rule id="44411" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^10$</field>
+    <options>no_full_log</options>
+    <info type="text">目标跟踪 (DT) 表中的哈希冲突问题。</info>
+    <description>An issue with hash collisions in the destination tracking (DT) table.</description>
+  </rule>
+
+  <rule id="44412" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^11$</field>
+    <options>no_full_log</options>
+    <info type="text">目标跟踪 (DT) 表内部逻辑或内存问题。</info>
+    <description>An issue with the destination tracking (DT) table internal logic or memory.</description>
+  </rule>
+
+  <rule id="44413" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^14$</field>
+    <options>no_full_log</options>
+    <info type="text">IP 头部无效的校验和。</info>
+    <description>Invalid IP header checksum.</description>
+  </rule>
+
+  <rule id="44414" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^15$</field>
+    <options>no_full_log</options>
+    <info type="text">相同的来源和受保护的 IP 地址(LAND 攻击）。</info>
+    <description>Identical source and protected IP addresses (LAND attack).</description>
+  </rule>
+
+  <rule id="44415" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^16$</field>
+    <options>no_full_log</options>
+    <info type="text">源/目的地址是本地主机（环回地址欺骗）。</info>
+    <description>Source/destination address is the local host (loopback address spoofing).</description>
+  </rule>
+
+  <rule id="44416" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^17$</field>
+    <options>no_full_log</options>
+    <info type="text">由于预定义的第 3 层规则而丢弃：除 IPv4 或 IPv6 之外的 IP 版本； 20 字节 IPv4 数据之前的 EOP(数据包结束);EOP 在 Total Length 指定的长度之前；保留标志集；设置更多碎片和不碎片标志；为 DSCP 和 ECN 添加了异常。</info>
+    <description>Drops due to predefined Layer 3 rules: IP version other than IPv4 or IPv6; EOP (End of Packet) before 20 bytes of IPv4 data; EOP comes before the length specified by Total Length; Reserved Flag set; More Frag and Don't Frag Flags set; Added Anomaly for DSCP and ECN.</description>
+  </rule>
+
+  <rule id="44417" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^50$|^54$|^55$</field>
+    <options>no_full_log</options>
+    <info type="text">第 3 层：被 SPP ACL 规则拒绝。</info>
+    <description>Layer 3: Denied by an SPP ACL rule.</description>
+  </rule>
+
+  <rule id="44418" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^59$</field>
+    <options>no_full_log</options>
+    <info type="text">被全球地理位置 ACL 拒绝。</info>
+    <description>Denied by the global geolocation ACL.</description>
+  </rule>
+
+  <rule id="44419" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^60$</field>
+    <options>no_full_log</options>
+    <info type="text">被全局 ACL 拒绝。</info>
+    <description>Denied by the global ACL.</description>
+  </rule>
+
+  <rule id="44420" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^61$</field>
+    <options>no_full_log</options>
+    <info type="text">被全局 IP Reputation ACL 拒绝。</info>
+    <description>Denied by the global IP Reputation ACL.</description>
+  </rule>
+
+  <rule id="44421" level="5">
+    <if_sid>44402</if_sid>
+    <field name="evesubcode">^62$</field>
+    <options>no_full_log</options>
+    <info type="text">被全局本地地址反欺骗 ACL 拒绝。</info>
+    <description>Denied by the global local address antispoofing ACL.</description>
+  </rule>
+
+  <rule id="44422" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^0$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到同步阈值的有效速率限制。</info>
+    <description>Effective rate limit for the syn threshold has been reached.</description>
+  </rule>
+
+  <rule id="44423" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^6$</field>
+    <options>no_full_log</options>
+    <info type="text">外部数据包是不属于任何已知连接的 TCP 数据包。启用 SPP 设置 foreign-packet 时跟踪。</info>
+    <description>A foreign packet is a TCP packet that does not belong to any known connections.  Tracked when the SPP setting foreign-packet is enabled.</description>
+  </rule>
+
+  <rule id="44424" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^7$</field>
+    <options>no_full_log</options>
+    <info type="text">数据包的序列号超出了可接受的窗口。在启用 SPP 设置 seq-validation 时跟踪。</info>
+    <description>Sequence number of a packet was outside the acceptable window.  Tracked when the SPP setting seq-validation is enabled.</description>
+  </rule>
+
+  <rule id="44425" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^10$</field>
+    <options>no_full_log</options>
+    <info type="text">TCP 状态机表中的哈希冲突问题。</info>
+    <description>An issue with hash collisions in TCP State Machine table.</description>
+  </rule>
+
+  <rule id="44426" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^11$</field>
+    <options>no_full_log</options>
+    <info type="text">TCP 状态机表内部逻辑或内存存在问题。</info>
+    <description>An issue with TCP State Machine table internal logic or memory.</description>
+  </rule>
+
+  <rule id="44427" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^12$</field>
+    <options>no_full_log</options>
+    <info type="text">收到的 TCP 数据包的状态与预期状态不一致。在启用 SPP 设置 state-transition-anomalies-validation 时跟踪。</info>
+    <description>State of the TCP packet received was not consistent with the expected state. Tracked when the SPP setting state-transition-anomalies-validation is enabled.</description>
+  </rule>
+
+  <rule id="44428" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^15$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到新连接阈值的有效速率限制。来自以前确定为合法 IP 地址的新连接激增可能是僵尸攻击的迹象。</info>
+    <description>Effective rate limit for the new-connections threshold has been reached. A spike in new connections from IP addresses formerly determined to be legitimate might be a sign of a zombie attack.</description>
+  </rule>
+
+  <rule id="44429" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^17$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到 TCP 端口的有效速率限制。</info>
+    <description>Effective rate limit for the TCP port has been reached.</description>
+  </rule>
+
+  <rule id="44430" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^18$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到 UDP 端口的有效速率限制。</info>
+    <description>Effective rate limit for the UDP port has been reached.</description>
+  </rule>
+
+  <rule id="44431" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^19$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到类型/代码的有效速率限制。</info>
+    <description>Effective rate limit for the type/code has been reached.</description>
+  </rule>
+
+  <rule id="44432" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^20$</field>
+    <options>no_full_log</options>
+    <info type="text">慢速连接激进老化。</info>
+    <description>Slow Connection Aggressive Aging.</description>
+  </rule>
+
+  <rule id="44433" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^22$</field>
+    <options>no_full_log</options>
+    <info type="text">检测到慢速连接攻击并启用“慢速连接的源阻塞”。源IP地址被报告。</info>
+    <description>Slow connection attack detected and “Source blocking for slow connections” enabled. Source IP address is reported.</description>
+  </rule>
+
+  <rule id="44434" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^24$</field>
+    <options>no_full_log</options>
+    <info type="text">TCP 校验和无效。</info>
+    <description>Invalid TCP checksum.</description>
+  </rule>
+
+  <rule id="44435" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^25$</field>
+    <options>no_full_log</options>
+    <info type="text">UDP 校验和无效。</info>
+    <description>Invalid UDP checksum.</description>
+  </rule>
+
+  <rule id="44436" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^26$</field>
+    <options>no_full_log</options>
+    <info type="text">ICMP 校验和无效。</info>
+    <description>Invalid ICMP checksum.</description>
+  </rule>
+
+  <rule id="44437" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^27$</field>
+    <options>no_full_log</options>
+    <info type="text">TCP 标志组合无效。如果设置了紧急标志，则紧急指针必须非零。为分片数据包设置 SYN、FIN 或 RST。</info>
+    <description>Invalid TCP flag combination. If the urgent flag is set, then the urgent pointer must be non-zero. SYN, FIN or RST is set for fragmented packets.</description>
+  </rule>
+
+  <rule id="44438" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^28$</field>
+    <options>no_full_log</options>
+    <info type="text">由于预定义的第 4 层标头规则而丢弃：TCP 数据包的数据偏移量小于 5；在 TCP 报头的 20 字节之前检测到 EOP（数据包结束）； EOP前的数据偏移表示数据偏移； TCP窗口缩放选项中的长度字段是3以外的值； TCP窗口缩放选项中的长度字段是3以外的值；缺少 UDP 有效载荷；缺少 ICMP 有效负载；基于选项类型的 TCP 选项分析。</info>
+    <description>Drops due to predefined Layer 4 header rules: Data offset is less than 5 for a TCP packet; EOP (End of packet) is detected before the 20 bytes of TCP header; EOP before the data offset indicated data offset; Length field in TCP window scale option is a value other than 3; Length field in TCP window scale option is a value other than 3; Missing UDP payload; Missing ICMP payload ; TCP Option Anamoly based on Option Type.</description>
+  </rule>
+
+  <rule id="44439" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^52$|^53$|^54$</field>
+    <options>no_full_log</options>
+    <info type="text">第 4 层：被 SPP ACL 规则拒绝。</info>
+    <description>Layer 4: Denied by an SPP ACL rule.</description>
+  </rule>
+
+  <rule id="44440" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^56$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到 syn-per-src 阈值的有效速率限制。源IP地址被报告。</info>
+    <description>Effective rate limit for the syn-per-src threshold has been reached. Source IP address is reported.</description>
+  </rule>
+
+  <rule id="44441" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^58$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到每个源并发连接阈值的有效速率限制。源IP地址被报告。</info>
+    <description>Effective rate limit for the concurrent-connections-per-source threshold has been reached. Source IP address is reported.</description>
+  </rule>
+
+  <rule id="44442" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^82$</field>
+    <options>no_full_log</options>
+    <info type="text">来自源的 DNS 查询泛洪。</info>
+    <description>DNS Query flood from Source.</description>
+  </rule>
+
+  <rule id="44443" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^83$</field>
+    <options>no_full_log</options>
+    <info type="text">来自源的 DNS 数据包跟踪泛洪。</info>
+    <description>DNS Packet Track Flood from Source.</description>
+  </rule>
+
+  <rule id="44444" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^86$</field>
+    <options>no_full_log</options>
+    <info type="text">无效的ICMP 类型/代码。</info>
+    <description>Invalid ICMP Type/Code.</description>
+  </rule>
+
+  <rule id="44445" level="5">
+    <if_sid>44403</if_sid>
+    <field name="evesubcode">^87$</field>
+    <options>no_full_log</options>
+    <info type="text">来自源的 HTTP 方法泛洪。</info>
+    <description>HTTP Method flood from source.</description>
+  </rule>
+
+  <rule id="44446" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^0$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到特定 HTTP 方法阈值的有效速率限制。</info>
+    <description>Effective rate limit for a particular HTTP method threshold has been reached.</description>
+  </rule>
+
+  <rule id="44447" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^1$</field>
+    <options>no_full_log</options>
+    <info type="text">由于 unknown-opcode-anomaly 规则而丢弃的数据包（全局设置 > 设置页面）。</info>
+    <description>Packets dropped due to the unknown-opcode-anomaly rule (Global Settings > Settings page).</description>
+  </rule>
+
+  <rule id="44448" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^2$</field>
+    <options>no_full_log</options>
+    <info type="text">由于invalid-opcode-anomaly规则(全局设置 > 设置页面）而丢弃的数据包。</info>
+    <description>Packets dropped due to the invalid-opcode-anomaly rule (Global Settings > Settings page).</description>
+  </rule>
+
+  <rule id="44449" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^3$|^7$|^9$|^11$|^13$|^37$|^38$|^39$|^40$</field>
+    <options>no_full_log</options>
+    <info type="text">第 7 层：被 SPP ACL 规则拒绝。</info>
+    <description>Layer 7: Denied by an SPP ACL rule.</description>
+  </rule>
+
+  <rule id="44450" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^4$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到特定 URL 阈值的有效速率限制。</info>
+    <description>Effective rate limit for a particular URL threshold has been reached.</description>
+  </rule>
+
+  <rule id="44451" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^5$</field>
+    <options>no_full_log</options>
+    <info type="text">无效的 HTTP 方法异常。</info>
+    <description>Invalid HTTP Method anomaly.</description>
+  </rule>
+
+  <rule id="44452" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^6$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到特定 Host 头阈值的有效速率限制。</info>
+    <description>Effective rate limit for a particular Host header threshold has been reached.</description>
+  </rule>
+
+  <rule id="44453" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^8$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到特定 Referer 头阈值的有效速率限制。</info>
+    <description>Effective rate limit for a particular Referer header threshold has been reached.</description>
+  </rule>
+
+  <rule id="44454" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^10$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到特定 Cookie 头阈值的有效速率限制。</info>
+    <description>Effective rate limit for a particular Cookie header threshold has been reached.</description>
+  </rule>
+
+  <rule id="44455" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^12$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到特定用户代理阈值的有效速率限制。</info>
+    <description>Effective rate limit for a particular User-Agent threshold has been reached.</description>
+  </rule>
+
+  <rule id="44456" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^42$</field>
+    <options>no_full_log</options>
+    <info type="text">OpCode 字段中的值无效。</info>
+    <description>Invalid value in the OpCode field.</description>
+  </rule>
+
+  <rule id="44457" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^43$</field>
+    <options>no_full_log</options>
+    <info type="text">标志字段中的无效组合。</info>
+    <description>Invalid combination in the flags field.</description>
+  </rule>
+
+  <rule id="44458" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^44$</field>
+    <options>no_full_log</options>
+    <info type="text">DNS 头部异常。</info>
+    <description>DNS Header Anomaly.</description>
+  </rule>
+
+  <rule id="44459" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^45$</field>
+    <options>no_full_log</options>
+    <info type="text">(QR) 位设置为 1。</info>
+    <description>(QR) bit set to 1.</description>
+  </rule>
+
+  <rule id="44460" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^46$</field>
+    <options>no_full_log</options>
+    <info type="text">递归允许 (RA) 位设置。</info>
+    <description>recursion allowed (RA) bit set.</description>
+  </rule>
+
+  <rule id="44461" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^47$</field>
+    <options>no_full_log</options>
+    <info type="text">计数为 0 的 DNS 查询。</info>
+    <description>DNS query with count 0.</description>
+  </rule>
+
+  <rule id="44462" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^48$|^53$</field>
+    <options>no_full_log</options>
+    <info type="text">问题数不是 1。</info>
+    <description>Question count not 1.</description>
+  </rule>
+
+  <rule id="44463" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^49$</field>
+    <options>no_full_log</options>
+    <info type="text">递归所需（RD）位设置。</info>
+    <description>recursion desired (RD) bit set.</description>
+  </rule>
+
+  <rule id="44464" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^50$</field>
+    <options>no_full_log</options>
+    <info type="text">使用 QCLASS 的 DNS 响应。</info>
+    <description>DNS response with QCLASS.</description>
+  </rule>
+
+  <rule id="44465" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^51$</field>
+    <options>no_full_log</options>
+    <info type="text">带有指定类型 ID 的资源的 DNS 响应。</info>
+    <description>DNS response with a resource specifying a TYPE ID.</description>
+  </rule>
+
+  <rule id="44466" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^52$</field>
+    <options>no_full_log</options>
+    <info type="text">(QR) 位设置为 0。</info>
+    <description>(QR) bit set to 0.</description>
+  </rule>
+
+  <rule id="44467" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^54$</field>
+    <options>no_full_log</options>
+    <info type="text">超过最大头部长度的 TCP/UDP 查询或响应消息。</info>
+    <description>TCP/UDP query or response message that exceeds the maximum header length.</description>
+  </rule>
+
+  <rule id="44468" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^55$</field>
+    <options>no_full_log</options>
+    <info type="text">超过 255 个字符的 DNS 名称。</info>
+    <description>DNS name that exceeds 255 characters.</description>
+  </rule>
+
+  <rule id="44469" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^56$</field>
+    <options>no_full_log</options>
+    <info type="text">超过最大长度 (63) 的标签的查询或响应。</info>
+    <description>Query or response with a label that exceeds the maximum length (63).</description>
+  </rule>
+
+  <rule id="44470" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^57$</field>
+    <options>no_full_log</options>
+    <info type="text">带有指向数据末尾之外的指针的 DNS 消息。</info>
+    <description>DNS message with a pointer that points beyond the end of data.</description>
+  </rule>
+
+  <rule id="44471" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^58$</field>
+    <options>no_full_log</options>
+    <info type="text">异步传输全范围 (AXFR) 请求 (QTYPE=252)。</info>
+    <description>An asynchronous Transfer Full Range (AXFR) request (QTYPE=252).</description>
+  </rule>
+
+  <rule id="44472" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^59$</field>
+    <options>no_full_log</options>
+    <info type="text">问题/资源地址类不是 IN 的查询/响应。</info>
+    <description>A query/response in which the question/resource address class is not IN.</description>
+  </rule>
+
+  <rule id="44473" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^60$</field>
+    <options>no_full_log</options>
+    <info type="text">DNS 漏洞利用异常：空 UDP 消息。</info>
+    <description>DNS Exploit Anomaly: Empty UDP message.</description>
+  </rule>
+
+  <rule id="44474" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^61$</field>
+    <options>no_full_log</options>
+    <info type="text">DNS 漏洞利用异常：消息过早结束。</info>
+    <description>DNS Exploit Anomaly: Message ends prematurely.</description>
+  </rule>
+
+  <rule id="44475" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^62$</field>
+    <options>no_full_log</options>
+    <info type="text">在两字节前缀字段中指定的数据少于两字节的查询/响应。</info>
+    <description>A query/response with less than two bytes of data specified in the two-byte prefix field.</description>
+  </rule>
+
+  <rule id="44476" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^63$</field>
+    <options>no_full_log</options>
+    <info type="text">请求类型设置为 ALL (QTYPE=255) 的 DNS 请求。</info>
+    <description>DNS request with request type set to ALL (QTYPE=255).</description>
+  </rule>
+
+  <rule id="44477" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^64$</field>
+    <options>no_full_log</options>
+    <info type="text">带有 TYPE 或 CLASS 保留值的查询/响应。</info>
+    <description>A query/response with TYPE or CLASS reserved values.</description>
+  </rule>
+
+  <rule id="44478" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^65$</field>
+    <options>no_full_log</options>
+    <info type="text">带有多余数据的查询/响应。</info>
+    <description>A query/response with excess data.</description>
+  </rule>
+
+  <rule id="44479" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^66$</field>
+    <options>no_full_log</options>
+    <info type="text">TTL值大于7天。</info>
+    <description>TTL value is greater than 7 days.</description>
+  </rule>
+
+  <rule id="44480" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^67$</field>
+    <options>no_full_log</options>
+    <info type="text">具有空 DNS 名称的查询/响应。</info>
+    <description>A query/response with a null DNS name.</description>
+  </rule>
+
+  <rule id="44481" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^68$</field>
+    <options>no_full_log</options>
+    <info type="text">UDP 由于没有匹配查询的响应而丢弃。</info>
+    <description>UDP Drops due to a response with no matching query.</description>
+  </rule>
+
+  <rule id="44482" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^69$</field>
+    <options>no_full_log</options>
+    <info type="text">TCP 由于没有匹配查询的响应而丢弃。</info>
+    <description>TCP Drops due to a response with no matching query.</description>
+  </rule>
+
+  <rule id="44483" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^70$</field>
+    <options>no_full_log</options>
+    <info type="text">超过 DNS DQRM 水平链接限制。</info>
+    <description>DNS DQRM Horizontal Link Limit Crossed.</description>
+  </rule>
+
+  <rule id="44484" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^71$</field>
+    <options>no_full_log</options>
+    <info type="text">DQRM 表内部逻辑或内存问题。</info>
+    <description>An issue with DQRM table internal logic or memory.</description>
+  </rule>
+
+  <rule id="44485" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^72$</field>
+    <options>no_full_log</options>
+    <info type="text">由于发送到端口 53 的响应，UDP 丢弃。</info>
+    <description>UDP drops due to response sent to port 53.</description>
+  </rule>
+
+  <rule id="44486" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^73$</field>
+    <options>no_full_log</options>
+    <info type="text">由于发送到端口 53 的响应，TCP 丢弃。</info>
+    <description>TCP drops due to response sent to port 53.</description>
+  </rule>
+
+  <rule id="44487" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^74$|^75$|^76$|^77$|^78$|^79$|^80$</field>
+    <options>no_full_log</options>
+    <info type="text">由于泛洪攻击期间的 LQ 检查导致 UDP 丢弃。</info>
+    <description>UDP drops due to LQ check during flood.</description>
+  </rule>
+
+  <rule id="44488" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^81$|^82$|^83$|^84$|^85$|^86$</field>
+    <options>no_full_log</options>
+    <info type="text">由于泛洪攻击期间的 TTL 检查，UDP 丢弃。</info>
+    <description>UDP drops due to TTL check during flood.</description>
+  </rule>
+
+  <rule id="44489" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^87$|^88$|^89$|^90$|^91$|^92$</field>
+    <options>no_full_log</options>
+    <info type="text">由于泛洪攻击期间的 TC=1 反欺骗检查，UDP 丢弃。</info>
+    <description>UDP drops due to TC=1 antispoofing check during flood.</description>
+  </rule>
+
+  <rule id="44490" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^93$|^94$|^95$|^96$|^97$|^98$</field>
+    <options>no_full_log</options>
+    <info type="text">由于泛洪攻击期间的重传反欺骗检查，UDP 丢弃。</info>
+    <description>UDP drops due to Retransmission antispoofing check during flood.</description>
+  </rule>
+
+  <rule id="44491" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^99$</field>
+    <options>no_full_log</options>
+    <info type="text">UDP 丢弃，因为响应是在泛洪攻击期间从缓存中提供的。</info>
+    <description>UDP drops because the response was served from the cache during a flood.</description>
+  </rule>
+
+  <rule id="44492" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^100$|^101$|^102$|^103$|^104$|^105$|^106$|^107$|^108$|^109$|^110$</field>
+    <options>no_full_log</options>
+    <info type="text">UDP 丢弃，因为在泛洪攻击期间没有从缓存中提供响应。</info>
+    <description>UDP drops because the response was not served from the cache during a flood.</description>
+  </rule>
+
+  <rule id="44493" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^201$</field>
+    <options>no_full_log</options>
+    <info type="text">由于 HTTP 范围标头规则而丢弃（全局设置 > 设置页面）。</info>
+    <description>Drops due to HTTP Range Header rule (Global Settings > Settings page).</description>
+  </rule>
+
+  <rule id="44494" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^111$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到 dns-query 阈值的有效速率限制。</info>
+    <description>Effective rate limit for the dns-query threshold has been reached.</description>
+  </rule>
+
+  <rule id="44495" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^112$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到 dns-question-count 阈值的有效速率限制。</info>
+    <description>Effective rate limit for the dns-question-count threshold has been reached.</description>
+  </rule>
+
+  <rule id="44496" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^113$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到 dns-fragment 阈值的有效速率限制。</info>
+    <description>Effective rate limit for the dns-fragment threshold has been reached.</description>
+  </rule>
+
+  <rule id="44497" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^114$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到 dns-zone-xfer 阈值的有效速率限制。</info>
+    <description>Effective rate limit for the dns-zone-xfer threshold has been reached.</description>
+  </rule>
+
+  <rule id="44498" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^115$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到 dns-mx 阈值的有效速率限制。</info>
+    <description>Effective rate limit for the dns-mx threshold has been reached.</description>
+  </rule>
+
+  <rule id="44499" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^116$</field>
+    <options>no_full_log</options>
+    <info type="text">已达到 dns-all 阈值的有效速率限制。</info>
+    <description>Effective rate limit for the dns-all threshold has been reached.</description>
+  </rule>
+
+  <rule id="44500" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^117$</field>
+    <options>no_full_log</options>
+    <info type="text">由于 DQRM 重复查询检查导致 UDP 丢弃。</info>
+    <description>UDP Drops due to DQRM duplicate query check.</description>
+  </rule>
+
+  <rule id="44501" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^118$</field>
+    <options>no_full_log</options>
+    <info type="text">由于 DQRM 重复查询检查导致 TCP 丢弃。</info>
+    <description>TCP Drops due to DQRM duplicate query check.</description>
+  </rule>
+
+  <rule id="44502" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^119$</field>
+    <options>no_full_log</options>
+    <info type="text">由于查询仅限于特定子网，DNS 查询 ACL 丢弃。</info>
+    <description>DNS Query ACL drops due to Query restricted to specific subnets.</description>
+  </rule>
+
+  <rule id="44503" level="5">
+    <if_sid>44404</if_sid>
+    <field name="evesubcode">^120$</field>
+    <options>no_full_log</options>
+    <info type="text">由于列入黑名单的 域/ipv4 地址，DNS 查询 ACL 丢弃。</info>
+    <description>DNS Query ACL Drops due to Blacklisted domains/ipv4 address.</description>
+  </rule>
+
+</group>

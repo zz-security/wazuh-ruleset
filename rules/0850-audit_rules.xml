@@ -1,0 +1,75 @@
+<!--
+  Copyright (C) 2015, Wazuh Inc.
+-->
+
+<!-- 
+  General Linux Audit module channel detection rules:           92600 - 92649
+-->
+
+<group name="audit_detections,">
+
+  <rule id="92600" level="0">
+    <if_group>audit</if_group>
+    <field name="audit.exe" type="pcre2">python</field>
+    <info type="text">执行python脚本。</info>
+    <description>Executed python script.</description>
+    <mitre>
+      <id>T1059.006</id>
+    </mitre>
+  </rule>
+
+  <rule id="92601" level="6">
+    <if_sid>92600</if_sid>
+    <match type="pcre2">a\d="\w+\.py".+cwd="/tmp"|a\d="/tmp/.+\.py</match>
+    <info type="text">从 /tmp/ 文件夹执行 python 脚本。</info>
+    <description>Executed python script from /tmp/ folder.</description>
+    <mitre>
+      <id>T1059.006</id>
+    </mitre>
+  </rule>
+
+  <rule id="92602" level="12">
+    <if_sid>92600, 92601</if_sid>
+    <match type="pcre2">(psexec.py|smbexec.py).+a\d="-hashes".+a\d=".+:.+</match>
+    <info type="text">可疑的 python 脚本匹配 Impacket 签名，可能使用被盗凭据或通过哈希攻击。</info>
+    <description>Suspicious python script matches Impacket signature, possible use of stolen credentials or pass the hash attack.</description>
+    <mitre>
+      <id>T1059.006</id>
+      <id>T1550.002</id>
+    </mitre>
+  </rule>
+
+  <rule id="92603" level="6">
+    <if_group>audit</if_group>
+    <field name="audit.command" type="pcre2">scp</field>
+    <field name="audit.file.name" type="pcre2">.+</field>
+    <info type="text">使用 SCP 通过 SSH 将文件复制到此系统。</info>
+    <description>A file was copied to this system over SSH using SCP.</description>
+    <mitre>
+      <id>T1021.004</id>
+    </mitre>
+  </rule>
+
+  <rule id="92604" level="6">
+    <if_group>audit</if_group>
+    <field name="audit.execve.a0" type="pcre2">ps</field>
+    <field name="audit.execve.a1" type="pcre2">^(?=.*a)(?=.*x)</field>
+    <info type="text">使用 ps 命令查询为所有用户运行的进程。</info>
+    <description>Processes running for all users were queried with ps command.</description>
+    <mitre>
+      <id>T1057</id>
+    </mitre>
+  </rule>
+
+  <rule id="92605" level="6">
+    <if_group>audit</if_group>
+    <field name="audit.execve.a0" type="pcre2">ls</field>
+    <field name="audit.execve.a2" type="pcre2">^(?=.*a)(?=.*R)</field>
+    <info type="text">使用 ls 命令对所有文件执行递归查询。</info>
+    <description>Executed recursive query of all files using ls command.</description>
+    <mitre>
+      <id>T1083</id>
+    </mitre>
+  </rule>
+
+</group>

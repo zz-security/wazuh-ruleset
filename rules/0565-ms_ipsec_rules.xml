@@ -1,0 +1,188 @@
+<!--
+  -  Microsoft Windows Firewall ruleset
+  -  Created by Wazuh, Inc.
+  -  Copyright (C) 2015, Wazuh Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<group name="windows,ipsec,">
+
+   <rule id="18651" level="8">
+    <if_sid>18104</if_sid>
+    <id>^4646$</id>
+    <info type="text">IKE DoS 预防模式已启动</info>
+    <description>IKE DoS-prevention mode started</description>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18652" level="8">
+    <if_sid>18105</if_sid>
+    <id>^4652$|^4653$</id>
+    <info type="text">IPsec 主模式协商失败</info>
+    <description>An IPsec Main Mode negotiation failed</description>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18653" level="8">
+    <if_sid>18105</if_sid>
+    <id>^4654$</id>
+    <info type="text">IPsec 快速模式协商失败</info>
+    <description>An IPsec Quick Mode negotiation failed</description>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18654" level="8">
+    <if_sid>18104</if_sid>
+    <id>^4983$|^4984$</id>
+    <info type="text">IPsec 扩展模式协商失败</info>
+    <description>An IPsec Extended Mode negotiation failed</description>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18655" level="4">
+    <if_sid>18104</if_sid>
+    <id>^4960$</id>
+    <info type="text">IPsec 丢弃了未通过完整性检查的入站数据包</info>
+    <description>IPsec dropped an inbound packet that failed an integrity check</description>
+    <mitre>
+      <id>T1070.004</id>
+    </mitre>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18656" level="8">
+    <if_sid>18104</if_sid>
+    <id>^4961$|^4962$</id>
+    <info type="text">IPsec 丢弃了未通过重放检查的入站数据包</info>
+    <description>IPsec dropped an inbound packet that failed a replay check</description>
+    <mitre>
+      <id>T1070.004</id>
+    </mitre>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18657" level="8">
+    <if_sid>18104</if_sid>
+    <id>^4963$</id>
+    <info type="text">IPsec 丢弃了本应受到保护的入站明文数据包</info>
+    <description>IPsec dropped an inbound clear text packet that should have been secured</description>
+    <mitre>
+      <id>T1070.004</id>
+    </mitre>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18658" level="4">
+    <if_sid>18104</if_sid>
+    <id>^4965$</id>
+    <info type="text">IPsec 从远程计算机接收到一个带有错误安全参数索引 (SPI) 的数据包</info>
+    <description>IPsec received a packet from a remote computer with an incorrect Security Parameter Index (SPI)</description>
+    <mitre>
+      <id>T1095</id>
+    </mitre>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18659" level="7">
+    <if_sid>18104</if_sid>
+    <id>^4976$</id>
+    <info type="text">在主模式协商期间，IPsec 收到了无效的协商数据包</info>
+    <description>During Main Mode negotiation, IPsec received an invalid negotiation packet</description>
+    <mitre>
+      <id>T1095</id>
+    </mitre>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18660" level="7">
+    <if_sid>18104</if_sid>
+    <id>^4977$</id>
+    <info type="text">在快速模式协商过程中，IPsec 收到了一个无效的协商数据包</info>
+    <description>During Quick Mode negotiation, IPsec received an invalid negotiation packet</description>
+    <mitre>
+      <id>T1095</id>
+    </mitre>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18661" level="7">
+    <if_sid>18104</if_sid>
+    <id>^4978$</id>
+    <info type="text">在扩展模式协商过程中，IPsec 收到了一个无效的协商数据包</info>
+    <description>During Extended Mode negotiation, IPsec received an invalid negotiation packet</description>
+    <mitre>
+      <id>T1095</id>
+    </mitre>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18662" level="8">
+    <if_sid>18104</if_sid>
+    <id>^5453$</id>
+    <info type="text">与远程计算机的 IPsec 协商失败，因为 IKE 和 AuthIP IPsec 密钥模块 (IKEEXT) 服务未启动</info>
+    <description>An IPsec negotiation with a remote computer failed because the IKE and AuthIP IPsec Keying Modules (IKEEXT) service is not started</description>
+    <mitre>
+      <id>T1095</id>
+      <id>T1489</id>
+    </mitre>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18663" level="8">
+    <if_sid>18105</if_sid>
+    <id>^5480$</id>
+    <info type="text">IPsec 服务无法获取计算机上网络接口的完整列表</info>
+    <description>IPsec Services failed to get the complete list of network interfaces on the computer</description>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18664" level="8">
+    <if_sid>18105</if_sid>
+    <id>^5483$</id>
+    <info type="text">IPsec 服务无法初始化 RPC 服务器。无法启动 IPsec 服务</info>
+    <description>IPsec Services failed to initialize RPC server. IPsec Services could not be started</description>
+    <mitre>
+      <id>T1489</id>
+    </mitre>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18665" level="8">
+    <if_sid>18105</if_sid>
+    <id>^5484$</id>
+    <info type="text">IPsec 服务发生严重故障并已关闭</info>
+    <description>IPsec Services has experienced a critical failure and has been shut down</description>
+    <mitre>
+      <id>T1529</id>
+    </mitre>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18666" level="8">
+    <if_sid>18105</if_sid>
+    <id>^5485$</id>
+    <info type="text">IPsec 服务无法处理网络接口的即插即用事件中的某些 IPsec 过滤器</info>
+    <description>IPsec Services failed to process some IPsec filters on a plug-and-play event for network interfaces</description>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18667" level="8">
+    <if_sid>18104</if_sid>
+    <id>^4710$</id>
+    <info type="text">IPsec 服务被禁用</info>
+    <description>IPsec Services was disabled</description>
+    <mitre>
+      <id>T1489</id>
+    </mitre>
+    <group>windows,</group>
+  </rule>
+
+  <rule id="18668" level="8">
+    <if_sid>18105</if_sid>
+    <id>^4712$</id>
+    <info type="text">IPsec 服务遇到潜在的严重故障</info>
+    <description>IPsec Services encountered a potentially serious failure</description>
+    <group>windows,</group>
+  </rule>
+</group>
+

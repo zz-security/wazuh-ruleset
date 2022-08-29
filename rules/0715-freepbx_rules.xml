@@ -1,0 +1,49 @@
+<!--
+  -  Freepbx rules
+  -  Created by Wazuh, Inc.
+  -  Copyright (C) 2015, Wazuh Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<group name="freepbx">
+ <rule id="70000" level="0">
+    <decoded_as>FreePBX</decoded_as>
+    <info type="text">FreePBX 父对象</info>
+    <description> FreePBX parent </description>
+ </rule>
+ <rule id="70001" level="5">
+   <if_sid>70000</if_sid>
+   <field name="msg_type">ERROR</field>
+   <info type="text">错误[$(code)]: $(msg)</info>
+   <description>ERROR[$(code)]: $(msg)</description>
+ </rule>
+ <rule id="70002" level="5">
+   <if_sid>70000</if_sid>
+   <field name="msg_type">WARNING</field>
+   <info type="text">警告[$(code)]: $(msg)</info>
+   <description>WARNING[$(code)]: $(msg)</description>
+ </rule>
+ <rule id="70005" level="3">
+   <if_sid>70000</if_sid>
+   <field name="msg_type">INFO</field>
+   <info type="text">信息: ($(source))- $(operation)</info>
+   <description>INFO: ($(source))- $(operation)</description>
+ </rule>
+ <rule id="70006" level="3">
+   <if_sid>70005</if_sid>
+   <field name="hash">\.+</field>
+   <info type="text">信息: hash of $(source): $(hash)</info>
+   <description>INFO: hash of $(source): $(hash)</description>
+ </rule>
+ <rule id="70007" level="3">
+   <if_sid>70000</if_sid>
+   <field name="program">\.+</field>
+   <info type="text">$(program) $(version) 系统内置</info>
+   <description>$(program) $(version) was built in the system</description>
+ </rule>
+ <rule id="70008" level="3">
+   <if_sid>70000</if_sid>
+   <field name="msg_type">notice</field>
+   <description>$(details)</description>
+ </rule>
+</group>

@@ -1,0 +1,100 @@
+<!--
+  -  Sophos rules
+  -  Created by Wazuh, Inc.
+  -  Copyright (C) 2015, Wazuh Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<!-- ID: 82100 - 82199 -->
+
+
+<group name="sophos,">
+
+	<rule id="82100" level="0">
+		<decoded_as>sophos</decoded_as>
+		<info type="text">Sophos警报。</info>
+		<description>Sophos alerts.</description>
+	</rule>
+
+	<rule id="82101" level="3">
+		<if_sid>82100</if_sid>
+		<match>Scan 'Sophos Cloud Scheduled Scan' started</match>
+		<info type="text">Sophos Cloud 预设扫描已启动</info>
+		<description>Sophos Cloud Scheduled Scan started</description>
+		<group></group>
+	</rule>
+
+	<rule id="82102" level="3">
+		<if_sid>82100</if_sid>
+		<match>Scan 'Sophos Cloud Scheduled Scan' completed</match>
+		<info type="text">Sophos Cloud 预设扫描已完成</info>
+		<description>Sophos Cloud Scheduled Scan completed</description>
+		<group></group>
+	</rule>
+
+	<rule id="82103" level="3">
+		<if_sid>82100</if_sid>
+		<match>has started</match>
+		<info type="text">用户已开始对此机器进行读写扫描</info>
+		<description>User has started on-access scanning for this machine.</description>
+		<group></group>
+	</rule>
+	<rule id="82104" level="3">
+		<if_sid>82100</if_sid>
+		<match>has stopped</match>
+		<info type="text">用户已停止对此机器的读写扫描</info>
+		<description>User has stopped on-access scanning for this machine.</description>
+		<group></group>
+	</rule>
+
+	<rule id="82105" level="3">
+		<if_sid>82100</if_sid>
+		<match>detection data version</match>
+		<info type="text">Sophos 数据库已更新</info>
+		<description>Sophos database updated</description>
+        <group>gpg13_4.4,</group>
+	</rule>
+
+  <rule id="64270" level="0">
+	<decoded_as>sophos-win</decoded_as>
+    <field name="category">savscan.log</field>
+	<info type="text">savscan 类别</info>
+    <description>savscan category</description>
+  </rule>
+
+  <rule id="64271" level="3">
+    <if_sid>64270</if_sid>
+    <field name="msg">SAVSCAN-DETAILS</field>
+	<info type="text">SAVSCAN-DETAILS警报</info>
+    <description>SAVSCAN-DETAILS alert</description>
+  </rule>
+
+  <rule id="64272" level="6">
+    <if_sid>64270</if_sid>
+    <field name="msg">NOTIFY_ONDEMANDTHREAT_INFECTED</field>
+	<info type="text">NOTIFY_ONDEMANDTHREAT_INFECTED警报</info>
+    <description>NOTIFY_ONDEMANDTHREAT_INFECTED alert</description>
+  </rule>
+
+  <rule id="64273" level="6">
+    <if_sid>64270</if_sid>
+    <field name="msg">SCANNER_DIED_KILLED</field>
+	<info type="text">SCANNER_DIED_KILLED警报</info>
+    <description>SCANNER_DIED_KILLED alert</description>
+  </rule>
+
+  <rule id="64274" level="0">
+	<decoded_as>sophos-win</decoded_as>
+    <field name="category">update.check</field>
+	<info type="text">更新类别</info>
+    <description>Update category</description>
+  </rule>
+
+  <rule id="64275" level="3">
+    <if_sid>64274</if_sid>
+    <field name="msg">NO_UPDATED_FROM</field>
+	<info type="text">NO_UPDATED_FROM 警报</info>
+    <description>NO_UPDATED_FROM alert</description>
+  </rule>
+
+</group>

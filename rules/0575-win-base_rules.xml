@@ -1,0 +1,171 @@
+<!--
+  -  Copyright (C) 2015, Wazuh Inc.
+-->
+
+<!--
+  Windows event channel rules 60000 - 60099
+-->
+
+<!-- Windows event channel rules. -->
+
+<group name="windows,">
+
+  <rule id="60000" level="0">
+    <category>ossec</category>
+    <decoded_as>windows_eventchannel</decoded_as>
+    <field name="win.system.providerName">\.+</field>
+    <options>no_full_log</options>
+    <info type="text">windows规则的分组。</info>
+    <description>Group of windows rules.</description>
+  </rule>
+
+  <!-- Classification by channel -->
+  <rule id="60001" level="0">
+    <if_sid>60000</if_sid>
+    <field name="win.system.channel">^Security$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows安全通道规则的分组。</info>
+    <description>Group of Windows rules for the security channel.</description>
+  </rule>
+
+  <rule id="60002" level="0">
+    <if_sid>60000</if_sid>
+    <field name="win.system.channel">^System$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows系统通道规则的分组。</info>
+    <description>Group of Windows rules for the system channel.</description>
+  </rule>
+
+  <rule id="60003" level="0">
+    <if_sid>60000</if_sid>
+    <field name="win.system.channel">^Application$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows应用通道规则的分组。</info>
+    <description>Group of Windows rules for the application channel.</description>
+  </rule>
+
+  <rule id="60004" level="0">
+    <if_sid>60000</if_sid>
+    <field name="win.system.channel">^Microsoft-Windows-Sysmon/Operational$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows系统监视通道规则的分组。</info>
+    <description>Group of Windows rules for the sysmon channel.</description>
+  </rule>
+
+  <rule id="60005" level="0">
+    <if_sid>60000</if_sid>
+    <field name="win.system.channel">^Microsoft-Windows-Windows Defender/Operational$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows系统通道规则的分组。</info>
+    <description>Group of Windows rules for the system channel.</description>
+  </rule>
+
+  <rule id="60016" level="0">
+    <if_sid>60000</if_sid>
+    <field name="win.system.channel">^Microsoft-Windows-Windows Firewall With Advanced Security/Firewall$</field>
+    <options>no_full_log</options>
+    <info type="text">具有高级安全性的 Microsoft Windows 防火墙规则的分组。</info>
+    <description>Group of Microsoft Windows firewall with advanced security rules.</description>
+  </rule>
+
+  <rule id="60006" level="0">
+    <if_sid>60003</if_sid>
+    <field name="win.system.providerName">^McLogEvent$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows McAfee 通道规则的分组。</info>
+    <description>Group of Windows rules for the McAfee channel.</description>
+  </rule>
+
+  <rule id="60017" level="0">
+    <if_sid>60001</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-Eventlog$</field>
+    <options>no_full_log</options>
+    <info type="text">来自安全通道的 Windows 事件日志规则的分组。</info>
+    <description>Group of rules for Windows eventlog from security channel.</description>
+  </rule>
+
+  <rule id="60007" level="0">
+    <if_sid>60002</if_sid>
+    <field name="win.system.providerName">^Eventlog$|^Microsoft-Windows-Eventlog$</field>
+    <options>no_full_log</options>
+    <info type="text">来自系统通道的 Windows 事件日志规则的分组。</info>
+    <description>Group of rules for Windows eventlog from system channel.</description>
+  </rule>
+
+  <rule id="60008" level="0">
+    <if_sid>60002</if_sid>
+    <field name="win.system.providerName">^Microsoft Antimalware$</field>
+    <options>no_full_log</options>
+    <info type="text">Microsoft security essentials(防病毒软件)规则的分组。</info>
+    <description>Group of Microsoft security essentials rules.</description>
+  </rule>
+
+  <rule id="60018" level="0">
+    <if_sid>60000</if_sid>
+    <field name="win.system.providerName">^Microsoft-Windows-WMI-Activity$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows Management Instrumentation (Windows 管理规范)规则的分组。</info>
+    <description>Group of Microsoft Windows Management Instrumentation (WMI) rules.</description>
+  </rule>
+
+  <!-- Rules to classify events by level (for rules with no defined channel) -->
+
+  <rule id="60009" level="0">
+    <if_sid>60000</if_sid>
+    <field name="win.system.severityValue">^INFORMATION$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 信息事件。</info>
+    <description>Windows informational event.</description>
+  </rule>
+
+  <rule id="60010" level="0">
+    <if_sid>60000</if_sid>
+    <field name="win.system.severityValue">^WARNING$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 警告事件。</info>
+    <description>Windows warning event.</description>
+    <group>gpg13_4.12,</group>
+  </rule>
+  
+  <rule id="60011" level="5">
+    <if_sid>60000</if_sid>
+    <field name="win.system.severityValue">^ERROR$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 错误事件。</info>
+    <description>Windows error event.</description>
+    <group>gdpr_IV_35.7.d,gpg13_4.3,system_error,</group>
+  </rule>
+
+  <rule id="60012" level="10">
+    <if_sid>60000</if_sid>
+    <field name="win.system.severityValue">^CRITICAL$</field>
+    <options>no_full_log</options>
+    <info type="text">Windows 关键事件。</info>
+    <description>Windows critical event.</description>
+    <group>gdpr_IV_35.7.d,gpg13_4.3,system_error,</group>
+  </rule>
+
+  <!-- Rules about multiple events -->
+
+  <rule id="60013" level="8" frequency="8" timeframe="120">
+    <if_matched_sid>60010</if_matched_sid>
+    <options>no_full_log</options>
+    <info type="text">多次 Windows 警告事件。</info>
+    <description>Multiple Windows warning events.</description>
+  </rule>
+
+  <rule id="60014" level="10" frequency="8" timeframe="240">
+    <if_matched_sid>60011</if_matched_sid>
+    <options>no_full_log</options>
+    <info type="text">多次 Windows 错误事件。</info>
+    <description>Multiple Windows error events.</description>
+  </rule>
+
+  <rule id="60015" level="12" frequency="4" timeframe="240">
+    <if_matched_sid>60012</if_matched_sid>
+    <options>no_full_log</options>
+    <info type="text">多次 Windows 关键事件。</info>
+    <description>Multiple Windows critical events.</description>
+  </rule>
+
+</group>

@@ -1,0 +1,155 @@
+<!--
+  -  CheckPoint Smart-1 Firewalls rules
+  -  Created by Wazuh, Inc.
+  -  Copyright (C) 2015, Wazuh Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<group name="checkpoint-smart1,">
+
+    <rule id="64220" level="0">
+        <decoded_as>checkpoint-smart1</decoded_as>
+        <info type="text">Checkpoint 事件。</info>
+        <description>Checkpoint events.</description>
+    </rule>
+
+    <rule id="64221" level="0">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Accept</field>
+        <info type="text">Accept: 已接受连接。</info>
+        <description>Accept: Connection Accepted.</description>
+    </rule>
+	
+    <rule id="64222" level="4">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Drop</field>
+        <info type="text">Drop: 禁止数据包通过。发送不响应。</info>
+        <description>Drop: Prohibit a packet from passing. Send no response.</description>
+    </rule>
+
+    <rule id="64223" level="9">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Reject</field>
+        <info type="text">>Reject: 禁止数据包通过。将无法到达的 ICMP 目标发送回源主机。</info>
+        <description>Reject: Prohibit a packet from passing. Send an ICMP destination-unreachable back to the source host.</description>
+        <mitre>
+            <id>T1095</id>
+        </mitre>
+    </rule>
+
+    <rule id="64224" level="2">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Encrypt</field>
+        <info type="text">Encrypt：连接加密</info>
+        <description>Encrypt: Connection Encrypted</description>
+    </rule>
+	
+	<rule id="64225" level="2">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Decrypt</field>
+        <info type="text">Decrypt: 连接解密</info>
+        <description>Decrypt: Connection Decrypted</description>
+    </rule>
+
+	<rule id="64226" level="2">
+        <if_sid>64220</if_sid>
+        <match>Key Install</match>
+        <info type="text">Key Install: 已创建加密密钥。</info>
+        <description>Key Install: Encryption keys were created.</description>
+    </rule>	
+
+	<rule id="64227" level="4">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Monitored</field>
+        <info type="text">Monitored: 一个安全事件被监控；但是，由于当前的配置，它没有被阻止。</info>
+        <description>Monitored: A security event was monitored; however, it was not blocked, due to the current configuration.</description>
+    </rule>
+	
+	<rule id="64228" level="3">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Bypass</field>
+        <info type="text">Bypass: 连接透明地通过 InterSpect。</info>
+        <description>Bypass: The connection passed transparently through InterSpect.</description>
+    </rule>
+
+	<rule id="64229" level="0">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Flag</field>
+        <info type="text">Flag：标记连接。</info>
+        <description>Flag: Flags the connection.</description>
+    </rule>
+
+	<rule id="64230" level="3">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Login</field>
+        <info type="text">Login: A用户登录到系统。</info>
+        <description>Login: A user logged into the system.</description>
+    </rule>
+
+	<rule id="64231" level="3">
+        <if_sid>64220</if_sid>
+        <match>VPN routing</match>
+        <info type="text">VPN routing: 该连接通过充当中央集线器的网关进行路由。</info>
+        <description>VPN routing: The connection was routed through the gateway acting as a central hub.</description>
+    </rule>
+	
+	<rule id="64232" level="3">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Deauthorize</field>
+        <info type="text">Deauthorize: 客户端身份验证注销。</info>
+        <description>Deauthorize: Client Authentication logoff.</description>
+    </rule>
+
+	<rule id="64233" level="3">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Authorize</field>
+        <info type="text">Authorize: 客户端身份验证登录。</info>
+        <description>Authorize: Client Authentication logon.</description>
+    </rule>
+
+	<rule id="64234" level="7">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Block</field>
+        <info type="text">Block: 连接被 Interspect 阻止。</info>
+        <description>Block: Connection blocked by Interspect.</description>
+    </rule>	
+	
+	<rule id="64235" level="3">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Detect</field>
+        <info type="text">Detect: Interspect 检测到连接。</info>
+        <description>Detect: Connection was detected by Interspect.</description>
+    </rule>	
+	
+	<rule id="64236" level="4">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Inspect</field>
+        <info type="text">Inspect: 连接受到配置的保护。</info>
+        <description>Inspect: Connection was subject to a configured protections.</description>
+    </rule>	
+	
+	<rule id="64237" level="7">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Quarantine</field>
+        <info type="text">Quarantine: 连接的 IP 源地址已被隔离。</info>
+        <description>Quarantine: The IP source address of the connection was quarantined.</description>
+    </rule>	
+	
+	<rule id="64238" level="7">
+        <if_sid>64220</if_sid>
+        <match>Replace Malicious code</match>
+        <info type="text">Replace Malicious code: 连接中的恶意代码已被替换。</info>
+        <description>Replace Malicious code: Malicious code in the connection was replaced.</description>
+        <mitre>
+            <id>T1001</id>
+        </mitre>
+    </rule>	
+		
+	<rule id="64239" level="3">
+        <if_sid>64220</if_sid>
+        <field name="fw_action">Allow</field>
+        <info type="text">Allow: 防火墙允许 URL。</info>
+        <description>Allow: The firewall allowed a URL.</description>
+    </rule>	
+	
+</group>

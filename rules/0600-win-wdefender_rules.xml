@@ -1,0 +1,1248 @@
+<!--
+  -  Windows Event Channel ruleset for the Windows Defender channel
+  -  Created by Wazuh, Inc.
+  -  Copyright (C) 2015, Wazuh Inc.
+  -  This program is a free software; you can redistribute it and/or modify it under the terms of GPLv2.
+-->
+
+<!--
+  -  ID range: 62100 - 62599
+-->
+
+<var name="MS_FREQ">8</var>
+
+<!-- MS Windows Defender rules -->
+<group name="windows,windows_defender,">
+  <rule id="62100" level="0">
+    <if_sid>60005</if_sid>
+    <field name="win.system.severityValue">^INFORMATION$</field>
+    <info type="text">Windows Defender 信息事件</info>
+    <description>Windows Defender informational event</description>
+    <options>no_full_log</options>
+  </rule>
+
+  <rule id="62101" level="0">
+    <if_sid>60005</if_sid>
+    <field name="win.system.severityValue">^WARNING$</field>
+    <info type="text">Windows Defender 警告事件</info>
+    <description>Windows Defender warning event</description>
+    <options>no_full_log</options>
+    <group>pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="62102" level="5">
+    <if_sid>60005</if_sid>
+    <field name="win.system.severityValue">^ERROR$</field>
+    <info type="text">Windows Defender 错误事件</info>
+    <description>Windows Defender error event</description>
+    <options>no_full_log</options>
+    <group>system_error,pci_dss_10.6.1,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+
+
+  <rule id="62103" level="10" frequency="$MS_FREQ" timeframe="240">
+    <if_matched_sid>62102</if_matched_sid>
+    <info type="text">Windows Defender 多次错误事件</info>
+    <description>Multiple Windows Defender error events</description>
+    <options>no_full_log</options>
+    <group>system_error,gpg13_4.3,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,</group>
+  </rule>
+
+  <rule id="62104" level="10" frequency="$MS_FREQ" timeframe="120">
+    <if_matched_sid>62101</if_matched_sid>
+    <info type="text">Windows Defender 多次警告事件</info>
+    <description>Multiple Windows Defender warning events</description>
+    <options>no_full_log</options>
+    <group>pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+
+  </rule>
+
+  <rule id="62105" level="14" frequency="$MS_FREQ" timeframe="60">
+    <if_matched_sid>62101</if_matched_sid>
+    <info type="text">短时间多个 Windows Defender 错误事件</info>
+    <description>Short-time multiple Windows Defender error events</description>
+    <options>no_full_log</options>
+    <group>pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+  <rule id="62106" level="14" frequency="$MS_FREQ" timeframe="30">
+    <if_matched_sid>62102</if_matched_sid>
+    <info type="text">短时间多个 Windows Defender 警告事件</info>
+    <description>Short-time multiple Windows Defender warning events</description>
+    <options>no_full_log</options>
+    <group>pci_dss_10.6.1,gpg13_4.12,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+
+  </rule>
+
+
+  <!-- Event ID 1000 -->
+  <rule id="62107" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^1000$</field>
+    <info type="text">Windows Defender：反恶意软件扫描已启动</info>
+    <description>Windows Defender: Antimalware scan started</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,pci_dss_10.6.1,pci_dss_5.3,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 1001 -->
+  <rule id="62108" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^1001$</field>
+    <info type="text">Windows Defender：反恶意软件扫描完成</info>
+    <description>Windows Defender: Antimalware scan finished</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,pci_dss_10.6.1,pci_dss_5.3,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 1002 -->
+  <rule id="62109" level="5">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^1002$</field>
+    <info type="text">Windows Defender：反恶意软件扫描在完成之前已停止</info>
+    <description>Windows Defender: Antimalware scan was stopped before it finished</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,pci_dss_10.6.1,pci_dss_5.3,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 1003 -->
+  <rule id="62110" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^1003$</field>
+    <info type="text">Windows Defender：反恶意软件扫描已暂停</info>
+    <description>Windows Defender: Antimalware scan paused</description>
+    <options>no_full_log</options>
+    <mitre>
+      <id>T1203</id>
+    </mitre>
+    <group>gdpr_IV_35.7.d,pci_dss_10.6.1,pci_dss_5.3,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 1004 -->
+  <rule id="62111" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^1004$</field>
+    <info type="text">Windows Defender：反恶意软件扫描已恢复</info>
+    <description>Windows Defender: Antimalware scan resumed</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,pci_dss_10.6.1,pci_dss_5.3,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 1005 -->
+  <rule id="62112" level="5">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^1005$</field>
+    <info type="text">Windows Defender：反恶意软件扫描失败</info>
+    <description>Windows Defender: Antimalware scan failed</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,pci_dss_10.6.1,pci_dss_5.3,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 1006 -->
+  <rule id="62113" level="14">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^1006$</field>
+    <info type="text">Windows Defender：反恶意软件引擎发现 $(win.eventdata.severityName) 恶意软件或其他可能不需要的软件</info>
+    <description>Windows Defender: Antimalware engine found $(win.eventdata.severityName) malware or other potentially unwanted software</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,gdpr_II_5.1.f,pci_dss_10.6.1,pci_dss_11.4,gpg13_10.1,hipaa_164.312.b,nist_800_53_AU.9,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+
+  <!-- Event ID 1007 -->
+  <rule id="62114" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^1007$</field>
+    <info type="text">Windows Defender: 反恶意软件平台执行了一项操作以保护您的系统免受恶意软件或其他可能不需要的软件的侵害</info>
+    <description>Windows Defender: Antimalware platform performed an action to protect your system from malware or other potentially unwanted software</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,gdpr_II_5.1.f,pci_dss_10.6.1,pci_dss_11.4,gpg13_10.1,hipaa_164.312.b,nist_800_53_AU.9,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+
+  <!-- Event ID 1008 -->
+  <rule id="62115" level="5">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^1008$</field>
+    <info type="text">Windows Defender: 反恶意软件平台未能采取措施保护您的系统免受恶意软件或其他可能不需要的软件的侵害</info>
+    <description>Windows Defender: Antimalware platform failed to perform an action to protect your system from malware or other potentially unwanted software</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,gdpr_II_5.1.f,pci_dss_10.6.1,pci_dss_11.4,gpg13_10.1,hipaa_164.312.b,nist_800_53_AU.9,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+
+  <!-- Event ID 1009 -->
+  <rule id="62116" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^1009$</field>
+    <info type="text">Windows Defender: 反恶意软件平台从 $(win.eventdata.path) 的隔离区中恢复了一个项目</info>
+    <description>Windows Defender: Antimalware platform restored an item from quarantine at $(win.eventdata.path)</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,gdpr_II_5.1.f,pci_dss_10.6.1,pci_dss_11.4,gpg13_10.1,hipaa_164.312.b,nist_800_53_AU.9,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+
+  </rule>
+
+
+  <!-- Event ID 1010 -->
+  <rule id="62117" level="5">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^1010$</field>
+    <info type="text">Windows Defender: 反恶意软件平台无法从 $(win.eventdata.path) 处的隔离区恢复项目</info>
+    <description>Windows Defender: Antimalware platform could not restore an item from quarantine at $(win.eventdata.path)</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,gdpr_II_5.1.f,pci_dss_10.6.1,pci_dss_11.4,gpg13_10.1,hipaa_164.312.b,nist_800_53_AU.9,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+
+  </rule>
+
+
+  <!-- Event ID 1011 -->
+  <rule id="62118" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^1011$</field>
+    <info type="text">Windows Defender: 反恶意软件平台从 $(win.eventdata.path) 的隔离区中删除了一个项目</info>
+    <description>Windows Defender: Antimalware platform deleted an item from quarantine at $(win.eventdata.path)</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,gdpr_II_5.1.f,pci_dss_10.6.1,pci_dss_11.4,gpg13_10.1,hipaa_164.312.b,nist_800_53_AU.9,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+
+  <!-- Event ID 1012 -->
+  <rule id="62119" level="5">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^1012$</field>
+    <info type="text">Windows Defender: 反恶意软件平台无法从 $(win.eventdata.path) 的隔离区中删除项目</info>
+    <description>Windows Defender: Antimalware platform could not delete an item from quarantine at $(win.eventdata.path)</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,gdpr_II_5.1.f,pci_dss_10.6.1,pci_dss_11.4,gpg13_10.1,hipaa_164.312.b,nist_800_53_AU.9,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+
+  <!-- Event ID 1013 -->
+  <rule id="62120" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^1013$</field>
+    <info type="text">Windows Defender: 反恶意软件平台删除了恶意软件和其他可能不需要的软件的历史记录</info>
+    <description>Windows Defender: Antimalware platform deleted history of malware and other potentially unwanted software</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,gdpr_II_5.1.f,pci_dss_10.6.1,pci_dss_11.4,gpg13_10.1,hipaa_164.312.b,nist_800_53_AU.9,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+
+  <!-- Event ID 1014 -->
+  <rule id="62121" level="5">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^1014$</field>
+    <info type="text">Windows Defender: 反恶意软件平台无法删除恶意软件和其他可能不需要的软件的历史记录</info>
+    <description>Windows Defender: Antimalware platform could not delete history of malware and other potentially unwanted software</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,gdpr_II_5.1.f,pci_dss_10.6.1,pci_dss_11.4,gpg13_10.1,hipaa_164.312.b,nist_800_53_AU.9,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+
+  <!-- Event ID 1015 -->
+  <rule id="62122" level="12">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^1015$</field>
+    <info type="text">Windows Defender: 反恶意软件平台检测到可疑的 $(win.eventdata.detectionType) 行为 ($(win.eventdata.processName))</info>
+    <description>Windows Defender: Antimalware platform detected suspicious $(win.eventdata.detectionType) behaviour ($(win.eventdata.processName))</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_5.2,pci_dss_10.6.1,pci_dss_11.4,gpg13_4.2,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,nist_800_53_SI.4,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+
+  <!-- Event ID 1116 -->
+  <rule id="62123" level="12">
+      <if_sid>62101</if_sid>
+      <field name="win.system.eventID">^1116$</field>
+      <info type="text">Windows Defender: 反恶意软件平台检测到 $(win.eventdata.severityName) 可能不需要的软件 ($(win.eventdata.processName))</info>
+      <description>Windows Defender: Antimalware platform detected $(win.eventdata.severityName) potentially unwanted software ($(win.eventdata.processName))</description>
+      <options>no_full_log</options>
+      <group>pci_dss_5.1,pci_dss_5.2,pci_dss_10.6.1,pci_dss_11.4,gpg13_4.2,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,nist_800_53_SI.4,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+
+  <!-- Event ID 1117 -->
+  <rule id="62124" level="3">
+      <if_sid>62100</if_sid>
+      <field name="win.system.eventID">^1117$</field>
+      <info type="text">Windows Defender: 反恶意软件平台执行了一项操作以保护您免受潜在有害软件的侵害 ($(win.eventdata.processName))</info>
+      <description>Windows Defender: Antimalware platform performed an action to protect you from potentially unwanted software ($(win.eventdata.processName))</description>
+      <options>no_full_log</options>
+      <group>pci_dss_5.1,pci_dss_5.2,pci_dss_10.6.1,pci_dss_11.4,gpg13_4.2,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,nist_800_53_SI.4,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+
+  <!-- Event ID 1118 -->
+  <rule id="62125" level="8">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^1118$</field>
+    <info type="text">Windows Defender: 反恶意软件平台未能执行保护您免受潜在有害软件侵害的操作 ($(win.eventdata.processName))</info>
+    <description>Windows Defender: Antimalware platform failed performing an action to protect you from potentially unwanted software ($(win.eventdata.processName))</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_5.2,pci_dss_10.6.1,pci_dss_11.4,gpg13_4.2,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,nist_800_53_SI.4,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+
+  <!-- Event ID 1119 -->
+  <rule id="62126" level="14">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^1119$</field>
+    <info type="text">Windows Defender: 反恶意软件平台在尝试对可能不需要的软件执行操作时遇到严重错误</info>
+    <description>Windows Defender: Antimalware platform encountered a critical error when attempting to perform an action over the  potentially unwanted software</description>
+    <options>no_full_log</options>
+    <group>gdpr_IV_35.7.d,gdpr_II_5.1.f,pci_dss_10.6.1,pci_dss_11.4,gpg13_10.1,hipaa_164.312.b,nist_800_53_AU.9,nist_800_53_SI.4,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+
+  <!-- Event ID 1120 -->
+  <rule id="62127" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^1120$</field>
+    <info type="text">Windows Defender: 反恶意软件平台已推断出威胁资源的哈希值</info>
+    <description>Windows Defender: Antimalware platform has deduced the hashes for a threat resource</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_5.2,pci_dss_10.6.1,pci_dss_11.4,gpg13_4.2,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,nist_800_53_SI.4,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,tsc_CC6.1,tsc_CC6.8,</group>
+  </rule>
+
+
+  <!-- Event ID 1150 -->
+  <rule id="62128" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^1150$</field>
+    <info type="text">Windows Defender: 反恶意软件平台正在运行并处于健康状态</info>
+    <description>Windows Defender: Antimalware platform is running and in a healthy state</description>
+    <options>no_full_log</options>
+    <group>pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 1151 -->
+  <rule id="62129" level="2">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^1151$</field>
+    <info type="text">Windows Defender: Endpoint Protection 客户端运行状况报告</info>
+    <description>Windows Defender: Endpoint Protection client health report</description>
+    <options>no_full_log</options>
+    <group>pci_dss_10.6.1,gdpr_IV_35.7.d,gdpr_IV_30.1.g,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2000 -->
+  <rule id="62130" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^2000$</field>
+    <info type="text">Windows Defender: 反恶意软件定义已成功更新</info>
+    <description>Windows Defender: Antimalware definitions updated successfully</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2001 -->
+  <rule id="62131" level="5">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^2001$</field>
+    <info type="text">Windows Defender: 反恶意软件定义更新失败</info>
+    <description>Windows Defender: Antimalware definition update failed</description>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+    <options>no_full_log</options>
+  </rule>
+
+
+  <!-- Event ID 2002 -->
+  <rule id="62132" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^2002$</field>
+    <info type="text">Windows Defender: 反恶意软件引擎更新成功</info>
+    <description>Windows Defender: Antimalware engine updated successfully</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2003 -->
+  <rule id="62133" level="5">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^2003$</field>
+    <info type="text">Windows Defender: 反恶意软件引擎更新失败</info>
+    <description>Windows Defender: Antimalware engine update failed</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2004 -->
+  <rule id="62134" level="8">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^2004$</field>
+    <info type="text">Windows Defender: 尝试加载反恶意软件定义时出错</info>
+    <description>Windows Defender: Error while attempting to load antimalware definitions</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2005 -->
+  <rule id="62135" level="8">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^2005$</field>
+    <info type="text">Windows Defender: 尝试加载反恶意软件引擎时出错，因为反恶意软件平台已过时</info>
+    <description>Windows Defender: Error while attempting to load antimalware engine because the antimalware platform is outdated</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2006 -->
+  <rule id="62136" level="8">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^2006$</field>
+    <info type="text">Windows Defender: 尝试更新反恶意软件平台时出错</info>
+    <description>Windows Defender: Error while attempting to update antimalware platform</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2007 -->
+  <rule id="62137" level="2">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^2007$</field>
+    <info type="text">Windows Defender: 反恶意软件平台即将更新</info>
+    <description>Windows Defender: Antimalware platform will soon be updated</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2010 -->
+  <rule id="62138" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^2010$</field>
+    <info type="text">Windows Defender: 反恶意软件引擎使用动态签名服务获取附加定义</info>
+    <description>Windows Defender: Antimalware engine used Dynamic Signature Service to get additional definitions</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2011 -->
+  <rule id="62139" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^2011$</field>
+    <info type="text">Windows Defender: DSS 删除了过时的动态定义</info>
+    <description>Windows Defender: DSS deleted the outdated dynamic definitions</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2012 -->
+  <rule id="62140" level="8">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^2012$</field>
+    <info type="text">Windows Defender: 尝试使用动态签名服务时出错</info>
+    <description>Windows Defender: Error while attempting to use Dynamic Signature Service</description>
+    <options>no_full_log</options>
+    <group>pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2013 -->
+  <rule id="62141" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^2013$</field>
+    <info type="text">Windows Defender: 动态签名服务删除了所有动态定义</info>
+    <description>Windows Defender: Dynamic Signature Service deleted all dynamic definitions</description>
+    <options>no_full_log</options>
+    <group>pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2020 -->
+  <rule id="62142" level="2">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^2020$</field>
+    <info type="text">Windows Defender: 反恶意软件引擎下载了一个干净的文件</info>
+    <description>Windows Defender: Antimalware engine downloaded a clean file</description>
+    <options>no_full_log</options>
+    <group>pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2021 -->
+  <rule id="62143" level="5">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^2021$</field>
+    <info type="text">Windows Defender: 反恶意软件引擎未能下载干净的文件</info>
+    <description>Windows Defender: Antimalware engine failed to download a clean file</description>
+    <options>no_full_log</options>
+    <group>pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2030 -->
+  <rule id="62144" level="2">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^2030$</field>
+    <info type="text">Windows Defender: 已下载反恶意软件引擎并配置为在下次系统重新启动时脱机运行</info>
+    <description>Windows Defender: Antimalware engine was downloaded and is configured to run offline on the next system restart</description>
+    <options>no_full_log</options>
+    <group>pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2031 -->
+  <rule id="62145" level="5">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^2031$</field>
+    <info type="text">Windows Defender: 反恶意软件引擎无法下载和配置离线扫描</info>
+    <description>Windows Defender: Antimalware engine was unable to download and configure an offline scan</description>
+    <options>no_full_log</options>
+    <group>pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2040 -->
+  <rule id="62146" level="5">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^2040$</field>
+    <info type="text">Windows Defender: 对此操作系统的反恶意软件支持即将结束</info>
+    <description>Windows Defender: Antimalware support for this Operating System will soon end</description>
+    <options>no_full_log</options>
+    <group>pci_dss_10.6.1,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_AU.6,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2041 -->
+  <rule id="62147" level="8">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^2041$</field>
+    <info type="text">Windows Defender: 此操作系统的反恶意软件支持已结束</info>
+    <description>Windows Defender: Antimalware support for this Operating System has ended</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 2042 -->
+  <rule id="62148" level="8">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^2042$</field>
+    <info type="text">Windows Defender: 反恶意软件引擎不再支持此操作系统</info>
+    <description>Windows Defender: Antimalware engine no longer supports this Operating System</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 3002 -->
+  <rule id="62149" level="10">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^3002$</field>
+    <info type="text">Windows Defender: $(win.eventdata.feature) 实时保护遇到错误失败</info>
+    <description>Windows Defender: $(win.eventdata.feature) real-time protection encountered an error and failed</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 3007 -->
+  <rule id="62150" level="5">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^3007$</field>
+    <info type="text">Windows Defender: $(win.eventdata.feature) 从故障中恢复的实时保护</info>
+    <description>Windows Defender: $(win.eventdata.feature) real-time protection recovered from a failure</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.6.1,pci_dss_5.2,gdpr_IV_35.7.d,gpg13_4.4,gpg13_4.14,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.6,tsc_A1.2,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 5000 -->
+  <rule id="62151" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^5000$</field>
+    <info type="text">Windows Defender: 启用防病毒实时保护</info>
+    <description>Windows Defender: Antivirus real-time protection is enabled</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.2.6,pci_dss_10.6.1,gpg13_4.14,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.14,nist_800_53_AU.5,nist_800_53_AU.6,tsc_A1.2,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 5001 -->
+  <rule id="62152" level="5">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^5001$</field>
+    <info type="text">Windows Defender: 防病毒实时保护已禁用</info>
+    <description>Windows Defender: Antivirus real-time protection is disabled</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.2.6,pci_dss_10.6.1,gpg13_4.14,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.14,nist_800_53_AU.5,nist_800_53_AU.6,tsc_A1.2,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 5004 -->
+  <rule id="62153" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^5004$</field>
+    <info type="text">Windows Defender: 防病毒实时保护功能配置已更改</info>
+    <description>Windows Defender: Antivirus real-time protection feature configuration has changed</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.2.6,pci_dss_10.6.1,gpg13_4.14,gpg13_10.1,gdpr_IV_35.7.d,gdpr_II_5.1.f,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.14,nist_800_53_AU.5,nist_800_53_AU.6,tsc_A1.2,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 5007 -->
+  <rule id="62154" level="5">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^5007$</field>
+    <info type="text">Windows Defender: 反恶意软件平台功能配置已更改</info>
+    <description>Windows Defender: Antimalware platform feature configuration changed</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.2.6,pci_dss_10.6.1,gpg13_4.14,gpg13_10.1,gdpr_IV_35.7.d,gdpr_II_5.1.f,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.14,nist_800_53_AU.5,nist_800_53_AU.6,tsc_A1.2,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 5008 -->
+  <rule id="62155" level="12">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^5008$</field>
+    <info type="text">Windows Defender: 由于 $(win.eventdata.resource) 处的 $(win.eventdata.failureType)，反恶意软件引擎遇到错误并失败</info>
+    <description>Windows Defender: Antimalware engine encountered an error and failed because of $(win.eventdata.failureType) at $(win.eventdata.resource)</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.2.6,pci_dss_10.6.1,gpg13_4.14,gpg13_10.1,gdpr_IV_35.7.d,gdpr_II_5.1.f,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.14,nist_800_53_AU.5,nist_800_53_AU.6,tsc_A1.2,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 5009 -->
+  <rule id="62156" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^5009$</field>
+    <info type="text">Windows Defender: 已启用针对恶意软件和其他可能不需要的软件的防病毒扫描</info>
+    <description>Windows Defender: Antivirus scanning for malware and other potentially unwanted software is enabled</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.2.6,pci_dss_10.6.1,gpg13_4.14,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.14,nist_800_53_AU.5,nist_800_53_AU.6,tsc_A1.2,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 5010 -->
+  <rule id="62157" level="10">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^5010$</field>
+    <info type="text">Windows Defender: 已禁用恶意软件和其他可能不需要的软件的防病毒扫描</info>
+    <description>Windows Defender: Antivirus scanning for malware and other potentially unwanted software is disabled</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.2.6,pci_dss_10.6.1,gpg13_4.14,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.14,nist_800_53_AU.5,nist_800_53_AU.6,tsc_A1.2,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 5011 -->
+  <rule id="62158" level="3">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^5011$</field>
+    <info type="text">Windows Defender: 已启用病毒的防病毒扫描</info>
+    <description>Windows Defender: Antivirus scanning for viruses is enabled</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.2.6,pci_dss_10.6.1,gpg13_4.14,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.14,nist_800_53_AU.5,nist_800_53_AU.6,tsc_A1.2,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 5012 -->
+  <rule id="62159" level="10">
+    <if_sid>62100</if_sid>
+    <field name="win.system.eventID">^5012$</field>
+    <info type="text">Windows Defender: 病毒的防病毒扫描已禁用</info>
+    <description>Windows Defender: Antivirus scanning for viruses is disabled</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.2.6,pci_dss_10.6.1,gpg13_4.14,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.14,nist_800_53_AU.5,nist_800_53_AU.6,tsc_A1.2,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 5100 -->
+  <rule id="62160" level="5">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^5100$</field>
+    <info type="text">Windows Defender: 反恶意软件平台即将到期</info>
+    <description>Windows Defender: Antimalware platform will expire soon</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.2.6,pci_dss_10.6.1,gpg13_4.14,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.14,nist_800_53_AU.5,nist_800_53_AU.6,tsc_A1.2,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- Event ID 5101 -->
+  <rule id="62161" level="8">
+    <if_sid>62101</if_sid>
+    <field name="win.system.eventID">^5101$</field>
+    <info type="text">Windows Defender: 由于错误 $(win.eventdata.errorCode)，反恶意软件平台已过期</info>
+    <description>Windows Defender: Antimalware platform is expired due to error $(win.eventdata.errorCode)</description>
+    <options>no_full_log</options>
+    <group>pci_dss_5.1,pci_dss_10.2.6,pci_dss_10.6.1,gpg13_4.14,gpg13_10.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SI.3,nist_800_53_AU.14,nist_800_53_AU.5,nist_800_53_AU.6,tsc_A1.2,tsc_CC6.8,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508007 -->
+  <rule id="62162" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508007$</field>
+    <info type="text">Windows Defender: 错误：没有内存</info>
+    <description>Windows Defender: ERROR: NO MEMORY</description>
+    <options>no_full_log</options>
+  </rule>
+
+
+  <!-- ERROR 0x8050800C -->
+  <rule id="62163" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x8050800C$</field>
+    <info type="text">Windows Defender: 错误：错误的输入数据</info>
+    <description>Windows Defender: ERROR: BAD INPUT DATA</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508020 -->
+  <rule id="62164" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508020$</field>
+    <info type="text">Windows Defender: 错误：错误的配置</info>
+    <description>Windows Defender: ERROR: BAD CONFIGURATION</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x805080211 -->
+  <rule id="62165" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x805080211$</field>
+    <info type="text">Windows Defender: 错误：隔离失败</info>
+    <description>Windows Defender: ERROR: QUARANTINE FAILED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508022 -->
+  <rule id="62166" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508022$</field>
+    <info type="text">Windows Defender: 错误：需要重新启动</info>
+    <description>Windows Defender: ERROR: REBOOT REQUIRED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508023 -->
+  <rule id="62167" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508023$</field>
+    <info type="text">Windows Defender: 错误：未发现威胁</info>
+    <description>Windows Defender: ERROR: THREAT NOT FOUND</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508024 -->
+  <rule id="62168" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508024$</field>
+    <info type="text">Windows Defender: 错误：需要全面扫描</info>
+    <description>Windows Defender: ERROR: FULL SCAN REQUIRED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508025 -->
+  <rule id="62169" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508025$</field>
+    <info type="text">Windows Defender: 错误：需要手动步骤</info>
+    <description>Windows Defender: ERROR: MANUAL STEPS REQUIRED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508026 -->
+  <rule id="62170" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508026$</field>
+    <info type="text">Windows Defender: 错误：不支持删除</info>
+    <description>Windows Defender: ERROR: REMOVE NOT SUPPORTED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508027 -->
+  <rule id="62171" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508027$</field>
+    <info type="text">Windows Defender: 错误：删除低中禁用</info>
+    <description>Windows Defender: ERROR: REMOVE LOW MEDIUM DISABLED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508029 -->
+  <rule id="62172" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508029$</field>
+    <info type="text">Windows Defender: 错误：需要重新扫描</info>
+    <description>Windows Defender: ERROR: RESCAN REQUIRED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508030 -->
+  <rule id="62173" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508030$</field>
+    <info type="text">Windows Defender: 错误：需要CALLISTO</info>
+    <description>Windows Defender: ERROR: CALLISTO REQUIRED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508031 -->
+  <rule id="62174" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508031$</field>
+    <info type="text">Windows Defender: 错误：平台过时</info>
+    <description>Windows Defender: ERROR: PLATFORM OUTDATED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80501000 -->
+  <rule id="62175" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80501000$</field>
+    <info type="text">Windows Defender: 错误：UI整合基础</info>
+    <description>Windows Defender: ERROR: UI CONSOLIDATION BASE</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80501001 -->
+  <rule id="62176" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80501001$</field>
+    <info type="text">Windows Defender: 错误：操作失败</info>
+    <description>Windows Defender: ERROR: ACTIONS FAILED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80501002 -->
+  <rule id="62177" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80501002$</field>
+    <info type="text">Windows Defender: 错误：没有引擎</info>
+    <description>Windows Defender: ERROR: NO ENGINE</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80501003 -->
+  <rule id="62178" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80501003$</field>
+    <info type="text">Windows Defender: 错误：主动威胁</info>
+    <description>Windows Defender: ERROR: ACTIVE THREATS</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80501004 -->
+  <rule id="62179" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80501004$</field>
+    <info type="text">Windows Defender: 错误：没有网络连接</info>
+    <description>Windows Defender: ERROR: NO INTERNET CONNECTION</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80501101 -->
+  <rule id="62180" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80501101$</field>
+    <info type="text">Windows Defender: 错误：LUA 取消</info>
+    <description>Windows Defender: ERROR: LUA CANCELLATION</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x805011011 -->
+  <rule id="62181" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x805011011$</field>
+    <info type="text">Windows Defender: 错误：代码LUA 取消</info>
+    <description>Windows Defender: ERROR: CODE LUA CANCELLED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80501102 -->
+  <rule id="62182" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80501102$</field>
+    <info type="text">Windows Defender: 错误：代码已经关闭</info>
+    <description>Windows Defender: ERROR: CODE ALREADY SHUTDOWN</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80501103 -->
+  <rule id="62183" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80501103$</field>
+    <info type="text">Windows Defender: 错误：代码异步调用挂起</info>
+    <description>Windows Defender: ERROR: CODE ASYNC CALL PENDING</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80501104 -->
+  <rule id="62184" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80501104$</field>
+    <info type="text">Windows Defender: 错误：代码取消</info>
+    <description>Windows Defender: ERROR: CODE CANCELLED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80501105 -->
+  <rule id="62185" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80501105$</field>
+    <info type="text">Windows Defender: 错误：代码无目标</info>
+    <description>Windows Defender: ERROR: CODE NO TARGETOS</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80501106 -->
+  <rule id="62186" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80501106$</field>
+    <info type="text">Windows Defender: 错误：代码错误的正则表达式</info>
+    <description>Windows Defender: ERROR: CODE BAD REGEXP</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80501107 -->
+  <rule id="62187" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80501107$</field>
+    <info type="text">Windows Defender: 错误：测试引起的错误</info>
+    <description>Windows Defender: ERROR: TEST INDUCED ERROR</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80501108 -->
+  <rule id="62188" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80501108$</field>
+    <info type="text">Windows Defender: 错误：SIG 备份已禁用</info>
+    <description>Windows Defender: ERROR: SIG BACKUP DISABLED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508001 -->
+  <rule id="62189" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508001$</field>
+    <info type="text">Windows Defender: 错误：错误的初始化模块</info>
+    <description>Windows Defender: ERROR: BAD INIT MODULES</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508002 -->
+  <rule id="62190" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508002$</field>
+    <info type="text">Windows Defender: 错误：错误的数据库</info>
+    <description>Windows Defender: ERROR: BAD DATABASE</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508004 -->
+  <rule id="62191" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508004$</field>
+    <info type="text">Windows Defender: 错误：错误的UFS</info>
+    <description>Windows Defender: ERROR: BAD UFS</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x8050800C -->
+  <rule id="62192" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x8050800C$</field>
+    <info type="text">Windows Defender: 错误：错误的输入数据</info>
+    <description>Windows Defender: ERROR: BAD INPUT DATA</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x8050800D -->
+  <rule id="62193" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x8050800D$</field>
+    <info type="text">Windows Defender: 错误：错误的全局存储</info>
+    <description>Windows Defender: ERROR: BAD GLOBAL STORAGE</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x8050800E -->
+  <rule id="62194" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x8050800E$</field>
+    <info type="text">Windows Defender: 错误：过时</info>
+    <description>Windows Defender: ERROR: OBSOLETE</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x8050800F -->
+  <rule id="62195" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x8050800F$</field>
+    <info type="text">Windows Defender: 错误：不支持</info>
+    <description>Windows Defender: ERROR: NOT SUPPORTED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508010 -->
+  <rule id="62196" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508010$</field>
+    <info type="text">Windows Defender: 错误：没有更多的项目</info>
+    <description>Windows Defender: ERROR: NO MORE ITEMS</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508011 -->
+  <rule id="62197" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508011$</field>
+    <info type="text">Windows Defender: 错误：重复的扫描 ID</info>
+    <description>Windows Defender: ERROR: DUPLICATE SCAN ID</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508012 -->
+  <rule id="62198" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508012$</field>
+    <info type="text">Windows Defender: 错误：扫描 ID错误</info>
+    <description>Windows Defender: ERROR: BAD SCAN ID</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508013 -->
+  <rule id="62199" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508013$</field>
+    <info type="text">Windows Defender: 错误：错误的用户数据库版本</info>
+    <description>Windows Defender: ERROR: BAD USER DB VERSION</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508014 -->
+  <rule id="62200" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508014$</field>
+    <info type="text">Windows Defender: 错误：恢复失败</info>
+    <description>Windows Defender: ERROR: RESTORE FAILED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508016 -->
+  <rule id="62201" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508016$</field>
+    <info type="text">Windows Defender: 错误：操作错误</info>
+    <description>Windows Defender: ERROR: BAD ACTION</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508019 -->
+  <rule id="62202" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508019$</field>
+    <info type="text">Windows Defender: 错误：未发现</info>
+    <description>Windows Defender: ERROR: NOT FOUND</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80509001 -->
+  <rule id="62203" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80509001$</field>
+    <info type="text">Windows Defender: 错误：错误处理</info>
+    <description>Windows Defender: ERROR: BAD EHANDLE</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80509003 -->
+  <rule id="62204" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80509003$</field>
+    <info type="text">Windows Defender: 错误：未加载 RELO 内核</info>
+    <description>Windows Defender: ERROR: RELO KERNEL NOT LOADED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x8050A001 -->
+  <rule id="62205" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x8050A001$</field>
+    <info type="text">Windows Defender: 错误：错误的数据库：打开</info>
+    <description>Windows Defender: ERROR: BAD DB: OPEN</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x8050A002 -->
+  <rule id="62206" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x8050A002$</field>
+    <info type="text">Windows Defender: 错误：错误的数据库：标题</info>
+    <description>Windows Defender: ERROR: BAD DB: HEADER</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x8050A003 -->
+  <rule id="62207" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x8050A003$</field>
+    <info type="text">Windows Defender: 错误：错误的数据库：旧的引擎</info>
+    <description>Windows Defender: ERROR: BAD DB: OLD ENGINE</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x8050A004 -->
+  <rule id="62208" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x8050A004$</field>
+    <info type="text">Windows Defender: 错误：错误的数据库：内容</info>
+    <description>Windows Defender: ERROR: BAD DB: CONTENT</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x8050A005 -->
+  <rule id="62209" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x8050A005$</field>
+    <info type="text">Windows Defender: 错误：错误的数据库：未签名</info>
+    <description>Windows Defender: ERROR: BAD DB: NOT SIGNED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x8050A002 -->
+  <rule id="62210" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x8050A002$</field>
+    <info type="text">Windows Defender: 错误：错误的数据库：标题</info>
+    <description>Windows Defender: ERROR: BAD DB: HEADER</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x8050801 -->
+  <rule id="62211" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x8050801$</field>
+    <info type="text">Windows Defender: 错误：删除失败</info>
+    <description>Windows Defender: ERROR: REMOVE FAILED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+
+
+  <!-- ERROR 0x80508018 -->
+  <rule id="62212" level="12">
+    <if_sid>62102</if_sid>
+    <field name="win.eventdata.errorCode">^0x80508018$</field>
+    <info type="text">Windows Defender: 错误：扫描中止</info>
+    <description>Windows Defender: ERROR: SCAN ABORTED</description>
+    <options>no_full_log</options>
+    <group>pci_dss_6.5.5,pci_dss_10.6.1,gpg13_4.1,gdpr_IV_35.7.d,hipaa_164.312.b,nist_800_53_SA.11,nist_800_53_AU.6,tsc_CC6.6,tsc_CC7.1,tsc_CC7.2,tsc_CC7.3,</group>
+  </rule>
+</group>
