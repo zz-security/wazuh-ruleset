@@ -75,7 +75,6 @@
     <if_group>sysmon_event_11</if_group>
     <field name="win.eventdata.image" type="pcre2">\\spoolsv.exe$</field>
     <field name="win.eventdata.targetFilename" type="pcre2">(?i)[c-z]:\\\\Windows\\\\System32\\\\spool\\\\drivers.+\.dll</field>
-    <info type="text">
     <info type="text">由打印机假脱机服务创建的 DLL 文件，可能来自 PrintNightmare 漏洞的恶意软件二进制文件。</info>
     <description>DLL file created by printer spool service, possible malware binary drop from PrintNightmare exploit.</description>
     <mitre>

@@ -58,7 +58,7 @@
         <mitre>
           <id>T1071.004</id>
         </mitre>
-        info type="text">Cisco eStreamer:针对潜在恶意软件的 APP-DETECT DNS 请求</info>
+        <info type="text">Cisco eStreamer:针对潜在恶意软件的 APP-DETECT DNS 请求</info>
         <description>Cisco eStreamer: APP-DETECT DNS request for potential malware</description>
         <group>pci_dss_10.6.1,gdpr_IV_35.7.d,</group>
     </rule>

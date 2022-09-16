@@ -443,7 +443,7 @@
     <if_sid>65000</if_sid>
     <field name="gcp.protoPayload.methodName" type="pcre2">^storage\.setIamPermissions$</field>
     <field name="gcp.protoPayload.authorizationInfo" type="pcre2">"granted":\strue</field>
-    <info type="text"GCP 存储桶权限已修改。></info>
+    <info type="text">GCP 存储桶权限已修改。</info>
     <description>GCP storage bucket permissions modified.</description>
     <mitre>
       <id>T1222</id>

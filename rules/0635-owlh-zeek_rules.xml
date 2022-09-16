@@ -18,7 +18,7 @@
   </rule>
   <rule id="66003" level="5">
     <field name="bro_engine">DNS</field>
-    <info type="text">Zeek: DNS查询/info>
+    <info type="text">Zeek: DNS查询</info>
     <description>Zeek: DNS Query</description>
   </rule>
   <rule id="66004" level="5">
